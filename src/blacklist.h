@@ -1,4 +1,4 @@
-// $Id: blacklist.h,v 1.1 2002/11/14 22:51:42 ensc Exp $    --*- c++ -*--
+// $Id: blacklist.h,v 1.2 2002/11/18 21:58:18 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -38,7 +38,7 @@ void		BlackList_init(BlackList *lst, char const *filename);
 void		BlackList_softUpdate(BlackList *lst);
 void		BlackList_update(BlackList *lst);
 
-#ifndef NDEBUG
+#if !defined(NDEBUG) || defined(ENSC_TESTSUITE)
 void		BlackList_print(BlackList *lst, int fd);
 #endif
 

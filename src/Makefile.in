@@ -218,6 +218,7 @@ EXTRA_DIST = $(testsuite_FILES)
 check_LIBRARIES = libenscsentinel.a
 
 libenscsentinel_a_SOURCES = $(lib_SRCS)
+libenscsentinel_a_CPPFLAGS = -DENSC_TESTSUITE
 
 check_PROGRAMS = blacklist-parser blacklist-check
 check_SCRIPTS = testsuite/blacklist-check1.sh
@@ -260,10 +261,13 @@ libenscsentinel_a_AR = $(AR) cru
 libenscsentinel_a_LIBADD =
 am__libenscsentinel_a_SOURCES_DIST = arguments.c util.c blacklist.c \
 	antidos.c vector.c ether.c
-@ENSC_NEED_ETHER_TRUE@am__objects_1 = ether.$(OBJEXT)
+@ENSC_NEED_ETHER_TRUE@am__objects_1 = libenscsentinel_a-ether.$(OBJEXT)
 @ENSC_NEED_ETHER_FALSE@am__objects_1 =
-am__objects_2 = arguments.$(OBJEXT) util.$(OBJEXT) blacklist.$(OBJEXT) \
-	antidos.$(OBJEXT) vector.$(OBJEXT) $(am__objects_1)
+am__objects_2 = libenscsentinel_a-arguments.$(OBJEXT) \
+	libenscsentinel_a-util.$(OBJEXT) \
+	libenscsentinel_a-blacklist.$(OBJEXT) \
+	libenscsentinel_a-antidos.$(OBJEXT) \
+	libenscsentinel_a-vector.$(OBJEXT) $(am__objects_1)
 am_libenscsentinel_a_OBJECTS = $(am__objects_2)
 libenscsentinel_a_OBJECTS = $(am_libenscsentinel_a_OBJECTS)
 check_PROGRAMS = blacklist-parser$(EXEEXT) blacklist-check$(EXEEXT)
@@ -280,7 +284,11 @@ blacklist_parser_DEPENDENCIES = libenscsentinel.a
 blacklist_parser_LDFLAGS =
 am__ip_sentinel_SOURCES_DIST = ip-sentinel.c arguments.c util.c \
 	blacklist.c antidos.c vector.c ether.c
-am_ip_sentinel_OBJECTS = ip-sentinel.$(OBJEXT) $(am__objects_2)
+@ENSC_NEED_ETHER_TRUE@am__objects_3 = ether.$(OBJEXT)
+@ENSC_NEED_ETHER_FALSE@am__objects_3 =
+am__objects_4 = arguments.$(OBJEXT) util.$(OBJEXT) blacklist.$(OBJEXT) \
+	antidos.$(OBJEXT) vector.$(OBJEXT) $(am__objects_3)
+am_ip_sentinel_OBJECTS = ip-sentinel.$(OBJEXT) $(am__objects_4)
 ip_sentinel_OBJECTS = $(am_ip_sentinel_OBJECTS)
 ip_sentinel_LDADD = $(LDADD)
 ip_sentinel_DEPENDENCIES =
@@ -291,8 +299,14 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/antidos.Po ./$(DEPDIR)/arguments.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/blacklist.Po ./$(DEPDIR)/ether.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ip-sentinel.Po ./$(DEPDIR)/util.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/vector.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ip-sentinel.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-antidos.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-arguments.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-blacklist.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-ether.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-util.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-vector.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/util.Po ./$(DEPDIR)/vector.Po \
 @AMDEP_TRUE@	testsuite/$(DEPDIR)/blacklist-check.Po \
 @AMDEP_TRUE@	testsuite/$(DEPDIR)/blacklist-parser.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -322,6 +336,12 @@ AR = ar
 
 clean-checkLIBRARIES:
 	-test -z "$(check_LIBRARIES)" || rm -f $(check_LIBRARIES)
+libenscsentinel_a-arguments.$(OBJEXT): arguments.c
+libenscsentinel_a-util.$(OBJEXT): util.c
+libenscsentinel_a-blacklist.$(OBJEXT): blacklist.c
+libenscsentinel_a-antidos.$(OBJEXT): antidos.c
+libenscsentinel_a-vector.$(OBJEXT): vector.c
+libenscsentinel_a-ether.$(OBJEXT): ether.c
 libenscsentinel.a: $(libenscsentinel_a_OBJECTS) $(libenscsentinel_a_DEPENDENCIES) 
 	-rm -f libenscsentinel.a
 	$(libenscsentinel_a_AR) libenscsentinel.a $(libenscsentinel_a_OBJECTS) $(libenscsentinel_a_LIBADD)
@@ -401,6 +421,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/blacklist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ether.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ip-sentinel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-antidos.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-arguments.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-blacklist.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-ether.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-util.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-vector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@testsuite/$(DEPDIR)/blacklist-check.Po@am__quote@
@@ -430,6 +456,138 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'`
+
+libenscsentinel_a-arguments.o: arguments.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-arguments.o -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-arguments.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-arguments.o `test -f 'arguments.c' || echo '$(srcdir)/'`arguments.c; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-arguments.Tpo" "$(DEPDIR)/libenscsentinel_a-arguments.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-arguments.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='arguments.c' object='libenscsentinel_a-arguments.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-arguments.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-arguments.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-arguments.o `test -f 'arguments.c' || echo '$(srcdir)/'`arguments.c
+
+libenscsentinel_a-arguments.obj: arguments.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-arguments.obj -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-arguments.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-arguments.obj `if test -f 'arguments.c'; then $(CYGPATH_W) 'arguments.c'; else $(CYGPATH_W) '$(srcdir)/arguments.c'`; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-arguments.Tpo" "$(DEPDIR)/libenscsentinel_a-arguments.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-arguments.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='arguments.c' object='libenscsentinel_a-arguments.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-arguments.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-arguments.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-arguments.obj `if test -f 'arguments.c'; then $(CYGPATH_W) 'arguments.c'; else $(CYGPATH_W) '$(srcdir)/arguments.c'`
+
+libenscsentinel_a-util.o: util.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-util.o -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-util.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-util.o `test -f 'util.c' || echo '$(srcdir)/'`util.c; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-util.Tpo" "$(DEPDIR)/libenscsentinel_a-util.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-util.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='util.c' object='libenscsentinel_a-util.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-util.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-util.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-util.o `test -f 'util.c' || echo '$(srcdir)/'`util.c
+
+libenscsentinel_a-util.obj: util.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-util.obj -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-util.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-util.obj `if test -f 'util.c'; then $(CYGPATH_W) 'util.c'; else $(CYGPATH_W) '$(srcdir)/util.c'`; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-util.Tpo" "$(DEPDIR)/libenscsentinel_a-util.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-util.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='util.c' object='libenscsentinel_a-util.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-util.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-util.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-util.obj `if test -f 'util.c'; then $(CYGPATH_W) 'util.c'; else $(CYGPATH_W) '$(srcdir)/util.c'`
+
+libenscsentinel_a-blacklist.o: blacklist.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-blacklist.o -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-blacklist.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-blacklist.o `test -f 'blacklist.c' || echo '$(srcdir)/'`blacklist.c; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-blacklist.Tpo" "$(DEPDIR)/libenscsentinel_a-blacklist.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-blacklist.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='blacklist.c' object='libenscsentinel_a-blacklist.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-blacklist.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-blacklist.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-blacklist.o `test -f 'blacklist.c' || echo '$(srcdir)/'`blacklist.c
+
+libenscsentinel_a-blacklist.obj: blacklist.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-blacklist.obj -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-blacklist.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-blacklist.obj `if test -f 'blacklist.c'; then $(CYGPATH_W) 'blacklist.c'; else $(CYGPATH_W) '$(srcdir)/blacklist.c'`; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-blacklist.Tpo" "$(DEPDIR)/libenscsentinel_a-blacklist.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-blacklist.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='blacklist.c' object='libenscsentinel_a-blacklist.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-blacklist.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-blacklist.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-blacklist.obj `if test -f 'blacklist.c'; then $(CYGPATH_W) 'blacklist.c'; else $(CYGPATH_W) '$(srcdir)/blacklist.c'`
+
+libenscsentinel_a-antidos.o: antidos.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-antidos.o -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-antidos.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-antidos.o `test -f 'antidos.c' || echo '$(srcdir)/'`antidos.c; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-antidos.Tpo" "$(DEPDIR)/libenscsentinel_a-antidos.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-antidos.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='antidos.c' object='libenscsentinel_a-antidos.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-antidos.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-antidos.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-antidos.o `test -f 'antidos.c' || echo '$(srcdir)/'`antidos.c
+
+libenscsentinel_a-antidos.obj: antidos.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-antidos.obj -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-antidos.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-antidos.obj `if test -f 'antidos.c'; then $(CYGPATH_W) 'antidos.c'; else $(CYGPATH_W) '$(srcdir)/antidos.c'`; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-antidos.Tpo" "$(DEPDIR)/libenscsentinel_a-antidos.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-antidos.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='antidos.c' object='libenscsentinel_a-antidos.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-antidos.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-antidos.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-antidos.obj `if test -f 'antidos.c'; then $(CYGPATH_W) 'antidos.c'; else $(CYGPATH_W) '$(srcdir)/antidos.c'`
+
+libenscsentinel_a-vector.o: vector.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-vector.o -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-vector.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-vector.o `test -f 'vector.c' || echo '$(srcdir)/'`vector.c; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-vector.Tpo" "$(DEPDIR)/libenscsentinel_a-vector.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-vector.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='vector.c' object='libenscsentinel_a-vector.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-vector.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-vector.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-vector.o `test -f 'vector.c' || echo '$(srcdir)/'`vector.c
+
+libenscsentinel_a-vector.obj: vector.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-vector.obj -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-vector.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-vector.obj `if test -f 'vector.c'; then $(CYGPATH_W) 'vector.c'; else $(CYGPATH_W) '$(srcdir)/vector.c'`; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-vector.Tpo" "$(DEPDIR)/libenscsentinel_a-vector.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-vector.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='vector.c' object='libenscsentinel_a-vector.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-vector.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-vector.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-vector.obj `if test -f 'vector.c'; then $(CYGPATH_W) 'vector.c'; else $(CYGPATH_W) '$(srcdir)/vector.c'`
+
+libenscsentinel_a-ether.o: ether.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-ether.o -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-ether.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-ether.o `test -f 'ether.c' || echo '$(srcdir)/'`ether.c; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-ether.Tpo" "$(DEPDIR)/libenscsentinel_a-ether.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-ether.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ether.c' object='libenscsentinel_a-ether.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-ether.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-ether.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-ether.o `test -f 'ether.c' || echo '$(srcdir)/'`ether.c
+
+libenscsentinel_a-ether.obj: ether.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-ether.obj -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-ether.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-ether.obj `if test -f 'ether.c'; then $(CYGPATH_W) 'ether.c'; else $(CYGPATH_W) '$(srcdir)/ether.c'`; \
+@am__fastdepCC_TRUE@	then mv "$(DEPDIR)/libenscsentinel_a-ether.Tpo" "$(DEPDIR)/libenscsentinel_a-ether.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-ether.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ether.c' object='libenscsentinel_a-ether.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-ether.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-ether.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-ether.obj `if test -f 'ether.c'; then $(CYGPATH_W) 'ether.c'; else $(CYGPATH_W) '$(srcdir)/ether.c'`
 
 testsuite/blacklist-check.o: testsuite/blacklist-check.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT testsuite/blacklist-check.o -MD -MP -MF "testsuite/$(DEPDIR)/blacklist-check.Tpo" \

@@ -1,4 +1,4 @@
-// $Id: compat.h,v 1.1 2002/11/14 22:51:42 ensc Exp $    --*- c++ -*--
+// $Id: compat.h,v 1.2 2002/11/16 02:37:24 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -52,12 +52,17 @@ struct  ether_arp {
 };
 #endif
 
+#if  (defined(__dietlibc__) && !defined(DIET_HAS_IN_ADDR_T)) ||  \
+    (!defined(__dietlibc__) && !defined(HAVE_IN_ADDR_T))
+  typedef uint32_t      in_addr_t;
+#endif
+
 #ifndef __GLIBC__
-# define TEMP_FAILURE_RETRY(expression) \
-  (__extension__                                                              \
-    ({ long int __result;                                                     \
-       do __result = (long int) (expression);                                 \
-       while (__result == -1L && errno == EINTR);                             \
+# define TEMP_FAILURE_RETRY(expression)			\
+  (__extension__					\
+    ({ long int __result;				\
+       do __result = (long int) (expression);		\
+       while (__result == -1L && errno == EINTR);	\
        __result; }))
 #endif
 

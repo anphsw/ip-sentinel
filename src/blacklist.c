@@ -1,4 +1,4 @@
-// $Id: blacklist.c,v 1.2 2002/11/15 22:59:42 ensc Exp $    --*- c++ -*--
+// $Id: blacklist.c,v 1.4 2002/11/18 21:58:18 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -385,6 +385,7 @@ BlackList_getMac(BlackList const *lst_const, struct in_addr const ip, struct eth
   BlackList *			lst = const_cast(BlackList *)(lst_const);
   
   assert(lst!=0);
+
   {
     struct IPData const	*data = Vector_search(&lst->ip_list, &ip, IPData_searchCompare);
     if (data!=0) {
@@ -425,6 +426,7 @@ BlackList_getMac(BlackList const *lst_const, struct in_addr const ip, struct eth
   return result;
 }
 
+#if !defined(NDEBUG) || defined(ENSC_TESTSUITE)
 void
 BlackList_print(BlackList *lst, int fd)
 {
@@ -471,5 +473,5 @@ BlackList_print(BlackList *lst, int fd)
       WRITE_MSGSTR(fd, "\n");
     }
   }
-  
 }
+#endif

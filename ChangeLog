@@ -1,4 +1,56 @@
+2002-11-22  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, configure.ac:
+	Version 0.2
+
+	* doc/ip-sentinel.man:
+	Documented 'interface' commandline-option
+
+	* README:
+	Added content
+
+	* m4/ensc_cflags.m4:
+	Added ENSC_CHECK_DEFAULT_FLAG
+
+	* src/ip-sentinel.c:
+	Beautified error-message
+
+2002-11-18  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, configure.ac:
+	Version 0.1.1
+
+	* src/testsuite/Makefile-files:
+	Added -DENSC_TESTSUITE flag
+
+	* src/.cvsignore:
+	Added generated testsuite-scripts
+
+	* src/blacklist.c, src/blacklist.h:
+	Compile BlackList_print() when running 'make check' also
+
+	* README:
+	Added short note about the manpage and the testsuite files
+
+	* .cvsignore:
+	Added more temporary files
+
+	* src/blacklist.c:
+	Do not compile BlackList_print when NDEBUG is defined
+
+	* m4/ensc_compat.m4:
+	Fixed detection of in_addr_t with strict compiler-settings
+
 2002-11-16  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* doc/ip-sentinel.man:
+	minor documentation fixes
+
+	* src/compat.h:
+	Define in_addr_t if needed
+
+	* m4/ensc_diet.m4:
+	s!==!=!
 
 	* configure.ac:
 	Version 0.1

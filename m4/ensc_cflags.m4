@@ -1,4 +1,4 @@
-dnl $Id: ensc_cflags.m4,v 1.1 2002/11/14 22:54:52 ensc Exp $
+dnl $Id: ensc_cflags.m4,v 1.2 2002/11/22 18:49:10 ensc Exp $
 
 dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
@@ -105,4 +105,12 @@ echo 'void f(){}' > conftest.c
     fi
   done
   rm -f conftest.c conftest.o
+])
+
+AC_DEFUN(ENSC_CHECK_DEFAULT_FLAG,
+[
+	if test -z x"${ensc_sys_default_flag}"; then
+		ENSC_CHECK_CC_FLAG([-fmessage-length=0])
+		ENSC_CHECK_CXX_FLAGS([-fmessage-length=0])
+	fi
 ])

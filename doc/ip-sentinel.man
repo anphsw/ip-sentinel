@@ -1,4 +1,4 @@
-.\" $Id: ip-sentinel.man,v 1.2 2002/11/15 22:56:39 ensc Exp $
+.\" $Id: ip-sentinel.man,v 1.4 2002/11/22 19:16:09 ensc Exp $
 .\" Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 .\"  
 .\" Permission is granted to make and distribute verbatim copies of
@@ -20,7 +20,7 @@
 .\" except that this permission notice may be stated in a translation
 .\" approved by the Free Software Foundation
 .\"  
-.TH ip-sentinel 8 "November 18 2002" "@PACKAGE@ 0.1"
+.TH ip-sentinel 8 "November 18 2002" "@PACKAGE@ 0.2"
 .\"
 .\" ====================
 .\"
@@ -57,10 +57,10 @@ ip-sentinel \- keeps your IP space clean
 .B ip-sentinel
 starts a daemon which tries to prevent unauthorized usage of IPs
 within the local ethernet broadcastdomain by giving an answer to
-ARP-requests. After receiving such a reply, the requesting party stores
-the told MAC in its ARP-table and will send future packets to this
-MAC. Because this MAC is invalid, the host with the invalid IP can not
-be reached.
+ARP-requests. After receiving such a faked reply, the requesting party
+stores the told MAC in its ARP-table and will send future packets to
+this MAC. Because this MAC is invalid, the host with the invalid IP
+can not be reached.
 
 After startup it opens its logfiles, goes into a chroot jail, drops
 privileges and forks itself into background by default. The parameters
@@ -126,6 +126,11 @@ Prints help message and exits.
 .TP
 .BR \-\-version
 Prints the version of the program and exits.
+.TP
+.I interface
+Specifies to network-interface where ip-sentinel listens for
+ARP-requests and sends ARP-replies. It is a name like "eth0"; aliases
+like "eth0:1" are not possible.
 .\"
 .\" ====================
 .\"

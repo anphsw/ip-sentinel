@@ -6,7 +6,7 @@
 
 Summary:	A tool to prevent unauthorized usage of IPs
 Name:		ip-sentinel
-Version:	0.1
+Version:	0.2
 Release:	1
 License:	GPL
 Group:		System Environment/Daemons

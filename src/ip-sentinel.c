@@ -1,4 +1,4 @@
-// $Id: ip-sentinel.c,v 1.4 2002/11/16 00:04:18 ensc Exp $    --*- c++ -*--
+// $Id: ip-sentinel.c,v 1.5 2002/11/22 18:48:49 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -266,7 +266,9 @@ handleMessage(int sock, int if_idx, struct ether_addr const *mac, struct ether_a
   pid = fork();
   switch (pid) {
     case -1	:
-      perror("fork()"); writeMsgTimestamp(2); WRITE_MSGSTR(2, "fork() failed");
+      perror("fork()");
+      writeMsgTimestamp(2);
+      WRITE_MSGSTR(2, ": fork() failed");
       ++error_count;
       if (error_count>MAX_ERRORS) {
 	WRITE_MSGSTR(2, "aborting...");

@@ -1,4 +1,4 @@
-dnl $Id: ensc_diet.m4,v 1.8 2002/11/14 22:56:53 ensc Exp $
+dnl $Id: ensc_diet.m4,v 1.9 2002/11/16 02:17:00 ensc Exp $
 
 dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
@@ -71,7 +71,7 @@ AC_DEFUN([ENSC_DIET_FIX],
 [
 	AC_REQUIRE([ENSC_DIET])
 
-	if test x"${ensc_use_dietlibc}" == xyes; then
+	if test x"${ensc_use_dietlibc}" = xyes; then
 	        dnl Fix cross-compiler detection of dietlibc since it is
 	        dnl broken when using names like i386-redhat-linux-gcc
 	        if test x"$CC" != xgcc; then
@@ -93,7 +93,7 @@ AC_DEFUN([ENSC_DIET_CHECK_IN_ADDR_T],
 [
 	AC_REQUIRE([ENSC_DIET])
 
-	if test x"${ensc_use_dietlibc}" == xyes; then
+	if test x"${ensc_use_dietlibc}" = xyes; then
 		AC_CACHE_CHECK([whether in_addr_t exists in dietlibc],
 		       [ensc_cv_type_diet_in_addr_t],
 		       [AC_LANG_PUSH(C)
@@ -122,7 +122,7 @@ AC_DEFUN([__ENSC_DIET_FUNC_CHECK],
 [
 	AC_REQUIRE([ENSC_DIET])
 
-	if test x"${ensc_use_dietlibc}" == xyes; then
+	if test x"${ensc_use_dietlibc}" = xyes; then
 		AC_CACHE_CHECK([whether dietlibc supports $3 function],
 	                       [ensc_cv_func_diet_$3],
 			       [AC_LANG_PUSH(C)

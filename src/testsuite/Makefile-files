@@ -1,4 +1,4 @@
-## $Id: Makefile-files,v 1.2 2002/11/15 16:59:30 ensc Exp $ --*- makefile -*--
+## $Id: Makefile-files,v 1.3 2002/11/18 21:58:48 ensc Exp $ --*- makefile -*--
 
 # Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 #  
@@ -19,6 +19,7 @@
 check_LIBRARIES			=  libenscsentinel.a
 
 libenscsentinel_a_SOURCES	=  $(lib_SRCS)
+libenscsentinel_a_CPPFLAGS	=  -DENSC_TESTSUITE
 
 check_PROGRAMS			=  blacklist-parser blacklist-check
 check_SCRIPTS			=  testsuite/blacklist-check1.sh

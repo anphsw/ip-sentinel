@@ -1070,7 +1070,7 @@ AC_DEFUN([ENSC_RELEASE],
 	AC_MSG_RESULT([$$1])
 ])
 
-dnl $Id: ensc_diet.m4,v 1.8 2002/11/14 22:56:53 ensc Exp $
+dnl $Id: ensc_diet.m4,v 1.9 2002/11/16 02:17:00 ensc Exp $
 
 dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
@@ -1143,7 +1143,7 @@ AC_DEFUN([ENSC_DIET_FIX],
 [
 	AC_REQUIRE([ENSC_DIET])
 
-	if test x"${ensc_use_dietlibc}" == xyes; then
+	if test x"${ensc_use_dietlibc}" = xyes; then
 	        dnl Fix cross-compiler detection of dietlibc since it is
 	        dnl broken when using names like i386-redhat-linux-gcc
 	        if test x"$CC" != xgcc; then
@@ -1165,7 +1165,7 @@ AC_DEFUN([ENSC_DIET_CHECK_IN_ADDR_T],
 [
 	AC_REQUIRE([ENSC_DIET])
 
-	if test x"${ensc_use_dietlibc}" == xyes; then
+	if test x"${ensc_use_dietlibc}" = xyes; then
 		AC_CACHE_CHECK([whether in_addr_t exists in dietlibc],
 		       [ensc_cv_type_diet_in_addr_t],
 		       [AC_LANG_PUSH(C)
@@ -1194,7 +1194,7 @@ AC_DEFUN([__ENSC_DIET_FUNC_CHECK],
 [
 	AC_REQUIRE([ENSC_DIET])
 
-	if test x"${ensc_use_dietlibc}" == xyes; then
+	if test x"${ensc_use_dietlibc}" = xyes; then
 		AC_CACHE_CHECK([whether dietlibc supports $3 function],
 	                       [ensc_cv_func_diet_$3],
 			       [AC_LANG_PUSH(C)
@@ -1235,7 +1235,7 @@ AC_DEFUN([ENSC_DIET_CHECK_ETHER],
 	AM_CONDITIONAL([ENSC_NEED_ETHER], `$cond`)
 ])
 
-dnl $Id: ensc_compat.m4,v 1.6 2002/08/29 13:23:31 ensc Exp $
+dnl $Id: ensc_compat.m4,v 1.7 2002/11/18 21:39:27 ensc Exp $
 
 dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
@@ -1279,7 +1279,8 @@ AC_DEFUN([ENSC_TYPE_IN_ADDR_T],
 		       [AC_LANG_PUSH(C)
                 	AC_TRY_COMPILE([#include <netinet/in.h>
                         	       ],
-	                               [in_addr_t	foo],
+	                               [volatile in_addr_t	foo;
+                                        foo = 0],
 		                       [ensc_cv_type_in_addr_t=yes],
     	        	               [ensc_cv_type_in_addr_t=no])
 			AC_LANG_POP(C)
@@ -1340,7 +1341,7 @@ AC_DEFUN([ENSC_MODERN_COMPILER_CHECK],
 	fi
 ])
 
-dnl $Id: ensc_cflags.m4,v 1.1 2002/11/14 22:54:52 ensc Exp $
+dnl $Id: ensc_cflags.m4,v 1.2 2002/11/22 18:49:10 ensc Exp $
 
 dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
@@ -1447,5 +1448,13 @@ echo 'void f(){}' > conftest.c
     fi
   done
   rm -f conftest.c conftest.o
+])
+
+AC_DEFUN(ENSC_CHECK_DEFAULT_FLAG,
+[
+	if test -z x"${ensc_sys_default_flag}"; then
+		ENSC_CHECK_CC_FLAG([-fmessage-length=0])
+		ENSC_CHECK_CXX_FLAGS([-fmessage-length=0])
+	fi
 ])
 
