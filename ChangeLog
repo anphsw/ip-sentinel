@@ -1,4 +1,43 @@
+2003-07-15  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* .cvsignore, NEWS, configure.ac, doc/index.html, ip-sentinel.spec.in:
+	version 0.5
+
+	* src/ip-sentinel.c:
+	assign 'from_len' everytime before calling recvfrom
+
+	* contrib/ip-sentinel.init:
+	simplified option-generation code and removed some typos
+	minor cleanups
+
+2003-07-10  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* contrib/ip-sentinel.init:
+	Used $lockfile variable
+	Simplified the 'case ... esac' statement a little bit
+	Fixed 'condrestart'
+	Removed redundant 'exit $?'
+	Return an LSB compliant exit-code in case of '*'
+
+	* ip-sentinel.spec.in:
+	moved 'make check' into the %check section
+
+	* src/ip-sentinel.c:
+	Fixed binding to an interface as reported by Sergeev Sergey
+
+	* src/wrappers.h:
+	Added Ebind() wrapper
+
+2003-06-20  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_cflags.m4:
+	changed ENSC_CHECK_DEFAULT_FLAG
+
 2003-05-27  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* doc/index.html:
+	fixed broken markup
+	added w3c validator images
 
 	* NEWS, configure.ac, ip-sentinel.spec.in:
 	version 0.4

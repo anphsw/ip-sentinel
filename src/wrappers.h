@@ -1,4 +1,4 @@
-// $Id: wrappers.h,v 1.3 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
+// $Id: wrappers.h,v 1.4 2003/07/10 00:11:22 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -212,6 +212,16 @@ Efork()
 {
   pid_t		res = fork();
   FatalErrnoError(res==-1, 1, "fork()");
+
+  return res;
+}
+
+/*@unused@*/
+inline static int
+Ebind(int sock, void const *addr, int addrlen)
+{
+  int		res = bind(sock, addr, addrlen);
+  FatalErrnoError(res==-1, 1, "bind()");
 
   return res;
 }

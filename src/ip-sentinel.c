@@ -1,4 +1,4 @@
-// $Id: ip-sentinel.c,v 1.13 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
+// $Id: ip-sentinel.c,v 1.15 2003/07/15 13:48:19 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -302,15 +302,13 @@ run(int sock, int if_idx, char const *filename)
   AntiDOS			anti_dos;
   int				error_count = 0;
   struct sockaddr_ll		addr;
-  socklen_t			from_len = sizeof(addr);
+  socklen_t			from_len;
   char				buffer[4096];
   ArpMessage const * const	msg    = reinterpret_cast(ArpMessage const *)(buffer);
   struct in_addr const	*	src_ip = reinterpret_cast(struct in_addr const *)(msg->data.arp_spa);
   unsigned int			oversize_sleep = 1;
 
   memset(&addr, 0, sizeof(addr));
-  addr.sll_family  = AF_PACKET;
-  addr.sll_ifindex = if_idx;
   
   BlackList_init(&cfg, filename);
   AntiDOS_init(&anti_dos);
@@ -322,8 +320,10 @@ run(int sock, int if_idx, char const *filename)
     struct ether_addr		mac_buffer;
     
     AntiDOS_update(&anti_dos);
-    size = TEMP_FAILURE_RETRY(recvfrom(sock, buffer, sizeof buffer, 0,
-				       (struct sockaddr *)(&addr), &from_len));
+
+    from_len = sizeof(addr);
+    size     = TEMP_FAILURE_RETRY(recvfrom(sock, buffer, sizeof buffer, 0,
+					   (struct sockaddr *)(&addr), &from_len));
 
     if (static_cast(ssize_t)(size)==-1) {
       ++error_count;
@@ -381,6 +381,25 @@ run(int sock, int if_idx, char const *filename)
 }
 
 int
+generateSocket(char const *iface, int *idx)
+{
+  int			sock = Esocket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
+  struct sockaddr_ll	addr;
+  assert(idx!=0);
+
+  *idx = getIfIndex(sock, iface);
+
+  memset(&addr, 0, sizeof(addr));
+  addr.sll_family   = AF_PACKET;
+  addr.sll_protocol = htons(ETH_P_ARP);
+  addr.sll_ifindex  = *idx;
+  
+  (void)Ebind(sock, &addr, sizeof addr);
+
+  return sock;
+}
+
+int
 main(int argc, char *argv[])
 {
   Arguments		arguments;
@@ -389,8 +408,7 @@ main(int argc, char *argv[])
   
   parseOptions(argc, argv, &arguments);
 
-  sock   = Esocket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
-  if_idx = getIfIndex(sock, arguments.iface);
+  sock   = generateSocket(arguments.iface, &if_idx);
   daemonize(&arguments);
 
   signal(SIGCHLD, sigChild);
