@@ -1,4 +1,4 @@
-## $Id: configure.ac,v 1.20 2003/10/31 00:21:51 ensc Exp $
+## $Id: configure.ac,v 1.24 2003/12/15 23:56:44 ensc Exp $
 
 # Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 #  
@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-AC_INIT(ip-sentinel, 0.8, enrico.scholz@informatik.tu-chemnitz.de, [ip-sentinel])
+AC_INIT(ip-sentinel, 0.9, enrico.scholz@informatik.tu-chemnitz.de, [ip-sentinel])
 AC_CONFIG_SRCDIR([src/antidos.c])
 AM_CONFIG_HEADER([config.h])
 
@@ -34,6 +34,8 @@ AC_PROG_CPP
 AC_PROG_LN_S
 AC_PROG_RANLIB
 
+ENSC_CHANGELOG()
+
 ENSC_STANDARD_TOOLS
 ENSC_RELEASE(IS_RELEASE)
 ENSC_DEVELOPING(IS_DEVELOPING)
@@ -45,6 +47,7 @@ AC_DEFINE(_GNU_SOURCE, 1, [Uses GNU features])
 ENSC_CHECK_CC_FLAG([-Wall -W -Wno-unused-function])
 ENSC_CHECK_CC_FLAG([-std=c99 ${RELEASE_CFLAGS} ${DEVELOPING_CFLAGS} ${DEVELOPING_STRICT_CFLAGS} -Wno-unreachable-code])
 
+ENSC_INITRDDIR(initrddir)
 
 AC_MSG_CHECKING([for configfile])
 AC_ARG_WITH(configfile,
@@ -86,6 +89,6 @@ ENSC_DIET_CHECK_IN_ADDR_T
 # Checks for library functions.
 ENSC_DIET_CHECK_ETHER
 
-AC_CONFIG_FILES([Makefile m4/Makefile
+AC_CONFIG_FILES([Makefile
                  src/Makefile ip-sentinel.spec])
 AC_OUTPUT

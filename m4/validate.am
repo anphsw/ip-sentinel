@@ -1,4 +1,4 @@
-## $Id: validate.am,v 1.5 2003/08/05 13:06:45 ensc Exp $	---*- makefile -*---
+## $Id: validate.am,v 1.6 2003/12/12 00:47:57 ensc Exp $	---*- makefile -*---
 
 ## Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 ##  
@@ -16,8 +16,7 @@
 ## Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##  
 
-config.h install-data-local install-exec-local:	\
-			.X$(subst /,_,$(prefix))-up-to-date
+$(BUILT_SOURCES) config.h:	.X$(subst /,_,$(sysconfdir))-up-to-date
 
 distclean-local:	distclean-uptodate
 
@@ -26,5 +25,5 @@ distclean-uptodate:
 
 .%-up-to-date:
 			@rm -f  .*-up-to-date
-			@touch $@
-			@$(MAKE)  clean
+			@touch -t 197001020000 '$@'
+			@$(MAKE) -s clean $(BUILT_SOURCES)

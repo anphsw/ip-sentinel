@@ -1,3 +1,21 @@
+Version 0.9
+===========
+
+	- networks with '@MAC' statements are taking precedence over those
+	  with the same netmask but without such statements. This makes it
+	  possible to declare a pool of MACs within a network with dynamic
+	  IP assignment. This change affects ambiguous configurations only
+	  which would have an undefined behavior in previous versions.
+	
+	- BUGFIX: requests which are matching negated '@!MAC' statements,
+	  are taking now precedence over later, more general matches
+	  (reported by Sergeev Sergey)
+	
+	- added workarounds for a bug in dietlibc-0.24's printf()
+	  function (affects testsuite only), and a gcc optimization bug
+	  (https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=110966)
+
+
 Version 0.8
 ===========
 

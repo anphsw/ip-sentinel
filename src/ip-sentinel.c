@@ -1,4 +1,4 @@
-// $Id: ip-sentinel.c,v 1.26 2003/10/07 17:21:20 ensc Exp $    --*- c++ -*--
+// $Id: ip-sentinel.c,v 1.27 2003/12/04 18:22:11 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -184,7 +184,7 @@ int *oversize_sleep)
   struct in_addr const *	src_ip = reinterpret_cast(struct in_addr const *)(msg->data.arp_spa);
 
   struct BlackListQuery		query = {
-    .ip    = reinterpret_cast(struct in_addr const *)(msg->data.arp_tpa),
+    .ip  = reinterpret_cast(struct in_addr const *)(msg->data.arp_tpa),
     .mac = 0,
   };
   
@@ -239,8 +239,8 @@ generateJobFromIntruder(struct Worker *worker,
   struct in_addr const *	dst_ip  = reinterpret_cast(struct in_addr const *)(msg->data.arp_tpa);
 
   struct BlackListQuery		query = {
-    .ip    = reinterpret_cast(struct in_addr const *)(msg->data.arp_spa),
-    .mac   = reinterpret_cast(struct ether_addr const *)(msg->data.arp_sha),
+    .ip  = reinterpret_cast(struct in_addr const *)(msg->data.arp_spa),
+    .mac = reinterpret_cast(struct ether_addr const *)(msg->data.arp_sha),
   };
     
     // Ignore 0.0.0.0 since it is used for duplicate address detection and/or

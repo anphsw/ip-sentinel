@@ -1,4 +1,4 @@
-// $Id: blacklist.h,v 1.6 2003/10/07 17:21:20 ensc Exp $    --*- c++ -*--
+// $Id: blacklist.h,v 1.7 2003/12/04 19:51:38 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -38,14 +38,17 @@ typedef struct {
     struct Arguments const *	args_;
 } BlackList;
 
+
+  // WORKAROUND: the const's are disabled for now because of a gcc
+  // optimization bug; for details, see
+  // https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=110966
 struct BlackListQuery {
     struct ether_addr			result_buffer_;
-    struct in_addr const * const	ip;		/* in */
-    struct ether_addr const * const	mac;		/* in */
+    struct in_addr const * /*const*/	ip;		/* in */
+    struct ether_addr const * /*const*/	mac;		/* in */
     struct ether_addr const *		poison_mac;	/* out */
 };
-    
-    
+
 
 struct ether_addr const *
 BlackList_getMac(BlackList const *lst, struct BlackListQuery *query);

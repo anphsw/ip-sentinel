@@ -1,4 +1,4 @@
-.\" $Id: ip-sentinel.man,v 1.10 2003/10/16 22:15:39 ensc Exp $
+.\" $Id: ip-sentinel.man,v 1.12 2003/12/15 23:56:44 ensc Exp $
 .\" Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 .\"  
 .\" Permission is granted to make and distribute verbatim copies of
@@ -26,7 +26,7 @@
 .ns
 .TP \\$1
 ..
-.TH ip-sentinel 8 "Aug 28 2003" "@PACKAGE@ 0.7"
+.TH ip-sentinel 8 "Aug 28 2003" "@PACKAGE@ 0.9"
 .\"
 .\" ====================
 .\"
@@ -263,9 +263,12 @@ are having the format "de:ad:be:ef:00:XX". Within a short timespan
 only 32 values are possible for \fIXX\fR.
 
 When having overlapping networks and/or single IPs, this one with the
-most specified netmask (count of 1's) takes precedence. IPs have a
-netmask of 32. The behavior is unspecified when having overlapping
-networks with the same count of 1's or when having duplicate IPs.
+most specified netmask (count of 1's) takes precedence. When netmasks
+are equal, networks which are using the "@srcmac" or "@!srcmac" syntax
+are taking precedence over those without source-macs. This "@..." rule
+\fBdoes not\fR apply to IPs. The behavior is unspecified when having
+overlapping networks with the same count of 1's and "@..." 
+specification, or when having duplicate IPs.
 
 .\"
 .SS PERFORMANCE

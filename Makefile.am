@@ -1,4 +1,4 @@
-## $Id: Makefile.am,v 1.4 2003/10/31 00:21:39 ensc Exp $
+## $Id: Makefile.am,v 1.6 2003/12/12 00:49:21 ensc Exp $
 
 # Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 #  
@@ -18,16 +18,23 @@
 
 ACLOCAL_AMFLAGS	=  -I m4
 
+CVS2CL_AMFLAGS	=  $(CVS2CL_TAG) -U cvsusers.map --show-dead
+CVS2CL_ALLFLAGS	:= $(CVS2CL_AMFLAGS) $(CVS2CL_FLAGS)
+
 WWW_HOST	=  janus.hrz
 WWW_DIR		=  public_html/ip-sentinel
 WWW_FILES_ROOT	=  $(srcdir)/doc/index.html
 WWW_FILES_FILES	=  $(distdir).tar.bz2 $(distdir).tar.bz2.asc $(srcdir)/README $(srcdir)/NEWS
 
 SUBDIRS		=  . src
-DIST_SUBDIRS	=  $(SUBDIRS) m4
 
-EXTRA_DIST	=  ip-sentinel.spec ${contrib_FILES} $(doc_FILES)
+EXTRA_DIST	=  ip-sentinel.spec ${contrib_FILES} $(doc_FILES) \
+		   disttest disttest-data
 CLEANFILES	=  $(doc_CLEANFILES)
+
+if MAINTAINER_MODE
+TESTS		=  disttest
+endif
 
 include $(srcdir)/contrib/Makefile-files
 include $(srcdir)/doc/Makefile-files

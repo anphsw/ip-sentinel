@@ -1,4 +1,4 @@
-dnl $Id: ensc_developing.m4,v 1.13 2003/01/30 02:12:47 ensc Exp $
+dnl $Id: ensc_developing.m4,v 1.14 2003/12/04 19:51:00 ensc Exp $
 
 
 AC_DEFUN([ENSC_DEVELOPING],
@@ -57,7 +57,7 @@ AC_DEFUN([__ENSC_RELEASE],
 		RELEASE_CFLAGS=
 	else
 		ensc_is_release=yes
-		RELEASE_CFLAGS='-O3'
+		RELEASE_CFLAGS=
 		AC_DEFINE(NDEBUG, [(1==1)], [The NDEBUG macro as specified in C99, 7.2])
 	fi
 ])

@@ -1,4 +1,4 @@
-// $Id: ether.c,v 1.4 2003/09/16 12:28:30 ensc Exp $    --*- c++ -*--
+// $Id: ether.c,v 1.5 2003/12/04 18:21:35 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -83,6 +83,7 @@ ether_ntoa(struct ether_addr const *addr)
     *buf_ptr++ = ':';
   }
 
+  assert(buf_ptr == buffer+sizeof(buffer));
   buf_ptr[-1] = '\0';
 
   return buffer;
