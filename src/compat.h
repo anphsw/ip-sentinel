@@ -1,4 +1,4 @@
-// $Id: compat.h,v 1.6 2003/09/09 16:30:26 ensc Exp $    --*- c++ -*--
+// $Id: compat.h,v 1.7 2003/09/16 12:28:25 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -42,13 +42,14 @@ int memcmp(const void *s1, const void *s2, size_t n);
 #ifdef __dietlibc__
 #include <netinet/if_ether.h>
 #include <net/if_arp.h>
+#include <stdint.h>
 
 struct  ether_arp {
         struct  arphdr ea_hdr;          /* fixed-size header */
-        u_int8_t arp_sha[ETH_ALEN];     /* sender hardware address */
-        u_int8_t arp_spa[4];            /* sender protocol address */
-        u_int8_t arp_tha[ETH_ALEN];     /* target hardware address */
-        u_int8_t arp_tpa[4];            /* target protocol address */
+        uint8_t arp_sha[ETH_ALEN];     /* sender hardware address */
+        uint8_t arp_spa[4];            /* sender protocol address */
+        uint8_t arp_tha[ETH_ALEN];     /* target hardware address */
+        uint8_t arp_tpa[4];            /* target protocol address */
 };
 #endif
 

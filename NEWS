@@ -1,3 +1,32 @@
+Version 0.8
+===========
+
+	Default options/behavior have not been changed yet, but chances
+	are high that they will become '--poision --mac 802.3x --direction
+	BOTH'.
+	
+	- FEATURE: added '--poison' option which enables the generation of
+	  ARP-replies for the ip of intruders when the intruder sends an
+	  ARP-request. When using a negated '@!MAC' syntax, this MAC will be
+	  used for the questionable IP. This option works only, when
+	  '--direction FROM|BOTH' is used.  Inspired by ideas of Sergeev
+	  Sergey.
+	
+	- BUGFIX: in '--direction FROM' mode, ignore 0.0.0.0 automatically
+	  since it is used for duplicate address detection and/or
+	  DHCPDISCOVER messages
+	
+	- made generated (tha,tpa) arp-parameters RFC826 compliant;
+	  formerly, broadcast-values were used. It will require some testing
+	  to see which version is more effective/working.
+
+	- FEATURE: allowed to specify MAC addresses for source-ip
+	  addresses.  This makes it possible to disturb intruders which are
+	  using officially assigned IP addresses. This feature has the
+	  syntax 'ip[/mask][@mac]' and takes only effect on packages coming
+	  *from* intruders. Inspired by Mark Pierce.
+
+	
 Version 0.7
 ===========
 

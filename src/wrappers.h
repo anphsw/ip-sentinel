@@ -1,4 +1,4 @@
-// $Id: wrappers.h,v 1.5 2003/08/22 01:58:29 ensc Exp $    --*- c++ -*--
+// $Id: wrappers.h,v 1.6 2003/10/16 22:14:56 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -186,7 +186,7 @@ Esetsid()
 
 /*@unused@*/
 inline static size_t
-Ewrite(int fd, void *ptr, size_t len)
+Ewrite(int fd, void const *ptr, size_t len)
 {
   size_t	res = write(fd, ptr, len);
   FatalErrnoError((ssize_t)(res)==-1, 1, "write()");

@@ -1,4 +1,4 @@
-// $Id: worker.c,v 1.5 2003/08/29 10:58:02 ensc Exp $    --*- c++ -*--
+// $Id: worker.c,v 1.7 2003/10/07 17:21:20 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -49,9 +49,10 @@ Worker_init(struct Worker *worker, struct Arguments const *args,
   
   assert(worker!=0);
 
-  worker->sock   = sock;
-  worker->if_idx = if_idx;
-  worker->llmac  = args->llmac;
+  worker->sock      = sock;
+  worker->if_idx    = if_idx;
+  worker->llmac     = args->llmac;
+  worker->do_poison = args->do_poison;
 
   Epipe(fds);
   pid = Efork();
@@ -133,11 +134,12 @@ Worker_fillPacket(struct Worker const *worker,
 {
   ArpMessage * const		msg  = &job->message;
   struct sockaddr_ll * const	addr = &job->address;
-  void const *			dhost_ptr;
   struct ether_addr		shost_ether;
   struct ether_addr const *	shost_ptr;
-  register in_addr_t * const		arp_tpa_ptr = reinterpret_cast(in_addr_t*)(&msg->data.arp_tpa);
+  struct ether_addr const *	dhost_ptr;
+  struct ether_addr const * const	rq_sha_ptr  = reinterpret_cast(struct ether_addr *)(&rq->request.arp_sha);
   register in_addr_t const * const	rq_tpa_ptr  = reinterpret_cast(in_addr_t*)(&rq->request.arp_tpa);
+  register in_addr_t const * const	rq_spa_ptr  = reinterpret_cast(in_addr_t*)(&rq->request.arp_spa);
 
   assert(worker!=0);
   assert(job!=0);
@@ -149,13 +151,11 @@ Worker_fillPacket(struct Worker const *worker,
   switch (rq->type) {
     case jobDST		:
       shost_ptr    = &rq->mac;
-      dhost_ptr    = BCAST_MAC.ether_addr_octet;
-      *arp_tpa_ptr = INADDR_ANY;
+      dhost_ptr    = &BCAST_MAC;
       break;
     case jobSRC		:
       shost_ptr    = 0;
-      dhost_ptr    = rq->request.arp_sha;
-      *arp_tpa_ptr = *rq_tpa_ptr;
+      dhost_ptr    = rq_sha_ptr;
       break;
     default		:
       assert(false);
@@ -181,7 +181,6 @@ Worker_fillPacket(struct Worker const *worker,
   }
 
   assert(shost_ptr!=0);
-  assert(dhost_ptr!=0);
   
   msg->padding[0] = 0x66;
   msg->padding[1] = 0x60;
@@ -196,7 +195,8 @@ Worker_fillPacket(struct Worker const *worker,
 
   memcpy(msg->data.arp_sha, &rq->mac,   sizeof(msg->data.arp_sha));
   memcpy(msg->data.arp_spa, rq_tpa_ptr, sizeof(msg->data.arp_spa));
-  memcpy(msg->data.arp_tha, dhost_ptr,  sizeof(msg->data.arp_tha));
+  memcpy(msg->data.arp_tha, rq_sha_ptr, sizeof(msg->data.arp_tha));
+  memcpy(msg->data.arp_tpa, rq_spa_ptr, sizeof(msg->data.arp_tpa));
 
   msg->header.ether_type  = htons(ETH_P_ARP);
 
@@ -259,6 +259,31 @@ Worker_printJob(struct RequestInfo const *rq)
 #endif
 }
 
+static bool
+Worker_poisonJob(struct ScheduleInfo *job, struct RequestInfo const *rq)
+{
+  assert(job!=0);
+  assert(rq!=0);
+
+    // poison the job on jobSRC requests only
+  if (rq->type==jobSRC) {
+    struct ether_addr const *	sha;
+
+    if (rq->poison_mac.f) sha = &rq->poison_mac.v;
+    else                  sha = &rq->mac;
+    
+    memcpy(job->message.header.ether_dhost, &BCAST_MAC,                 sizeof(job->message.header.ether_dhost));
+    memcpy(job->message.data.arp_sha,       sha,                        sizeof(job->message.data.arp_sha));
+    memcpy(job->message.data.arp_spa,       job->message.data.arp_tpa,  sizeof(job->message.data.arp_spa));
+    memcpy(job->message.data.arp_tha,       &BCAST_MAC,                 sizeof(job->message.data.arp_tha));
+    memset(job->message.data.arp_tpa,       0,                          sizeof(job->message.data.arp_tpa));
+
+    return true;
+  }
+
+  return false;
+}
+
 static void ALWAYSINLINE
 Worker_scheduleNewJob(struct Worker *worker, struct PriorityQueue *queue, time_t now)
 {
@@ -296,6 +321,17 @@ Worker_scheduleNewJob(struct Worker *worker, struct PriorityQueue *queue, time_t
 
   job.schedule_time = now+5;
   PriorityQueue_insert(queue, &job);
+
+  job.schedule_time = now+60;
+  PriorityQueue_insert(queue, &job);
+  
+  if (worker->do_poison && Worker_poisonJob(&job, &request)) {
+    job.schedule_time = now+5;
+    PriorityQueue_insert(queue, &job);
+
+    job.schedule_time = now+60;
+    PriorityQueue_insert(queue, &job);
+  }
 
   error_count = 0;
 }
@@ -397,4 +433,12 @@ Worker_debugFillPacket(struct Worker const *worker,
 {
   Worker_fillPacket(worker, job, rq);
 }
+
+bool
+Worker_debugPoisonJob(struct ScheduleInfo *job,
+		      struct RequestInfo const *rq)
+{
+  return Worker_poisonJob(job, rq);
+}
+
 #endif

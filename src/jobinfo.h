@@ -1,4 +1,4 @@
-// $Id: jobinfo.h,v 1.1 2003/08/22 01:55:51 ensc Exp $    --*- c++ -*--
+// $Id: jobinfo.h,v 1.2 2003/10/07 17:21:20 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -33,6 +33,10 @@ struct RequestInfo
     struct ether_arp		request;
     struct ether_addr		mac;
     enum { jobSRC, jobDST }	type;
+    struct {
+	bool			f;
+	struct ether_addr	v;
+    }				poison_mac;
 };
 
 #endif	//  H_IPSENTINEL_JOBINFO_H

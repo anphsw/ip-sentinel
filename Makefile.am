@@ -1,4 +1,4 @@
-## $Id: Makefile.am,v 1.3 2002/11/15 22:55:31 ensc Exp $
+## $Id: Makefile.am,v 1.4 2003/10/31 00:21:39 ensc Exp $
 
 # Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 #  
@@ -18,7 +18,7 @@
 
 ACLOCAL_AMFLAGS	=  -I m4
 
-WWW_HOST	=  janus
+WWW_HOST	=  janus.hrz
 WWW_DIR		=  public_html/ip-sentinel
 WWW_FILES_ROOT	=  $(srcdir)/doc/index.html
 WWW_FILES_FILES	=  $(distdir).tar.bz2 $(distdir).tar.bz2.asc $(srcdir)/README $(srcdir)/NEWS

@@ -1,3 +1,114 @@
+2003-10-31  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, configure.ac, doc/index.html:
+	version 0.8
+
+	* Makefile.am:
+	changed publish-host
+
+2003-10-16  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, configure.ac:
+	version 0.7.90
+
+	* README:
+	updated
+
+	* doc/Makefile-files:
+	substitute localstatedir
+
+	* doc/ip-sentinel.man:
+	documented '--poison'
+	documented '@[!]srcmac' syntax
+	added at-mac examples and explainations
+
+	* src/wrappers.h:
+	made second argument of Ewrite() const
+
+2003-10-07  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac:
+	added copyright notice
+
+	* NEWS, configure.ac:
+	version 0.7.2
+
+	* ip-sentinel.spec.in:
+	set Release: to 0
+
+	* src/testsuite/data/blacklist-check.out, src/testsuite/data/simulate-L-L.out, src/testsuite/data/simulate-L-R.out, src/testsuite/data/simulate-L-S.out, src/testsuite/data/simulate-R-L.out, src/testsuite/data/simulate-R-R.out, src/testsuite/data/simulate-R-S.out, src/testsuite/data/simulate.cfg, src/testsuite/data/simulate.inp:
+	updated testcases to support new '--poison' behavior
+
+	* src/testsuite/Makefile-files:
+	added 'simulate-test*' files
+
+	* src/testsuite/data/simulate-test.cfg, src/testsuite/data/simulate-test.cmd, src/testsuite/data/simulate-test.inp, src/testsuite/data/simulate-test.out:
+	initial checkin
+
+	* src/testsuite/functions:
+	- defined $DIFF
+	- adapted regexps to support new '--poison' option
+
+	* src/testsuite/blacklist-check.sh, src/testsuite/blacklist-parser.sh, src/testsuite/prioqueue-check.sh, src/testsuite/simulate.sh:
+	use '$DIFF' instead of 'diff ...'
+
+	* src/testsuite/blacklist-check.c, src/testsuite/simulate.c, src/blacklist.c, src/blacklist.h, src/ip-sentinel.c, src/jobinfo.h, src/worker.c, src/worker.h:
+	added support for '--poison' option
+
+	* src/arguments.h, src/arguments.c:
+	added '--poison' option
+
+	* src/testsuite/Makefile-files:
+	added simulate-test.sh testcase
+
+	* src/testsuite/simulate.sh:
+	made it possible to call other 'simulate-XXX' scripts
+
+	* NEWS, src/testsuite/data/simulate-L-L.out, src/testsuite/data/simulate-L-R.out, src/testsuite/data/simulate-L-S.out, src/testsuite/data/simulate-R-L.out, src/testsuite/data/simulate-R-R.out, src/testsuite/data/simulate-R-S.out, src/testsuite/simulate.c, src/ip-sentinel.c:
+	Ignore 0.0.0.0 since it is used for duplicate address detection and/or
+	by DHCPDISCOVER
+
+2003-09-16  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/data/blacklist-check.fd3, src/testsuite/data/blacklist-check.ips, src/testsuite/data/blacklist-check.lst, src/testsuite/data/blacklist-check.out, src/testsuite/data/blacklist-check.res, src/testsuite/data/blacklist-check1.out:
+	added new testcase (positive-netmask + excluded hosts)
+
+	* src/blacklist.c:
+	fixed compilation issues with non-C99 compilers
+
+	* NEWS, configure.ac:
+	version 0.7.1
+
+	* src/testsuite/data/simulate-L-R.out, src/testsuite/data/simulate-L-S.out, src/testsuite/data/simulate-R-L.out, src/testsuite/data/simulate-R-R.out, src/testsuite/data/simulate-R-S.out, src/testsuite/data/simulate-L-L.out:
+	added testcases for @MAC support
+	fixed (tha,tpa) pairs
+
+	* src/testsuite/data/simulate.cfg, src/testsuite/data/simulate.inp, src/testsuite/data/blacklist-check.fd3, src/testsuite/data/blacklist-check.ips, src/testsuite/data/blacklist-check.lst, src/testsuite/data/blacklist-check.out, src/testsuite/data/blacklist-check.res, src/testsuite/data/blacklist-check1.out, src/testsuite/data/blacklist.dat, src/testsuite/data/blacklist.out:
+	added testcases for @MAC support
+
+	* src/testsuite/functions:
+	added @MAC support
+
+	* src/testsuite/blacklist-check.c, src/testsuite/simulate.c:
+	applied and used new BlackList_getMac() 'mac' parameter
+
+	* src/blacklist.c:
+	added @MAC support
+
+	* src/blacklist.h:
+	added a 'mac' parameter to BlackList_getMac() which is the mac-address
+	of the potential intruder
+
+	* src/ip-sentinel.c:
+	use new calling convention for BlackList_getMac()
+
+	* src/worker.c:
+	fixed/changed generation of the (tha,tpa) pair; previous versions used
+	broadcast-values which violates RFC826
+
+	* src/ether.c, src/compat.h:
+	use uint8_t instead of u_int8_t (complained by dietlibc-0.23)
+
 2003-09-09  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
 
 	* NEWS, configure.ac, doc/index.html:

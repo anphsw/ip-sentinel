@@ -1,4 +1,4 @@
-## $Id: Makefile-files,v 1.8 2003/08/22 19:48:47 ensc Exp $ --*- makefile -*--
+## $Id: Makefile-files,v 1.10 2003/10/07 17:23:38 ensc Exp $ --*- makefile -*--
 
 ## Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 ##  
@@ -71,6 +71,10 @@ tests_DAT			=  testsuite/data/blacklist-check.fd3		\
 				   testsuite/data/prioqueue-check3.out		\
 				   testsuite/data/simulate.cfg			\
 				   testsuite/data/simulate.inp			\
+				   testsuite/data/simulate-test.cmd		\
+				   testsuite/data/simulate-test.out		\
+				   testsuite/data/simulate-test.cfg		\
+				   testsuite/data/simulate-test.inp		\
 				   testsuite/data/simulate-L-L.cmd		\
 				   testsuite/data/simulate-L-L.out		\
 				   testsuite/data/simulate-L-R.cmd		\
@@ -88,6 +92,7 @@ generated_SCRPTS		=  testsuite/blacklist-check1.sh		\
 				   testsuite/prioqueue-check1.sh		\
 				   testsuite/prioqueue-check2.sh		\
 				   testsuite/prioqueue-check3.sh		\
+				   testsuite/simulate-test.sh			\
 				   testsuite/simulate-L-L.sh			\
 				   testsuite/simulate-L-R.sh			\
 				   testsuite/simulate-L-S.sh			\

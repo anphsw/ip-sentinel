@@ -1,4 +1,4 @@
-// $Id: arguments.h,v 1.7 2003/08/22 19:11:03 ensc Exp $    --*- c++ -*--
+// $Id: arguments.h,v 1.8 2003/10/07 17:20:05 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -43,6 +43,7 @@ struct Arguments
     bool		do_fork;
     char const *	chroot;
     char const *	iface;
+    bool		do_poison;
 
     enum {dirFROM=1, dirTO=2,
 	  dirBOTH=3}	arp_dir;

@@ -1,5 +1,21 @@
-# Process this file with autoconf to produce a configure script.
-AC_INIT(ip-sentinel, 0.7, enrico.scholz@informatik.tu-chemnitz.de, [ip-sentinel])
+## $Id: configure.ac,v 1.20 2003/10/31 00:21:51 ensc Exp $
+
+# Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+#  
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#  
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#  
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+AC_INIT(ip-sentinel, 0.8, enrico.scholz@informatik.tu-chemnitz.de, [ip-sentinel])
 AC_CONFIG_SRCDIR([src/antidos.c])
 AM_CONFIG_HEADER([config.h])
 

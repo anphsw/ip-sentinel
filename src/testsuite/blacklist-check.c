@@ -1,4 +1,4 @@
-// $Id: blacklist-check.c,v 1.4 2003/08/22 19:13:24 ensc Exp $    --*- c++ -*--
+// $Id: blacklist-check.c,v 1.6 2003/10/07 17:21:38 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -73,15 +73,33 @@ int main(int argc, char *argv[])
     char		ip_str[128], mac_str[128];
     int			res_i = fscanf(ip_file,     "%s\n", ip_str);
     int			res_r = fscanf(result_file, "%s\n", mac_str);
-    struct ether_addr	result, exp_result;
+    struct ether_addr	atmac;
+    struct ether_addr	exp_result;
     struct in_addr	inp;
     bool		is_ok = 1;
+    char *		at_pos;
+    struct ether_addr const	*result;
+    struct BlackListQuery	query = {
+      .ip  = &inp,
+      .mac = &atmac,
+    };
 
     if (ip_str[0]=='#' || ip_str[0]=='\n' || ip_str[0]=='\0') continue;
     
     if (res_i==0 || res_r==0) {
       write(2, "Invalid format; aborting...\n", 28);
       return EXIT_FAILURE;
+    }
+
+    if ((at_pos=strchr(ip_str, ','))!=0) {
+      *at_pos = '\0';
+      if (ether_aton_r(at_pos+1, &atmac)==0) {
+	write(2, "Invalid MAC in input-file...\n", 29);
+	return EXIT_FAILURE;
+      }
+    }
+    else {
+      ether_aton_r("ff:ff:ff:ff:ff:00", &atmac);
     }
 
     if (inet_aton(ip_str, &inp)==0) {
@@ -97,13 +115,15 @@ int main(int argc, char *argv[])
     }
 
     printf("%-15s\t", ip_str);
-    if (BlackList_getMac(&lst, inp, &result)) {
+    if ((result=BlackList_getMac(&lst, &query))!=0) {
       char		buffer[128];
-      sprintf(buffer, "%s", ether_ntoa(&result));
+      sprintf(buffer, "%s", ether_ntoa(result));
       if (mac_str[0]=='-') is_ok = 0;
       else if (mac_str[0]!='R') {
 	sprintf(buffer+strlen(buffer), "/%s", ether_ntoa(&exp_result));
-	is_ok = is_ok && (memcmp(&result, &exp_result, sizeof result)==0);
+	is_ok = is_ok && (memcmp(result, &exp_result, sizeof *result)==0);
+	if (query.poison_mac)
+	  sprintf(buffer+strlen(buffer), "|%s", ether_ntoa(query.poison_mac));
       }
       printf("%-35s\t", buffer);
     }
