@@ -1,4 +1,4 @@
-// $Id: arguments.c,v 1.5 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
+// $Id: arguments.c,v 1.10 2003/08/27 23:37:27 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -22,11 +22,14 @@
 
 #include "arguments.h"
 #include "util.h"
+#include "compat.h"
 
 #include <getopt.h>
 #include <assert.h>
 #include <string.h>
 #include <unistd.h>
+#include <net/ethernet.h>
+#include <netinet/ether.h>
 
 #ifndef DEFAULT_IPFILE
 #  define DEFAULT_IPFILE		PATH_CONFIGFILE
@@ -57,18 +60,25 @@
 #endif
 
 
+#define OPTION_MAC			1024
+#define OPTION_LLMAC			1025
+#define OPTION_DIRECTION		1026
+
 static struct option
 cmdline_options[] = {
-  { "ipfile",  required_argument, 0, 'i' },
-  { "pidfile", required_argument, 0, 'p' },
-  { "logfile", required_argument, 0, 'l' },
-  { "errfile", required_argument, 0, 'e' },
-  { "user",    required_argument, 0, 'u' },
-  { "group",   required_argument, 0, 'g' },
-  { "nofork",  no_argument,       0, 'n' },
-  { "chroot",  required_argument, 0, 'r' },
-  { "help",    no_argument,       0, 'h' },
-  { "version", no_argument,       0, 'v' },
+  { "ipfile",    required_argument, 0, 'i' },
+  { "pidfile",   required_argument, 0, 'p' },
+  { "logfile",   required_argument, 0, 'l' },
+  { "errfile",   required_argument, 0, 'e' },
+  { "user",      required_argument, 0, 'u' },
+  { "group",     required_argument, 0, 'g' },
+  { "nofork",    no_argument,       0, 'n' },
+  { "chroot",    required_argument, 0, 'r' },
+  { "help",      no_argument,       0, 'h' },
+  { "version",   no_argument,       0, 'v' },
+  { "mac",       required_argument, 0, OPTION_MAC },
+  { "llmac",     required_argument, 0, OPTION_LLMAC },
+  { "direction", required_argument, 0, OPTION_DIRECTION },
   { 0, 0, 0, 0 }
 };
 
@@ -81,8 +91,8 @@ printHelp(char const *cmd, int fd)
 	       " [--ipfile|-i <FILE>] [--pidfile|-p <FILE>]\n"
 	       "        [--logfile|-l <FILE>] [--errfile|-e <FILE>]"
 	       " [--user|-u <USER>]\n"
-   	       "        [--chroot|-r <DIR>] [--nofork|-n] [--help|-h]\n"
-	       "        [--version] <interface>\n"
+   	       "        [--chroot|-r <DIR>] [--nofork|-n] [--mac MAC] \n"
+	       "        [--help|-h] [--version] <interface>\n"
 	       "\n"
 	       "      --ipfile|-i <FILE>      read blocked IPs from FILE [" DEFAULT_IPFILE "]\n"
 	       "                              within CHROOT\n"
@@ -96,6 +106,17 @@ printHelp(char const *cmd, int fd)
 	       "      --group|-g <GROUP>      run as group GROUP [gid of user]\n"
 	       "      --chroot|-r <DIR>       go into chroot-jail at DIR [<HOME>]\n"
 	       "      --nofork|-n             do not fork a daemon-process\n"
+	       "      --mac <MAC>             use MAC as the default faked mac address;\n"
+	       "                              possible values are LOCAL, RANDOM, 802.1d,\n"
+	       "                              802.3x or a real mac [RANDOM]\n"
+	       "      --llmac <MAC>           use MAC as the default mac address in link-level\n"
+	       "                              headers when answering requests *from* intruders;\n"
+	       "                              additionally to the values described at '--mac',\n"
+               "                              <MAC> can be 'SAME' which means that the mac from\n"
+	       "                              the arp-header will be used. [LOCAL]\n"
+	       "      --direction <DIR>       answer arp-requests going into the specified\n"
+	       "                              direction (relative to the intruder) only.\n"
+	       "                              Valid values are 'FROM', 'TO' and 'BOTH'. [TO]\n"
 	       "      --help|-h               display this text and exit\n"
 	       "      --version               print version and exit\n"
 	       "      interface               ethernet-interface where to listen\n"
@@ -113,8 +134,35 @@ printVersion(int fd)
 	       "the GNU General Public License.  This program has absolutely no warranty.\n");
 }
 
+static void
+Arguments_parseMac(char const *optarg, struct TaggedMac *mac, bool allow_same)
+{
+  if      (              strcmp(optarg, "RANDOM")==0) mac->type = mcRANDOM;
+  else if (              strcmp(optarg, "LOCAL") ==0) mac->type = mcLOCAL;
+  else if (allow_same && strcmp(optarg, "SAME")  ==0) mac->type = mcSAME;
+  else {
+    if (!xether_aton_r(optarg, &mac->addr.ether)) {
+      WRITE_MSGSTR(2, "invalid mac specified\n");
+      exit(1);
+    }
+    mac->type = mcFIXED;
+  }
+}
+
+static void
+Arguments_parseDirection(char const *optarg, struct Arguments *options)
+{
+  if      (strcmp(optarg, "FROM")==0) options->arp_dir = dirFROM;
+  else if (strcmp(optarg, "TO")  ==0) options->arp_dir = dirTO;
+  else if (strcmp(optarg, "BOTH")==0) options->arp_dir = dirBOTH;
+  else {
+    WRITE_MSGSTR(2, "invalid value for '--direction' specified\n");
+    exit(1);
+  }
+}
+
 void
-parseOptions(int argc, char *argv[], Arguments *options)
+parseOptions(int argc, char *argv[], struct Arguments *options)
 {
   assert(options!=0);
   
@@ -126,6 +174,9 @@ parseOptions(int argc, char *argv[], Arguments *options)
   options->group    = 0;
   options->do_fork  = true;
   options->chroot   = 0;
+  options->arp_dir  = dirTO;
+  options->mac.type = mcRANDOM;
+  options->llmac.type = mcLOCAL;
 
   while (1) {
     int	c = getopt_long(argc, argv, "hi:p:l:e:u:g:nr:", cmdline_options, 0);
@@ -141,7 +192,11 @@ parseOptions(int argc, char *argv[], Arguments *options)
       case 'g'	:  options->group    = optarg; break;
       case 'n'	:  options->do_fork  = false;  break;
       case 'r'	:  options->chroot   = optarg; break;
-      case 'v'	:  printVersion(1); exit(0);    break;
+      case 'v'	:  printVersion(1); exit(0);   break;
+      case OPTION_MAC		:  Arguments_parseMac(optarg, &options->mac,  false); break;
+      case OPTION_LLMAC		:  Arguments_parseMac(optarg, &options->llmac, true); break;
+      case OPTION_DIRECTION	:  Arguments_parseDirection(optarg, options);         break;
+	
       default	:
 	WRITE_MSGSTR(2, "Try \"");
 	WRITE_MSG   (2, argv[0]);
@@ -151,7 +206,7 @@ parseOptions(int argc, char *argv[], Arguments *options)
     }
   }
 
-  if (optind>=argc)        WRITE_MSGSTR(2, "No interface specified; ");
+  if      (optind>=argc)   WRITE_MSGSTR(2, "No interface specified; ");
   else if (optind+1!=argc) WRITE_MSGSTR(2, "Too much interfaces specified; ");
 
   if (optind+1!=argc) {
@@ -162,4 +217,20 @@ parseOptions(int argc, char *argv[], Arguments *options)
   }
 
   options->iface = argv[optind];
+}
+
+static void
+fixupMac(struct TaggedMac *mac)
+{
+  if (mac->type==mcLOCAL) {
+    (void)xether_aton_r("LOCAL", &mac->addr.ether);
+    mac->type=mcFIXED;
+  }
+}
+
+void
+Arguments_fixupOptions(struct Arguments *options)
+{
+  fixupMac(&options->mac);
+  fixupMac(&options->llmac);
 }

@@ -1,4 +1,4 @@
-// $Id: util.h,v 1.3 2003/07/30 23:25:44 ensc Exp $    --*- c++ -*--
+// $Id: util.h,v 1.8 2003/08/22 14:44:22 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <sys/param.h>
 #include <string.h>
+#include <net/ethernet.h>
 
 
   /*@-namechecks@*/
@@ -48,6 +49,9 @@
 
 #define XSTRCAT(dst, cnt, src) xstrcatn(dst, cnt, src, sizeof(src)-1)
 
+struct ether_addr *
+xether_aton_r(char const *asc, struct ether_addr *addr);
+
 inline static void
 xstrcatn(char **dst, size_t *cnt, char const *src, size_t src_len)
 {
@@ -71,5 +75,6 @@ void writeUInt(int fd, unsigned int nr);
 void writeMsgTimestamp(int fd);
 void writeIP(int fd, struct in_addr);
 
+void	Util_setRandomMac(struct ether_addr *res);
 
 #endif	//  H_IPSENTINEL_UTIL_H

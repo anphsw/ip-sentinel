@@ -1,4 +1,4 @@
-// $Id: blacklist.h,v 1.3 2003/05/26 21:50:08 ensc Exp $    --*- c++ -*--
+// $Id: blacklist.h,v 1.4 2003/08/21 14:33:55 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -24,17 +24,21 @@
 #include <netinet/in.h>
 #include <time.h>
 
+struct Arguments;
+
 typedef struct {
     struct Vector		ip_list;
     struct Vector		net_list;
     char const *		filename;
     time_t			last_mtime;
+
+    struct Arguments const *	args_;
 } BlackList;
 
 struct ether_addr const *
 BlackList_getMac(BlackList const *lst, struct in_addr const ip, struct ether_addr *res);
 
-void		BlackList_init(BlackList *lst, char const *filename);
+void		BlackList_init(BlackList *lst, struct Arguments const *args);
 void		BlackList_free(BlackList *);
 void		BlackList_softUpdate(BlackList *lst);
 void		BlackList_update(BlackList *lst);

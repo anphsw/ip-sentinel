@@ -1,4 +1,4 @@
-// $Id: blacklist-parser.c,v 1.2 2003/05/26 21:50:48 ensc Exp $    --*- c++ -*--
+// $Id: blacklist-parser.c,v 1.4 2003/08/22 19:13:40 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -21,18 +21,22 @@
 #endif
 
 #include "blacklist.h"
+#include "arguments.h"
 #include <signal.h>
 
-volatile sig_atomic_t		child_count;
-
+struct ether_addr	local_mac_address = { { 127,0,0,1,0,0 } };
 
 int main(int argc, char *argv[])
 {
+  struct Arguments	args = {
+    .mac = { .type  = mcRANDOM },
+    .ipfile    = argv[1]
+  };
   BlackList		lst;
 
   if (argc!=2) return EXIT_FAILURE;
   
-  BlackList_init(&lst, argv[1]);
+  BlackList_init(&lst, &args);
   BlackList_softUpdate(&lst);
   BlackList_print(&lst,1);
 

@@ -1,4 +1,4 @@
-// $Id: blacklist-check.c,v 1.2 2003/05/26 21:50:44 ensc Exp $    --*- c++ -*--
+// $Id: blacklist-check.c,v 1.4 2003/08/22 19:13:24 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -21,6 +21,7 @@
 #endif
 
 #include "blacklist.h"
+#include "arguments.h"
 #include "compat.h"
 
 #include <stdbool.h>
@@ -32,14 +33,17 @@
 #include <arpa/inet.h>
 #include <string.h>
 
-volatile sig_atomic_t		child_count;
-
+struct ether_addr	local_mac_address = { { 127,0,0,1,0,0 } };
 
 int main(int argc, char *argv[])
 {
   BlackList		lst;
   FILE *		ip_file;
   FILE *		result_file;
+  struct Arguments	args = {
+    .mac = { .type  = mcRANDOM },
+    .ipfile    = argv[2]
+  };
 
   if (argc!=4) {
     write(2, "Wrong argument-count; aborting...\n", 33);
@@ -60,7 +64,7 @@ int main(int argc, char *argv[])
 
   
   
-  BlackList_init(&lst, argv[2]);
+  BlackList_init(&lst, &args);
   BlackList_softUpdate(&lst);
   BlackList_print(&lst, 3);
   write(1, "\n", 1);

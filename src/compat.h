@@ -1,4 +1,4 @@
-// $Id: compat.h,v 1.4 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
+// $Id: compat.h,v 1.6 2003/09/09 16:30:26 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -68,11 +68,17 @@ struct  ether_arp {
 
 
 #if defined(__GNUC__)
-#  define UNUSED	__attribute__((__unused__))
-#  define NORETURN	__attribute__((__noreturn__))
+#  define UNUSED		__attribute__((__unused__))
+#  define NORETURN		__attribute__((__noreturn__))
+#  if __GNUC__ >= 3
+#    define ALWAYSINLINE	__attribute__((__always_inline__))
+#  else
+#    define ALWAYSINLINE
+#  endif
 #else
 #  define UNUSED
 #  define NORETURN
+#  define ALWAYSINLINE
 #endif
 
 #endif	//  H_ENSC_IPSENTINEL_SRC_COMPAT_H

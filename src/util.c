@@ -1,4 +1,4 @@
-// $Id: util.c,v 1.3 2003/07/30 23:25:44 ensc Exp $    --*- c++ -*--
+// $Id: util.c,v 1.10 2003/08/28 00:20:09 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -21,11 +21,21 @@
 #endif
 
 #include "util.h"
+#include "wrappers.h"
+#include "ip-sentinel.h"
+#include "parameters.h"
 
 #include <unistd.h>
 #include <assert.h>
 #include <sys/time.h>
 #include <arpa/inet.h>
+#include <net/if.h>
+#include <netinet/ether.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <time.h>
+
+static struct ether_addr const	DEFAULT_MAC = { RANDOM_MAC_BASE };
 
 void
 writeMsgTimestamp(int fd)
@@ -110,4 +120,33 @@ writeIP(int fd, struct in_addr ip)
 {
   char const	*ip_str = inet_ntoa(ip);
   write(fd, ip_str, strlen(ip_str));
+}
+
+struct ether_addr *
+xether_aton_r(char const *asc, struct ether_addr *addr)
+{
+  char const *mac;
+
+  if (strcmp(asc, "LOCAL") ==0) {
+    memcpy(addr, &local_mac_address, sizeof(*addr));
+    return addr;
+  }
+  
+  if      (strcmp(asc, "802.1d")==0) mac = "01:80:C2:00:00:00";
+  else if (strcmp(asc, "802.3x")==0) mac = "01:80:C2:00:00:01";
+  else mac = asc;
+
+  return ether_aton_r(mac, addr);
+}
+
+
+void
+Util_setRandomMac(struct ether_addr *res)
+{
+  time_t		t   = time(0);
+  size_t const		idx = RANDOM_MAC_OCTET;
+
+  *res                       = DEFAULT_MAC;
+  res->ether_addr_octet[idx] = (rand()%BLACKLIST_RAND_COUNT +
+				t/BLACKLIST_RAND_PERIOD)%256;
 }

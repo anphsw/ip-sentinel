@@ -1,4 +1,4 @@
-// $Id: wrappers.h,v 1.4 2003/07/10 00:11:22 ensc Exp $    --*- c++ -*--
+// $Id: wrappers.h,v 1.5 2003/08/22 01:58:29 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -238,5 +238,26 @@ Erealloc(/*@only@*//*@out@*//*@null@*/ void *ptr,
 
   return res;
 }
+
+/*@unused@*/
+inline static /*@null@*//*@only@*/ void *
+Emalloc(size_t size)
+    /*@*/
+    /*@ensures maxSet(result) == size@*/
+{
+  register void /*@out@*/               *res = malloc(size);
+  FatalErrnoError(res==0 && size!=0, 1, "malloc()");
+    /*@-compdef@*/
+  return res;
+    /*@=compdef@*/
+}
+
+inline static void
+Epipe(int modus[2])
+{
+  register int		res = pipe(modus);
+  FatalErrnoError(res==-1, 1, "pipe()");
+}
+
 
 #endif	//  H_IPSENTINEL_WRAPPERS_H

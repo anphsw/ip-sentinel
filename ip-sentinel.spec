@@ -1,5 +1,9 @@
 ## $id: ip-sentinel.spec.in,v 1.3 2003/05/26 21:53:02 ensc Exp $		--*- rpm-spec -*--
 
+## Supports a '--without dietlibc' option which disables linking
+## against dietlibc
+
+
 %{!?username:%define username	ip-sentinel}
 %define service		ip-sentinel
 %define homedir		%_var/lib/ip-sentinel
@@ -8,14 +12,14 @@
 
 Summary:	A tool to prevent unauthorized usage of IPs
 Name:		ip-sentinel
-Version:	0.6
+Version:	0.7
 Release:	1
 Epoch:		0
 License:	GPL
 Group:		System Environment/Daemons
 URL:		http://www.tu-chemnitz.de/~ensc/ip-sentinel
-Source0:	http://www.tu-chemnitz.de/~ensc/ip-sentinel/files/%{name}-%{version}.tar.bz2
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+Source0:	http://www.tu-chemnitz.de/~ensc/ip-sentinel/files/%name-%version.tar.bz2
+BuildRoot:	%_tmppath/%name-%version-%release-buildroot
 Requires:		init(ip-sentinel)
 Requires(pre):		/usr/sbin/useradd /usr/sbin/groupadd
 Requires(postun):	/usr/sbin/userdel /usr/sbin/groupdel
@@ -29,7 +33,7 @@ BuildRequires:	dietlibc
 Summary:		SysV initscripts for ip-sentinel
 Group:			System Environment/Base
 Provides:		init(ip-sentinel)
-Requires:		%{name} = %{epoch}:%{version}-%{release}
+Requires:		%name = %epoch:%version-%release
 Requires(preun,postun):	initscripts
 Requires(post,preun):	/sbin/chkconfig
 
@@ -38,7 +42,7 @@ Requires(post,preun):	/sbin/chkconfig
 Summary:		minit initscripts for ip-sentinel
 Group:			System Environment/Base
 Provides:		init(ip-sentinel)
-Requires:		%{name} = %{epoch}:%{version}-%{release}
+Requires:		%name = %epoch:%version-%release
 Requires(pre,postun):	minit-setup
 
 
@@ -79,7 +83,7 @@ with the minit initconcept.
 
 %build
 %configure --enable-release --with-username=%username %{?_without_dietlibc:--disable-dietlibc}
-%{__make} %{?_smp_mflags} all
+%__make %{?_smp_mflags} all
 
 
 ##---------------------------------------------
@@ -170,6 +174,9 @@ test "$1" = 0 || %_initrddir/%service condrestart &>/dev/null
 
 
 %changelog
+* Tue Sep  9 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de> 0:0.7-1
+- removed more unneeded curlies
+
 * Tue Aug  5 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de> 0:0.6-1
 - version 0.6
 - added minit support

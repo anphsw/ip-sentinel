@@ -165,7 +165,9 @@ sbin_PROGRAMS = ip-sentinel
 @ENSC_NEED_ETHER_FALSE@ether_SRCS = 
 
 lib_SRCS = arguments.c util.c blacklist.c 	\
-				   antidos.c vector.c $(ether_SRCS)
+				   antidos.c vector.c prioqueue.c	\
+				   worker.c				\
+				   $(ether_SRCS)
 
 
 EXTRA_ip_sentinel_SOURCES = ether.c
@@ -176,10 +178,13 @@ AM_CPPFLAGS = -D_GNU_SOURCE
 noinst_HEADERS = antidos.h arguments.h arpmessage.h	\
 				   blacklist.h compat.h ip-sentinel.h	\
 				   parameters.h util.h vector.h		\
-				   wrappers.h vector.ic
+				   worker.h jobinfo.h			\
+				   wrappers.h vector.ic			\
+				   prioqueue.h prioqueue.ic
 
 
 EXTRA_DIST = $(testsuite_FILES)
+CLEANFILES = $(testsuite_CLEANFILES)
 
 @ENSC_ENABLE_DIET_TRUE@DIET_CC = $(DIET) $(DIETFLAGS) @CC@
 @ENSC_ENABLE_DIET_FALSE@DIET_CC = @CC@
@@ -189,8 +194,15 @@ check_LIBRARIES = libenscsentinel.a
 libenscsentinel_a_SOURCES = $(lib_SRCS)
 libenscsentinel_a_CPPFLAGS = -DENSC_TESTSUITE
 
-check_PROGRAMS = blacklist-parser blacklist-check
-check_SCRIPTS = testsuite/blacklist-check1.sh
+check_PROGRAMS = blacklist-parser blacklist-check		\
+				   prioqueue-check simulate
+
+
+check_SCRIPTS = testsuite/blacklist-check1.sh \
+                                   testsuite/prioqueue-check1.sh \
+                                   testsuite/prioqueue-check2.sh \
+                                   testsuite/prioqueue-check3.sh
+
 
 blacklist_parser_SOURCES = testsuite/blacklist-parser.c
 blacklist_parser_LDADD = libenscsentinel.a
@@ -200,11 +212,22 @@ blacklist_check_SOURCES = testsuite/blacklist-check.c
 blacklist_check_LDADD = libenscsentinel.a
 blacklist_check_CPPFLAGS = -DENSC_TESTSUITE
 
+prioqueue_check_SOURCES = testsuite/prioqueue-check.c
+prioqueue_check_LDADD = libenscsentinel.a
+prioqueue_check_CPPFLAGS = -DENSC_TESTSUITE
+
+simulate_SOURCES = testsuite/simulate.c
+simulate_LDADD = libenscsentinel.a
+simulate_CPPFLAGS = -DENSC_TESTSUITE
+
 tests_SCRPTS = testsuite/blacklist-parser.sh		\
 				   testsuite/blacklist-check.sh
 
 
-tests_XTRA = testsuite/functions
+tests_XTRA = testsuite/functions				\
+				   testsuite/prioqueue-check.sh			\
+				   testsuite/simulate.sh
+
 
 tests_DAT = testsuite/data/blacklist-check.fd3		\
 				   testsuite/data/blacklist-check.ips		\
@@ -216,14 +239,46 @@ tests_DAT = testsuite/data/blacklist-check.fd3		\
 				   testsuite/data/blacklist-check1.out		\
 				   testsuite/data/blacklist-check1.res		\
 				   testsuite/data/blacklist.dat			\
-				   testsuite/data/blacklist.out
+				   testsuite/data/blacklist.out			\
+				   testsuite/data/prioqueue-check1.inp		\
+				   testsuite/data/prioqueue-check1.out		\
+				   testsuite/data/prioqueue-check2.inp		\
+				   testsuite/data/prioqueue-check2.out		\
+				   testsuite/data/prioqueue-check3.inp		\
+				   testsuite/data/prioqueue-check3.out		\
+				   testsuite/data/simulate.cfg			\
+				   testsuite/data/simulate.inp			\
+				   testsuite/data/simulate-L-L.cmd		\
+				   testsuite/data/simulate-L-L.out		\
+				   testsuite/data/simulate-L-R.cmd		\
+				   testsuite/data/simulate-L-R.out		\
+				   testsuite/data/simulate-L-S.cmd		\
+				   testsuite/data/simulate-L-S.out		\
+				   testsuite/data/simulate-R-L.cmd		\
+				   testsuite/data/simulate-R-L.out		\
+				   testsuite/data/simulate-R-R.cmd		\
+				   testsuite/data/simulate-R-R.out		\
+				   testsuite/data/simulate-R-S.cmd		\
+				   testsuite/data/simulate-R-S.out
 
 
-TESTS = $(tests_SCRPTS)				\
-				   testsuite/blacklist-check1.sh
+generated_SCRPTS = testsuite/blacklist-check1.sh		\
+				   testsuite/prioqueue-check1.sh		\
+				   testsuite/prioqueue-check2.sh		\
+				   testsuite/prioqueue-check3.sh		\
+				   testsuite/simulate-L-L.sh			\
+				   testsuite/simulate-L-R.sh			\
+				   testsuite/simulate-L-S.sh			\
+				   testsuite/simulate-R-L.sh			\
+				   testsuite/simulate-R-R.sh			\
+				   testsuite/simulate-R-S.sh
 
+
+TESTS = $(tests_SCRPTS) $(generated_SCRPTS)
 
 testsuite_FILES = $(tests_SCRPTS) $(tests_DAT) $(tests_XTRA)
+
+testsuite_CLEANFILES = $(generated_SCRPTS)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -232,17 +287,20 @@ CONFIG_CLEAN_FILES =
 libenscsentinel_a_AR = $(AR) cru
 libenscsentinel_a_LIBADD =
 am__libenscsentinel_a_SOURCES_DIST = arguments.c util.c blacklist.c \
-	antidos.c vector.c ether.c
+	antidos.c vector.c prioqueue.c worker.c ether.c
 @ENSC_NEED_ETHER_TRUE@am__objects_1 = libenscsentinel_a-ether.$(OBJEXT)
 @ENSC_NEED_ETHER_FALSE@am__objects_1 =
 am__objects_2 = libenscsentinel_a-arguments.$(OBJEXT) \
 	libenscsentinel_a-util.$(OBJEXT) \
 	libenscsentinel_a-blacklist.$(OBJEXT) \
 	libenscsentinel_a-antidos.$(OBJEXT) \
-	libenscsentinel_a-vector.$(OBJEXT) $(am__objects_1)
+	libenscsentinel_a-vector.$(OBJEXT) \
+	libenscsentinel_a-prioqueue.$(OBJEXT) \
+	libenscsentinel_a-worker.$(OBJEXT) $(am__objects_1)
 am_libenscsentinel_a_OBJECTS = $(am__objects_2)
 libenscsentinel_a_OBJECTS = $(am_libenscsentinel_a_OBJECTS)
-check_PROGRAMS = blacklist-parser$(EXEEXT) blacklist-check$(EXEEXT)
+check_PROGRAMS = blacklist-parser$(EXEEXT) blacklist-check$(EXEEXT) \
+	prioqueue-check$(EXEEXT) simulate$(EXEEXT)
 sbin_PROGRAMS = ip-sentinel$(EXEEXT)
 PROGRAMS = $(sbin_PROGRAMS)
 
@@ -258,16 +316,26 @@ blacklist_parser_OBJECTS = $(am_blacklist_parser_OBJECTS)
 blacklist_parser_DEPENDENCIES = libenscsentinel.a
 blacklist_parser_LDFLAGS =
 am__ip_sentinel_SOURCES_DIST = ip-sentinel.c arguments.c util.c \
-	blacklist.c antidos.c vector.c ether.c
+	blacklist.c antidos.c vector.c prioqueue.c worker.c ether.c
 @ENSC_NEED_ETHER_TRUE@am__objects_3 = ether.$(OBJEXT)
 @ENSC_NEED_ETHER_FALSE@am__objects_3 =
 am__objects_4 = arguments.$(OBJEXT) util.$(OBJEXT) blacklist.$(OBJEXT) \
-	antidos.$(OBJEXT) vector.$(OBJEXT) $(am__objects_3)
+	antidos.$(OBJEXT) vector.$(OBJEXT) prioqueue.$(OBJEXT) \
+	worker.$(OBJEXT) $(am__objects_3)
 am_ip_sentinel_OBJECTS = ip-sentinel.$(OBJEXT) $(am__objects_4)
 ip_sentinel_OBJECTS = $(am_ip_sentinel_OBJECTS)
 ip_sentinel_LDADD = $(LDADD)
 ip_sentinel_DEPENDENCIES =
 ip_sentinel_LDFLAGS =
+am_prioqueue_check_OBJECTS = \
+	testsuite/prioqueue_check-prioqueue-check.$(OBJEXT)
+prioqueue_check_OBJECTS = $(am_prioqueue_check_OBJECTS)
+prioqueue_check_DEPENDENCIES = libenscsentinel.a
+prioqueue_check_LDFLAGS =
+am_simulate_OBJECTS = testsuite/simulate-simulate.$(OBJEXT)
+simulate_OBJECTS = $(am_simulate_OBJECTS)
+simulate_DEPENDENCIES = libenscsentinel.a
+simulate_LDFLAGS =
 
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -279,23 +347,29 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-arguments.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-blacklist.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-ether.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-prioqueue.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-util.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-vector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/util.Po ./$(DEPDIR)/vector.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libenscsentinel_a-worker.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/prioqueue.Po ./$(DEPDIR)/util.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/vector.Po ./$(DEPDIR)/worker.Po \
 @AMDEP_TRUE@	testsuite/$(DEPDIR)/blacklist_check-blacklist-check.Po \
-@AMDEP_TRUE@	testsuite/$(DEPDIR)/blacklist_parser-blacklist-parser.Po
+@AMDEP_TRUE@	testsuite/$(DEPDIR)/blacklist_parser-blacklist-parser.Po \
+@AMDEP_TRUE@	testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Po \
+@AMDEP_TRUE@	testsuite/$(DEPDIR)/simulate-simulate.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__libenscsentinel_a_SOURCES_DIST) \
 	$(blacklist_check_SOURCES) $(blacklist_parser_SOURCES) \
-	$(am__ip_sentinel_SOURCES_DIST) $(EXTRA_ip_sentinel_SOURCES)
+	$(am__ip_sentinel_SOURCES_DIST) $(EXTRA_ip_sentinel_SOURCES) \
+	$(prioqueue_check_SOURCES) $(simulate_SOURCES)
 HEADERS = $(noinst_HEADERS)
 
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/testsuite/Makefile-files \
 	$(top_srcdir)/m4/diet.am Makefile.am Makefile.in
-SOURCES = $(libenscsentinel_a_SOURCES) $(blacklist_check_SOURCES) $(blacklist_parser_SOURCES) $(ip_sentinel_SOURCES) $(EXTRA_ip_sentinel_SOURCES)
+SOURCES = $(libenscsentinel_a_SOURCES) $(blacklist_check_SOURCES) $(blacklist_parser_SOURCES) $(ip_sentinel_SOURCES) $(EXTRA_ip_sentinel_SOURCES) $(prioqueue_check_SOURCES) $(simulate_SOURCES)
 
 all: all-am
 
@@ -376,11 +450,23 @@ blacklist-parser$(EXEEXT): $(blacklist_parser_OBJECTS) $(blacklist_parser_DEPEND
 ip-sentinel$(EXEEXT): $(ip_sentinel_OBJECTS) $(ip_sentinel_DEPENDENCIES) 
 	@rm -f ip-sentinel$(EXEEXT)
 	$(LINK) $(ip_sentinel_LDFLAGS) $(ip_sentinel_OBJECTS) $(ip_sentinel_LDADD) $(LIBS)
+testsuite/prioqueue_check-prioqueue-check.$(OBJEXT): \
+	testsuite/$(am__dirstamp) testsuite/$(DEPDIR)/$(am__dirstamp)
+prioqueue-check$(EXEEXT): $(prioqueue_check_OBJECTS) $(prioqueue_check_DEPENDENCIES) 
+	@rm -f prioqueue-check$(EXEEXT)
+	$(LINK) $(prioqueue_check_LDFLAGS) $(prioqueue_check_OBJECTS) $(prioqueue_check_LDADD) $(LIBS)
+testsuite/simulate-simulate.$(OBJEXT): testsuite/$(am__dirstamp) \
+	testsuite/$(DEPDIR)/$(am__dirstamp)
+simulate$(EXEEXT): $(simulate_OBJECTS) $(simulate_DEPENDENCIES) 
+	@rm -f simulate$(EXEEXT)
+	$(LINK) $(simulate_LDFLAGS) $(simulate_OBJECTS) $(simulate_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
 	-rm -f testsuite/blacklist_check-blacklist-check.$(OBJEXT)
 	-rm -f testsuite/blacklist_parser-blacklist-parser.$(OBJEXT)
+	-rm -f testsuite/prioqueue_check-prioqueue-check.$(OBJEXT)
+	-rm -f testsuite/simulate-simulate.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -394,12 +480,18 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-arguments.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-blacklist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-ether.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-prioqueue.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-vector.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libenscsentinel_a-worker.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/prioqueue.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vector.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/worker.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@testsuite/$(DEPDIR)/blacklist_check-blacklist-check.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@testsuite/$(DEPDIR)/blacklist_parser-blacklist-parser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@testsuite/$(DEPDIR)/simulate-simulate.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR) testsuite/$(DEPDIR)
@@ -536,6 +628,50 @@ libenscsentinel_a-vector.obj: vector.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-vector.obj `if test -f 'vector.c'; then $(CYGPATH_W) 'vector.c'; else $(CYGPATH_W) '$(srcdir)/vector.c'; fi`
 
+libenscsentinel_a-prioqueue.o: prioqueue.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-prioqueue.o -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-prioqueue.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-prioqueue.o `test -f 'prioqueue.c' || echo '$(srcdir)/'`prioqueue.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libenscsentinel_a-prioqueue.Tpo" "$(DEPDIR)/libenscsentinel_a-prioqueue.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-prioqueue.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='prioqueue.c' object='libenscsentinel_a-prioqueue.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-prioqueue.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-prioqueue.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-prioqueue.o `test -f 'prioqueue.c' || echo '$(srcdir)/'`prioqueue.c
+
+libenscsentinel_a-prioqueue.obj: prioqueue.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-prioqueue.obj -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-prioqueue.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-prioqueue.obj `if test -f 'prioqueue.c'; then $(CYGPATH_W) 'prioqueue.c'; else $(CYGPATH_W) '$(srcdir)/prioqueue.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libenscsentinel_a-prioqueue.Tpo" "$(DEPDIR)/libenscsentinel_a-prioqueue.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-prioqueue.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='prioqueue.c' object='libenscsentinel_a-prioqueue.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-prioqueue.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-prioqueue.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-prioqueue.obj `if test -f 'prioqueue.c'; then $(CYGPATH_W) 'prioqueue.c'; else $(CYGPATH_W) '$(srcdir)/prioqueue.c'; fi`
+
+libenscsentinel_a-worker.o: worker.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-worker.o -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-worker.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-worker.o `test -f 'worker.c' || echo '$(srcdir)/'`worker.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libenscsentinel_a-worker.Tpo" "$(DEPDIR)/libenscsentinel_a-worker.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-worker.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='worker.c' object='libenscsentinel_a-worker.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-worker.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-worker.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-worker.o `test -f 'worker.c' || echo '$(srcdir)/'`worker.c
+
+libenscsentinel_a-worker.obj: worker.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-worker.obj -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-worker.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-worker.obj `if test -f 'worker.c'; then $(CYGPATH_W) 'worker.c'; else $(CYGPATH_W) '$(srcdir)/worker.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libenscsentinel_a-worker.Tpo" "$(DEPDIR)/libenscsentinel_a-worker.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libenscsentinel_a-worker.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='worker.c' object='libenscsentinel_a-worker.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libenscsentinel_a-worker.Po' tmpdepfile='$(DEPDIR)/libenscsentinel_a-worker.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libenscsentinel_a-worker.obj `if test -f 'worker.c'; then $(CYGPATH_W) 'worker.c'; else $(CYGPATH_W) '$(srcdir)/worker.c'; fi`
+
 libenscsentinel_a-ether.o: ether.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libenscsentinel_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libenscsentinel_a-ether.o -MD -MP -MF "$(DEPDIR)/libenscsentinel_a-ether.Tpo" \
 @am__fastdepCC_TRUE@	  -c -o libenscsentinel_a-ether.o `test -f 'ether.c' || echo '$(srcdir)/'`ether.c; \
@@ -601,6 +737,50 @@ testsuite/blacklist_parser-blacklist-parser.obj: testsuite/blacklist-parser.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='testsuite/$(DEPDIR)/blacklist_parser-blacklist-parser.Po' tmpdepfile='testsuite/$(DEPDIR)/blacklist_parser-blacklist-parser.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(blacklist_parser_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o testsuite/blacklist_parser-blacklist-parser.obj `if test -f 'testsuite/blacklist-parser.c'; then $(CYGPATH_W) 'testsuite/blacklist-parser.c'; else $(CYGPATH_W) '$(srcdir)/testsuite/blacklist-parser.c'; fi`
+
+testsuite/prioqueue_check-prioqueue-check.o: testsuite/prioqueue-check.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prioqueue_check_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT testsuite/prioqueue_check-prioqueue-check.o -MD -MP -MF "testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o testsuite/prioqueue_check-prioqueue-check.o `test -f 'testsuite/prioqueue-check.c' || echo '$(srcdir)/'`testsuite/prioqueue-check.c; \
+@am__fastdepCC_TRUE@	then mv -f "testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Tpo" "testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='testsuite/prioqueue-check.c' object='testsuite/prioqueue_check-prioqueue-check.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Po' tmpdepfile='testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prioqueue_check_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o testsuite/prioqueue_check-prioqueue-check.o `test -f 'testsuite/prioqueue-check.c' || echo '$(srcdir)/'`testsuite/prioqueue-check.c
+
+testsuite/prioqueue_check-prioqueue-check.obj: testsuite/prioqueue-check.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prioqueue_check_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT testsuite/prioqueue_check-prioqueue-check.obj -MD -MP -MF "testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o testsuite/prioqueue_check-prioqueue-check.obj `if test -f 'testsuite/prioqueue-check.c'; then $(CYGPATH_W) 'testsuite/prioqueue-check.c'; else $(CYGPATH_W) '$(srcdir)/testsuite/prioqueue-check.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Tpo" "testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='testsuite/prioqueue-check.c' object='testsuite/prioqueue_check-prioqueue-check.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.Po' tmpdepfile='testsuite/$(DEPDIR)/prioqueue_check-prioqueue-check.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prioqueue_check_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o testsuite/prioqueue_check-prioqueue-check.obj `if test -f 'testsuite/prioqueue-check.c'; then $(CYGPATH_W) 'testsuite/prioqueue-check.c'; else $(CYGPATH_W) '$(srcdir)/testsuite/prioqueue-check.c'; fi`
+
+testsuite/simulate-simulate.o: testsuite/simulate.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simulate_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT testsuite/simulate-simulate.o -MD -MP -MF "testsuite/$(DEPDIR)/simulate-simulate.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o testsuite/simulate-simulate.o `test -f 'testsuite/simulate.c' || echo '$(srcdir)/'`testsuite/simulate.c; \
+@am__fastdepCC_TRUE@	then mv -f "testsuite/$(DEPDIR)/simulate-simulate.Tpo" "testsuite/$(DEPDIR)/simulate-simulate.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "testsuite/$(DEPDIR)/simulate-simulate.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='testsuite/simulate.c' object='testsuite/simulate-simulate.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='testsuite/$(DEPDIR)/simulate-simulate.Po' tmpdepfile='testsuite/$(DEPDIR)/simulate-simulate.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simulate_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o testsuite/simulate-simulate.o `test -f 'testsuite/simulate.c' || echo '$(srcdir)/'`testsuite/simulate.c
+
+testsuite/simulate-simulate.obj: testsuite/simulate.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simulate_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT testsuite/simulate-simulate.obj -MD -MP -MF "testsuite/$(DEPDIR)/simulate-simulate.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o testsuite/simulate-simulate.obj `if test -f 'testsuite/simulate.c'; then $(CYGPATH_W) 'testsuite/simulate.c'; else $(CYGPATH_W) '$(srcdir)/testsuite/simulate.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "testsuite/$(DEPDIR)/simulate-simulate.Tpo" "testsuite/$(DEPDIR)/simulate-simulate.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "testsuite/$(DEPDIR)/simulate-simulate.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='testsuite/simulate.c' object='testsuite/simulate-simulate.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='testsuite/$(DEPDIR)/simulate-simulate.Po' tmpdepfile='testsuite/$(DEPDIR)/simulate-simulate.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simulate_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o testsuite/simulate-simulate.obj `if test -f 'testsuite/simulate.c'; then $(CYGPATH_W) 'testsuite/simulate.c'; else $(CYGPATH_W) '$(srcdir)/testsuite/simulate.c'; fi`
 uninstall-info-am:
 
 ETAGS = etags
@@ -788,6 +968,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -858,6 +1039,14 @@ uninstall-am: uninstall-info-am uninstall-sbinPROGRAMS
 
 
 testsuite/blacklist-check1.sh:	testsuite/blacklist-check.sh
+				@rm -f $@
+				ln -s ../$< $@
+
+testsuite/prioqueue-check%.sh:	testsuite/prioqueue-check.sh
+				@rm -f $@
+				ln -s ../$< $@
+
+testsuite/simulate%.sh:		testsuite/simulate.sh
 				@rm -f $@
 				ln -s ../$< $@
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -1,4 +1,4 @@
-## $Id: Makefile.am,v 1.3 2003/05/26 21:49:22 ensc Exp $
+## $Id: Makefile.am,v 1.6 2003/08/22 19:15:42 ensc Exp $
 
 # Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 #  
@@ -25,7 +25,9 @@ ether_SRCS			=
 endif
 
 lib_SRCS			=  arguments.c util.c blacklist.c 	\
-				   antidos.c vector.c $(ether_SRCS)
+				   antidos.c vector.c prioqueue.c	\
+				   worker.c				\
+				   $(ether_SRCS)
 
 EXTRA_ip_sentinel_SOURCES	=  ether.c
 ip_sentinel_SOURCES		=  ip-sentinel.c $(lib_SRCS)
@@ -35,9 +37,12 @@ AM_CPPFLAGS			=  -D_GNU_SOURCE
 noinst_HEADERS			=  antidos.h arguments.h arpmessage.h	\
 				   blacklist.h compat.h ip-sentinel.h	\
 				   parameters.h util.h vector.h		\
-				   wrappers.h vector.ic
+				   worker.h jobinfo.h			\
+				   wrappers.h vector.ic			\
+				   prioqueue.h prioqueue.ic
 
 EXTRA_DIST			=  $(testsuite_FILES)
+CLEANFILES			=  $(testsuite_CLEANFILES)
 
 include $(top_srcdir)/m4/diet.am
 include $(srcdir)/testsuite/Makefile-files

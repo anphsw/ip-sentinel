@@ -1,4 +1,4 @@
-// $Id: arguments.h,v 1.3 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
+// $Id: arguments.h,v 1.7 2003/08/22 19:11:03 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -20,8 +20,19 @@
 #define H_IPSENTINEL_ARGUMENTS_H
 
 #include <stdbool.h>
+#include <net/ethernet.h>
 
-typedef struct
+struct TaggedMac
+{
+    enum {mcRANDOM, mcFIXED,
+	  mcLOCAL, mcSAME}	type;
+
+    union {
+	struct ether_addr	ether;
+    }				addr;
+};
+
+struct Arguments
 {
     char const *	ipfile;
     char const *	pidfile;
@@ -32,9 +43,14 @@ typedef struct
     bool		do_fork;
     char const *	chroot;
     char const *	iface;
-} Arguments;
 
-void
-parseOptions(int argc, char *argv[], Arguments *options);
+    enum {dirFROM=1, dirTO=2,
+	  dirBOTH=3}	arp_dir;
+    struct TaggedMac	mac;
+    struct TaggedMac	llmac;
+};
+
+void	parseOptions(int argc, char *argv[], struct Arguments *options);
+void	Arguments_fixupOptions(struct Arguments *options);
 
 #endif	//  H_IPSENTINEL_ARGUMENTS_H
