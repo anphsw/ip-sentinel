@@ -1,6 +1,6 @@
-## $Id: Makefile.am,v 1.6 2003/12/12 00:49:21 ensc Exp $
+## $Id: Makefile.am,v 1.8 2005/03/29 15:48:54 ensc Exp $
 
-# Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+# Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 #  
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,9 +32,10 @@ EXTRA_DIST	=  ip-sentinel.spec ${contrib_FILES} $(doc_FILES) \
 		   disttest disttest-data
 CLEANFILES	=  $(doc_CLEANFILES)
 
-if MAINTAINER_MODE
-TESTS		=  disttest
-endif
+
+silent.%:	FORCE
+		$(MAKE) '$*' -s
+
 
 include $(srcdir)/contrib/Makefile-files
 include $(srcdir)/doc/Makefile-files
@@ -45,3 +46,5 @@ include $(top_srcdir)/m4/diet.am
 include $(top_srcdir)/m4/gpgsig.am
 include $(top_srcdir)/m4/substrule.am
 include $(top_srcdir)/m4/wwwpublish.am
+
+.PHONY:		FORCE

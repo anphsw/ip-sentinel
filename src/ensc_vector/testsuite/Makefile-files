@@ -1,4 +1,4 @@
-## $Id: Makefile-files,v 1.2 2004/03/10 02:30:34 ensc Exp $		--*- makefile -*--
+## $Id: Makefile-files,v 1.4 2005/03/18 00:13:50 ensc Exp $		--*- makefile -*--
 
 ## Copyright (C) 2004 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 ##  
@@ -15,8 +15,14 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-check_PROGRAMS +=		ensc_vector/testsuite/test1
-TESTS +=			ensc_vector/testsuite/test1
+check_PROGRAMS +=		ensc_vector/testsuite/test1 \
+				ensc_vector/testsuite/test2
+
+TESTS +=			ensc_vector/testsuite/test1 \
+				ensc_vector/testsuite/test2
 
 ensc_vector_testsuite_test1_SOURCES =	ensc_vector/testsuite/test1.c
-ensc_vector_testsuite_test1_LDADD =	libensc_vector.a
+ensc_vector_testsuite_test1_LDADD =	$(LIBENSCVECTOR)
+
+ensc_vector_testsuite_test2_SOURCES =	ensc_vector/testsuite/test2.c
+ensc_vector_testsuite_test2_LDADD =	$(LIBENSCVECTOR)

@@ -1,6 +1,6 @@
-// $Id: wrappers.h,v 1.7 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
+// $Id: wrappers.h,v 1.11 2005/03/29 02:09:29 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003,2004 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <signal.h>
 
   /*@-internalglobs@*//*@-modfilesys@*/
   /*@unused@*//*@noreturnwhentrue@*/
@@ -257,5 +258,20 @@ Epipe(int modus[2])
   FatalErrnoError(res==-1, 1, "pipe()");
 }
 
+inline static int
+Efcntl_l(int fd, int cmd, long arg)
+{
+  register int		res = fcntl(fd, cmd, arg);
+  FatalErrnoError(res==-1, 1, "fcntl()");
+  return res;
+}
+
+inline static sighandler_t
+Esignal(int signum, sighandler_t handler)
+{
+  sighandler_t		res = signal(signum, handler);
+  FatalErrnoError(res==SIG_ERR, 1, "signal()");
+  return res;
+}
 
 #endif	//  H_IPSENTINEL_WRAPPERS_H

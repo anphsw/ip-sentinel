@@ -1,6 +1,6 @@
-// $Id: compat.h,v 1.10 2004/08/19 21:45:10 ensc Exp $    --*- c++ -*--
+// $Id: compat.h,v 1.13 2005/03/08 10:58:48 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003,2004,2005 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -85,6 +85,20 @@ struct  ether_arp {
        __result; }))
 #endif
 
+#if !defined(HAVE_DECL_STRDUPA) || !HAVE_DECL_STRDUPA
+  // from glibc's <string.h>
+#  if defined __GNUC__
+/* Duplicate S, returning an identical alloca'd string.  */
+#   define strdupa(s)                                                           \
+  (__extension__                                                              \
+    ({                                                                        \
+      __const char *__old = (s);                                              \
+      size_t __len = strlen (__old) + 1;                                      \
+      char *__new = (char *) __builtin_alloca (__len);                        \
+      (char *) memcpy (__new, __old, __len);                                  \
+    }))
+#  endif
+#endif
 
 #if defined(__GNUC__)
 #  define UNUSED		__attribute__((__unused__))

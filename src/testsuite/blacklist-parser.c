@@ -1,6 +1,6 @@
-// $Id: blacklist-parser.c,v 1.4 2003/08/22 19:13:40 ensc Exp $    --*- c++ -*--
+// $Id: blacklist-parser.c,v 1.5 2004/12/23 00:44:18 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

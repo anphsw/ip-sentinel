@@ -1,6 +1,6 @@
-// $Id: util.c,v 1.12 2004/06/16 10:35:16 ensc Exp $    --*- c++ -*--
+// $Id: util.c,v 1.14 2005/03/29 15:49:58 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003,2004 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -56,14 +56,14 @@ writeMsgTimestamp(int fd)
     
     (void)localtime_r(&tv.tv_sec, &tmval);
     if (strftime(buffer, sizeof buffer, "%T", &tmval)>0) {
-      (void)write(fd, buffer, strlen(buffer));
+      Vwrite(fd, buffer, strlen(buffer));
       
       aux  = tv.tv_usec;
       aux |= 1; // Prevent 'aux==0' which will cause an endless-loop below
       assert(aux>0);
   
       while (aux<100000) { ++fill_cnt; aux *= 10; }
-      (void)write(fd, "000000", fill_cnt-1);
+      Vwrite(fd, "000000", fill_cnt-1);
       writeUInt(fd, static_cast(unsigned int)(tv.tv_usec));
     }
     else
@@ -72,7 +72,7 @@ writeMsgTimestamp(int fd)
       char			buf[64];
       size_t			l = fmt_tai64n(buf, &tv);
 
-      write(fd, buf, l);
+      Vwrite(fd, buf, l);
     }
   }
 }
@@ -83,14 +83,14 @@ writeUInt(int fd, unsigned int val)
   char			buf[sizeof(val)*3 + 3];
   size_t		l = fmt_uint(buf, val);
 
-  (void)write(fd, buf, l);
+  Vwrite(fd, buf, l);
 }
 
 void
 writeIP(int fd, struct in_addr ip)
 {
   char const	*ip_str = inet_ntoa(ip);
-  write(fd, ip_str, strlen(ip_str));
+  Vwrite(fd, ip_str, strlen(ip_str));
 }
 
 struct ether_addr *

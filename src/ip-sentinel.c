@@ -1,6 +1,6 @@
-// $Id: ip-sentinel.c,v 1.28 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
+// $Id: ip-sentinel.c,v 1.32 2005/03/29 15:50:36 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003,2004,2005 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ adjustUserGroup(struct Arguments *arguments, uid_t *uid, gid_t *gid)
   }
 }
 
-static void ALWAYSINLINE
+static void //ALWAYSINLINE
 daemonize(struct Arguments *arguments)
 {
   int			err_fd, out_fd, pid_fd;
@@ -137,6 +137,9 @@ daemonize(struct Arguments *arguments)
   if (pid_fd!=-1) Eclose(pid_fd);
   Eclose(out_fd);
   Eclose(err_fd);
+
+  SETCLOEXEC(1);
+  SETCLOEXEC(2);
 }
 
 inline static int ALWAYSINLINE
@@ -292,7 +295,7 @@ generateJobFromIntruder(struct Worker *worker,
 }
 
 
-static void NORETURN ALWAYSINLINE
+static void NORETURN //ALWAYSINLINE
 run(struct Worker *worker, struct Arguments const *args) 
 {
   BlackList			cfg;
@@ -357,6 +360,7 @@ generateSocket(char const *iface, int *idx)
   assert(iface!=0);
   assert(idx!=0);
 
+  SETCLOEXEC(sock);
   *idx = initIfaceInformation(sock, iface);
 
   memset(&addr, 0, sizeof(addr));

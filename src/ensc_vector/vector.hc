@@ -1,4 +1,4 @@
-// $Id: vector.hc,v 1.1 2004/02/06 14:47:18 ensc Exp $    --*- c++ -*--
+// $Id: vector.hc,v 1.2 2005/03/17 14:47:53 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -50,4 +50,12 @@ static inline UNUSED void const *
 Vector_search_const(struct Vector const *vec, void const *key, int (*compar)(const void *, const void *))
 {
   return Vector_search((struct Vector *)(vec), key, compar);
+}
+
+static inline UNUSED void const *
+Vector_searchSelfOrg_const(struct Vector const *vec, void const *key,
+			   int (*compare)(const void *, const void *),
+			   VectorSelfOrgMethod method)
+{
+  return Vector_searchSelfOrg((struct Vector *)(vec), key, compare, method);
 }

@@ -1,3 +1,271 @@
+2005-03-29 18:44  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, configure.ac: version 0.12
+
+2005-03-29 18:43  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* build-all: initial checkin
+
+2005-03-29 18:42  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/: diet.am, ensc_diet.m4: ENSC_DIET(): removed use
+	  ENSC_ENABLE_DIETLIBC instead of ENSC_DIET
+
+2005-03-29 18:42  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac: replaced the ENSC_DIET() with the more powerful
+	  ENSC_ENABLE_DIETLIBC()
+
+2005-03-29 18:41  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_dietlibc.m4: added from common m4 repository
+
+2005-03-29 17:50  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/Makefile-files: fixed VPATH builds
+
+2005-03-29 17:50  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ip-sentinel.c: disable ALWAYSINLINE temporarly at some places
+	  to avoid compilation errors with gcc4
+
+2005-03-29 17:49  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/: blacklist.c, util.c, util.h, testsuite/blacklist-check.c:
+	  prevent warnings with '-D_FORTIFY_SOURCE' by using 'Vwrite()'
+	  instead of 'write()'
+
+2005-03-29 17:48  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* Makefile.am: added silent.% target do not execute 'disttest'
+	  anymore
+
+2005-03-29 04:24  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac: added GPG key
+
+2005-03-29 04:19  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/: changelog.am, ensc_initrddir.m4, gpgsig.am, pkgconfig.am,
+	  validate.am: updated from global m4 repository
+
+2005-03-29 04:14  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/Makefile-files: conditionalized build of the glibc
+	  variant also
+
+2005-03-29 04:10  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/Makefile-files: use $(LIBENSCVECTOR) instead of
+	  libensc_vector.a
+
+2005-03-29 04:09  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/wrappers.h: #include <signal.h>
+
+2005-03-29 04:09  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/Makefile.am: use $(LIBENSCVECTOR) instead of
+	  libensc_vector.a, include m4/libsel.am, minor cleanups
+
+2005-03-29 04:08  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/libsel.am: initial checkin
+
+2005-03-29 04:07  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac: set the ENSC_USE_* conditionals
+
+2005-03-29 03:18  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* cvsusers.map, testit: initial checkin
+
+2005-03-29 03:17  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/wrappers.h: Esignal(): added
+
+2005-03-29 03:17  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/worker.c: ignore SIGCHLD to avoid zombies; setting handler to
+	  SIG_IGN removes the need for explicit waitpid(2) calls
+
+2005-03-29 03:15  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac: allow build with non-C99 compiler also (at your own
+	  risk)
+
+2005-03-24 13:41  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/test2.c: #undef NDEBUG
+
+2005-03-23 03:17  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/.cvsignore: updated
+
+2005-03-19 03:03  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/list-free.c: some minor C89 compatibility changes
+
+2005-03-19 03:03  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/Makefile-files: use
+	  'lib-dietlibc-not-enabled-error.a' consistently clean all
+	  libraries inclusive those which might not be built
+
+2005-03-18 14:13  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* doc/index.html[DEAD]: moved into webtree
+
+2005-03-18 01:13  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/Makefile-files: use $(LIBENSCVECTOR)
+	  instead of libensc_vector.a
+
+2005-03-18 01:13  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/Makefile-files: split into a -glibc and a -diet
+	  part
+
+2005-03-17 15:49  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/test1.c: added tests for
+	  Vector_searchSelfOrg()
+
+2005-03-17 15:48  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/Makefile-files: added test2
+
+2005-03-17 15:47  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/: vector.h, vector.hc: Vector_searchSelfOrg*():
+	  added
+
+2005-03-17 15:47  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/: list-add.c, list-at.c, list-free.c,
+	  list-init.c, list-insertinternal.c, list-internal.h,
+	  list-search.c, list-searchselforg.c, list.h, list.hc,
+	  vector-searchselforg.c, testsuite/test2.c: initial checkin
+
+2005-03-17 15:47  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/Makefile-files: added list-* files added
+	  vector-searchselforg.c
+
+2005-03-17 15:46  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_fmt/: fmt.h, fmtx-32.c: fixed declaration of the
+	  *_x*int() methods; they do not take a 'base' argument
+
+2005-03-08 15:07  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* ip-sentinel.spec.in: tabified it removed epoch
+
+2005-03-08 15:05  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* doc/ip-sentinel.man: updated '--action' descriptions (mentioned
+	  chroot execution and restricted rights)
+
+2005-03-08 11:58  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* ip-sentinel.spec.in, doc/ip-sentinel.man, src/blacklist.c,
+	  src/compat.h, src/ip-sentinel.c, src/util.h: minor cleanups in
+	  the copyright notices
+
+2005-03-08 01:06  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/data/: blacklist-check.fd3, blacklist-check1.fd3,
+	  blacklist.out, simulate-test1.out: resorted lines to reflect the
+	  new, endian-neutral sorting of ip addresses
+
+2005-03-08 01:04  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/wrappers.h: Efcntl_l(): added
+
+2005-03-08 01:04  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/worker.h: added support for '--action'
+
+2005-03-08 01:04  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/worker.c: implemented support for the '--action' option
+	  removed legacy logging format
+
+2005-03-08 01:03  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/util.h: SETCLOEXEC(): added
+
+2005-03-08 01:03  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ip-sentinel.c: mark generated sockets as close-on-exec
+
+2005-03-08 01:03  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/compat.h: strdupa(): added
+
+2005-03-08 01:03  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/blacklist.c: stabilized sorting order between little- and
+	  big-endian systems
+
+2005-03-08 01:01  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/: arguments.c, arguments.h: added '--action' option
+
+2005-03-08 01:01  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_diet.m4: ENSC_DIET_ENV(): added
+
+2005-03-08 01:01  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_cxxcompiler.m4: initial checkin
+
+2005-03-08 01:01  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* doc/ip-sentinel.man: documented '--action' option
+
+2005-03-08 01:00  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* ip-sentinel.spec.in, doc/index.html: cleanups
+
+2005-03-08 01:00  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac: require a C99 compiler added check for 'strdupa()'
+
+2005-03-08 00:59  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS: added dates
+
+2005-01-21 12:29  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* Makefile.m4.am[DEAD], m4/Makefile.am[DEAD]: obsoleted by recent
+	  automake
+
+2004-12-23 01:44  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac: updated/added copyright notices fixed speling
+
+2004-12-23 01:44  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* Makefile.am, ip-sentinel.spec.in, m4/Makefile.am,
+	  m4/changelog.am, m4/diet.am, m4/doxygen.am, m4/ensc_cflags.m4,
+	  m4/ensc_changelog.m4, m4/ensc_compat.m4, m4/ensc_database.m4,
+	  m4/ensc_db.m4, m4/ensc_developing.m4, m4/ensc_diet.m4,
+	  m4/ensc_enscdebug.m4, m4/ensc_flexlexer.m4, m4/ensc_isdn.m4,
+	  m4/ensc_ldapcxx.m4, m4/ensc_python.m4, m4/ensc_rdtscll.m4,
+	  m4/ensc_tools.m4, m4/pkgconfig.am, m4/substrule.am,
+	  m4/validate.am, m4/wwwpublish.am, src/Makefile.am, src/antidos.h,
+	  src/arguments.c, src/arguments.h, src/arpmessage.h,
+	  src/blacklist.c, src/blacklist.h, src/compat.h, src/ether.c,
+	  src/ip-sentinel.c, src/util.c, src/util.h, src/worker.c,
+	  src/wrappers.h, src/testsuite/Makefile-files,
+	  src/testsuite/blacklist-check.c,
+	  src/testsuite/blacklist-check.sh,
+	  src/testsuite/blacklist-parser.c,
+	  src/testsuite/blacklist-parser.sh, src/testsuite/functions,
+	  src/testsuite/prioqueue-check.sh, src/testsuite/simulate.c,
+	  src/testsuite/simulate.sh: updated/added copyright notices
+
 2004-12-16 10:25  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 
 	* NEWS, THANKS, configure.ac, doc/index.html, doc/ip-sentinel.man:

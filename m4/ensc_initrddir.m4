@@ -1,4 +1,4 @@
-dnl $Id: ensc_initrddir.m4,v 1.1 2003/12/04 19:51:14 ensc Exp $
+dnl $Id: ensc_initrddir.m4,v 1.2 2005/03/29 02:19:19 ensc Exp $
 
 dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
@@ -22,7 +22,7 @@ AC_DEFUN([ENSC_INITRDDIR],
 	AC_MSG_CHECKING([for initrddir])
 	AC_ARG_WITH([initrddir],
 		    [AC_HELP_STRING([--with-initrddir <DIR>],
-				    [use <DIR> as directory for SysV init-files (default: $sysconfdir/rc.d)])],
+				    [use <DIR> as directory for SysV init-files (default: $sysconfdir/init.d)])],
 	            [case "$withval" in
 			yes|no)	AC_MSG_ERROR(['$withval' is not a valid value for '--with-initrddir']);;
 			*)      ensc_initrddir=$withval;;

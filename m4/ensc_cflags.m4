@@ -1,6 +1,6 @@
-dnl $Id: ensc_cflags.m4,v 1.6 2003/12/12 00:47:57 ensc Exp $
+dnl $Id: ensc_cflags.m4,v 1.7 2004/12/23 00:44:18 ensc Exp $
 
-dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+dnl Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
 dnl This program is free software; you can redistribute it and/or modify
 dnl it under the terms of the GNU General Public License as published by

@@ -1,6 +1,6 @@
-// $Id: util.h,v 1.10 2004/06/16 10:35:16 ensc Exp $    --*- c++ -*--
+// $Id: util.h,v 1.14 2005/03/29 15:49:58 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003,2004,2005 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <sys/param.h>
 #include <string.h>
+#include <unistd.h>
 #include <net/ethernet.h>
 
 
@@ -42,13 +43,22 @@
 #  define assertDefined(x)
 #endif
 
-#define WRITE_MSG(fd,str)	write(fd, str, strlen(str))
-#define WRITE_MSGSTR(fd,str)	write(fd, str, sizeof(str)-1)
+#define WRITE_MSG(fd,str)	Vwrite(fd, str, strlen(str))
+#define WRITE_MSGSTR(fd,str)	Vwrite(fd, str, sizeof(str)-1)
 
-#define XSTRCAT(dst, cnt, src) xstrcatn(dst, cnt, src, sizeof(src)-1)
+#define XSTRCAT(dst, cnt, src)	xstrcatn(dst, cnt, src, sizeof(src)-1)
+
+#define SETCLOEXEC(FD)		Efcntl_l(FD, F_SETFD, FD_CLOEXEC)
 
 struct ether_addr *
 xether_aton_r(char const *asc, struct ether_addr *addr);
+
+
+inline static void
+Vwrite(int fd, char const *buf, size_t len)
+{
+  if (write(fd,buf,len)==-1) { /**/ }
+}
 
 inline static void
 xstrcatn(char **dst, size_t *cnt, char const *src, size_t src_len)

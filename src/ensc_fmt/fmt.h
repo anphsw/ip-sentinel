@@ -1,4 +1,4 @@
-// $Id: fmt.h,v 1.2 2004/06/27 13:00:41 ensc Exp $    --*- c -*--
+// $Id: fmt.h,v 1.3 2005/03/17 14:46:19 ensc Exp $    --*- c -*--
 
 // Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -57,8 +57,8 @@ size_t	FMT_P( xlong)    (char *ptr,          long val);
 
 size_t  FMT_P(uint_base)(char *ptr, unsigned int val, char base);
 size_t  FMT_P( int_base)(char *ptr,          int val, char base);
-size_t  FMT_P(xuint)    (char *ptr, unsigned int val, char base);
-size_t  FMT_P( xint)    (char *ptr,          int val, char base);
+size_t  FMT_P(xuint)    (char *ptr, unsigned int val);
+size_t  FMT_P( xint)    (char *ptr,          int val);
 
 struct timeval;
 size_t	FMT_P(tai64n)(char *ptr, struct timeval const *now);

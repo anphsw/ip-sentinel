@@ -1,6 +1,6 @@
-## $Id: configure.ac,v 1.28 2004/12/16 09:25:20 ensc Exp $
+## $Id: configure.ac,v 1.35 2005/03/29 16:44:52 ensc Exp $
 
-# Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+# Copyright (C) 2002,2003,2004,2005 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 #  
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-AC_INIT(ip-sentinel, 0.11, enrico.scholz@informatik.tu-chemnitz.de, [ip-sentinel])
+AC_INIT(ip-sentinel, 0.12, enrico.scholz@informatik.tu-chemnitz.de, [ip-sentinel])
 AC_CONFIG_SRCDIR([src/antidos.c])
 AM_CONFIG_HEADER([config.h])
 
@@ -34,7 +34,7 @@ if test "$build_os" != "linux-gnu"; then
 ****************************
 
 Builds in non-GNU/Linux environments are not well tested and will fail
-probably. To have a minimal change to succeed, make sure that a recent
+probably. To have a minimal chance to succeed, make sure that a recent
 GNU 'make' will be used.
 
 ****************************])
@@ -43,6 +43,8 @@ fi
 
 username=nobody
 configfile=ips.cfg
+
+AC_SUBST(GPG_KEY, "0xFFD316AC53ACA43A!")
 
 # Checks for programs.
 AC_PROG_CC
@@ -53,13 +55,14 @@ AC_PROG_CPP
 AC_PROG_LN_S
 AC_PROG_RANLIB
 
+ENSC_C99COMPILER
 ENSC_CHANGELOG()
 
 ENSC_STANDARD_TOOLS
 ENSC_RELEASE(IS_RELEASE)
 ENSC_DEVELOPING(IS_DEVELOPING)
 
-ENSC_DIET
+ENSC_ENABLE_DIETLIBC([USE_DIETLIBC], 0.24)
 ENSC_DIET_FIX
 AC_DEFINE(_GNU_SOURCE, 1, [Uses GNU features])
 
@@ -67,6 +70,7 @@ ENSC_CHECK_CC_FLAG([-Wall -W -Wno-unused-function])
 ENSC_CHECK_CC_FLAG([-std=c99 ${RELEASE_CFLAGS} ${DEVELOPING_CFLAGS} ${DEVELOPING_STRICT_CFLAGS} -Wno-unreachable-code])
 
 ENSC_INITRDDIR(initrddir)
+
 
 AC_MSG_CHECKING([for configfile])
 AC_ARG_WITH(configfile,
@@ -97,6 +101,8 @@ AC_DEFINE_UNQUOTED([PATH_CONFIGFILE],  ["$configfile"],  [Configfilename])
 
 ENSC_MODERN_COMPILER_CHECK
 
+AM_CONDITIONAL(ENSC_USE_GLIBC,    test x"$ensc_use_dietlibc" != xyes)
+AM_CONDITIONAL(ENSC_USE_DIETLIBC, test x"$ensc_use_dietlibc"  = xyes)
 
 # Checks for libraries.
 
@@ -107,6 +113,11 @@ ENSC_DIET_CHECK_IN_ADDR_T
 
 # Checks for library functions.
 ENSC_DIET_CHECK_ETHER
+ENSC_DIET_ENV([AC_CHECK_DECLS([strdupa],[], [], [
+#define _GNU_SOURCE
+#include <string.h>
+		])
+])
 
 AH_BOTTOM([#include "compat.h"])
 AC_CONFIG_FILES([Makefile

@@ -1,6 +1,6 @@
-## $Id: diet.am,v 1.4 2003/08/05 13:06:45 ensc Exp $
+## $Id: diet.am,v 1.6 2005/03/29 16:42:36 ensc Exp $
 
-## Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+## Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 ##  
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 ## ugly blank before 'gcc' when not using DIET...
 
 
-if ENSC_ENABLE_DIET
+if USE_DIETLIBC
 DIET_CC			=  $(DIET) $(DIETFLAGS) @CC@
 else
 DIET_CC			=  @CC@

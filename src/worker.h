@@ -1,4 +1,4 @@
-// $Id: worker.h,v 1.3 2003/10/07 17:21:20 ensc Exp $    --*- c++ -*--
+// $Id: worker.h,v 1.4 2005/03/08 00:04:46 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -39,6 +39,9 @@ struct Worker
       // the link-level mac-address sent when the arp-request
       // is coming *from* the intruder
     struct TaggedMac	llmac;
+
+      // the action-command
+    char const *	action_cmd;
 };
 
 void	Worker_init(struct Worker *, struct Arguments const *,

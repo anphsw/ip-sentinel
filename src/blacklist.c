@@ -1,6 +1,6 @@
-// $Id: blacklist.c,v 1.26 2004/12/15 18:21:12 ensc Exp $    --*- c++ -*--
+// $Id: blacklist.c,v 1.30 2005/03/29 15:49:58 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003,2004,2005 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ typedef enum {blUNDECIDED, blIGNORE, blSET, blRAND}	BlackListStatus;
 struct AtMac
 {
     struct ether_addr				mac;
-    enum {amNONE, amPOSITIVE, amNEGATIVE }	status;
+    enum {amNONE, amNEGATIVE, amPOSITIVE }	status;
 };
 
 struct BaseData
@@ -86,9 +86,9 @@ IPData_searchCompare(void const *lhs_v, void const *rhs_v)
   struct IPData const *		rhs = rhs_v;
   assert(lhs!=0 && rhs!=0);
 
-  if      (lhs->s_addr < rhs->v.ip.s_addr) return -1;
-  else if (lhs->s_addr > rhs->v.ip.s_addr) return +1;
-  else                                     return  0;
+  if      (ntohl(lhs->s_addr) < ntohl(rhs->v.ip.s_addr)) return -1;
+  else if (ntohl(lhs->s_addr) > ntohl(rhs->v.ip.s_addr)) return +1;
+  else                                                   return  0;
 }
 
 static int
@@ -229,7 +229,7 @@ BlackList_parseNetMask(struct in_addr * const result, char **start,
       WRITE_MSGSTR(2, ": invalid netmask '");
       WRITE_MSG   (2, *start);
       WRITE_MSGSTR(2, "', first bad char was '");
-      write(2, endptr, 1);
+      Vwrite      (2, endptr, 1);
       WRITE_MSGSTR(2, "'\n");
       return false;
     }
@@ -513,7 +513,7 @@ BlackList_expandLine(BlackList *lst, char *start, char const *end, size_t line_n
 
 #if 0  
   WRITE_MSGSTR(1, "Expanding line '");
-  write(1, start, end-start);
+  Vwrite      (1, start, end-start);
   WRITE_MSGSTR(1, "'\n");
 #endif  
   
@@ -833,14 +833,14 @@ BlackList_print_internal(int fd, struct BaseData const *data,
   char const 		*aux = 0;
 
   switch (data->status) {
-    case blUNDECIDED	:  write(fd, "?", 1); aux = "FAIL"; break;
-    case blIGNORE	:  write(fd, "!", 1); aux = "";     break;
-    case blRAND		:  aux = "RANDOM";    break;
+    case blUNDECIDED	:  Vwrite(fd, "?", 1); aux = "FAIL"; break;
+    case blIGNORE	:  Vwrite(fd, "!", 1); aux = "";     break;
+    case blRAND		:  aux = "RANDOM";                   break;
     case blSET		:  break;
     default		:  assert(false);
   }
 
-  if (no_ip) write(fd, "*", 1);
+  if (no_ip) Vwrite(fd, "*", 1);
   else {
     writeIP(fd, data->ip);
     if (mask) {

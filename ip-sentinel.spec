@@ -1,9 +1,25 @@
 ## $id: ip-sentinel.spec.in,v 1.3 2003/05/26 21:53:02 ensc Exp $		--*- rpm-spec -*--
 
+# Copyright (C) 2004,2005 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+#  
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#  
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#  
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+
 ## This package understands the following switches:
-## --without dietlibc        ...   disable usage of dietlibc
-## --without minit           ...   disable creation of 'minit' subpackage
-## --with    fedora          ...   enable fedora.us specific parts
+## --without dietlibc	     ...   disable usage of dietlibc
+## --without minit	     ...   disable creation of 'minit' subpackage
+## --with    fedora	     ...   enable fedora.us specific parts
 ## --define  username\ name  ...   set the name of the user running the daemon
 
 %define uid		1
@@ -18,11 +34,10 @@
 %define minitdir	%_sysconfdir/minit
 %define minitsvcdir	%minitdir/services/%name
 
-Summary:	A tool to prevent unauthorized usage of IPs
+Summary:	Tool to prevent unauthorized usage of IP addresses
 Name:		ip-sentinel
-Version:	0.11
+Version:	0.12
 Release:	0
-Epoch:		0
 License:	GPL
 Group:		System Environment/Daemons
 URL:		http://www.tu-chemnitz.de/~ensc/ip-sentinel
@@ -43,8 +58,8 @@ Requires:		init(ip-sentinel)
 Summary:		SysV initscripts for ip-sentinel
 Group:			System Environment/Base
 Provides:		init(ip-sentinel)
-Requires(preun):	%name = %epoch:%version-%release
-Requires(postun):	%name = %epoch:%version-%release
+Requires(preun):	%name = %version-%release
+Requires(postun):	%name = %version-%release
 Requires(preun):	initscripts
 Requires(postun):	initscripts
 Requires(post):		/sbin/chkconfig
@@ -55,7 +70,7 @@ Requires(preun):	/sbin/chkconfig
 Summary:		minit initscripts for ip-sentinel
 Group:			System Environment/Base
 Provides:		init(ip-sentinel)
-Requires:		%name = %epoch:%version-%release
+Requires:		%name = %version-%release
 Requires(pre):		minit-setup
 Requires(postun):	minit-setup
 
@@ -85,24 +100,15 @@ This package provides the scripts which can be used to start ip-sentinel
 with the minit initconcept.
 
 
-##---------------------------------------------
-
-
 %prep
 %setup -q
 
 
-##---------------------------------------------
-
-
 %build
 %configure --enable-release \
-           --with-initrddir=%{_initrddir} \
-           --with-username=%username %{?_without_dietlibc:--disable-dietlibc}
+	   --with-initrddir=%{_initrddir} \
+	   --with-username=%username %{?_without_dietlibc:--disable-dietlibc}
 %__make %{?_smp_mflags} all
-
-
-##---------------------------------------------
 
 
 %install
@@ -114,21 +120,12 @@ rm -rf $RPM_BUILD_ROOT
 %{?_without_minit:rm -rf $RPM_BUILD_ROOT%minitsvcdir}
 
 
-##---------------------------------------------
-
-
 %check
 %__make check
 
 
-##---------------------------------------------
-
-
 %clean
 rm -rf $RPM_BUILD_ROOT
-
-
-##---------------------------------------------
 
 
 %pre
@@ -154,7 +151,6 @@ fi
 
 %postun sysv
 test "$1" = 0 || %_initrddir/%service condrestart &>/dev/null
-
 
 
 %files

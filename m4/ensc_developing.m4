@@ -1,4 +1,19 @@
-dnl $Id: ensc_developing.m4,v 1.14 2003/12/04 19:51:00 ensc Exp $
+dnl $Id: ensc_developing.m4,v 1.15 2004/12/23 00:44:18 ensc Exp $
+
+dnl Copyright (C) 2003,2004 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+dnl  
+dnl This program is free software; you can redistribute it and/or modify
+dnl it under the terms of the GNU General Public License as published by
+dnl the Free Software Foundation; version 2 of the License.
+dnl  
+dnl This program is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl GNU General Public License for more details.
+dnl  
+dnl You should have received a copy of the GNU General Public License
+dnl along with this program; if not, write to the Free Software
+dnl Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 
 AC_DEFUN([ENSC_DEVELOPING],

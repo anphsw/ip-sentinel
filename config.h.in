@@ -3,6 +3,13 @@
 /* Define if dietlibc defines the 'in_addr_t' type */
 #undef DIET_HAS_IN_ADDR_T
 
+/* Define to 1 if dietlibc supports C99 */
+#undef ENSC_DIETLIBC_C99
+
+/* Define to 1 if you have the declaration of `strdupa', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRDUPA
+
 /* Define to 1 if dietlibc knows the 'ether_aton' function */
 #undef HAVE_DIET_ETHER_ATON
 
