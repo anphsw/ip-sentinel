@@ -1,0 +1,384 @@
+2002-11-16  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac:
+	Version 0.1
+
+	* src/.cvsignore:
+	Added ip-sentinel
+
+	* src/ip-sentinel.c:
+	Fixed signal-handling
+	Beautified output
+
+2002-11-15  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* ip-sentinel.spec.in:
+	Fixed default username
+
+	* README:
+	Added a short note
+
+	* src/arguments.c:
+	Fixed default of configfile
+
+	* src/testsuite/blacklist-parser.sh:
+	typo
+
+	* src/antidos.c, src/antidos.h, src/ip-sentinel.c, src/parameters.h:
+	Added protection against flooding the program with queries from
+	different IPs which would oversize the AntiDOS vector.
+
+	* contrib/ip-sentinel.init, contrib/ip-sentinel.sysconfig:
+	Added IPS_ prefix to avoid ambiguities
+
+	* .cvsignore:
+	Added some temporary files
+
+	* src/blacklist.c:
+	Fixed resource-leak (cfg-file was not closed)
+
+	* src/wrappers.h:
+	Added wrappers for getgrnam
+
+	* src/vector.h, src/vector.c:
+	Moved some functions into vector.ic
+
+	* src/vector.ic:
+	initial checkin
+
+	* src/ip-sentinel.c:
+	Added --group parameter support
+	Minor fixes
+
+	* src/arguments.h, src/arguments.c:
+	Added --group parameter support
+
+	* src/Makefile.am:
+	Added vector.ic
+
+	* doc/ip-sentinel.man:
+	Documented --group parameter
+	Added configfile example
+
+	* doc/Makefile-files:
+	Added doc_CLEANFILES
+
+	* contrib/ip-sentinel.sysconfig:
+	Added support for --group parameter
+
+	* contrib/ip-sentinel.init:
+	Added missing $
+	Added support for --group parameter
+
+	* Makefile.am:
+	Added doc_CLEANFILES
+
+	* src/testsuite/blacklist-check.sh, src/testsuite/blacklist-parser.sh:
+	Certain cleanups
+	Added functions-file support
+
+	* src/testsuite/Makefile-files:
+	Added CVS tags
+	Certain cleanups
+	Added functions and data/blacklist.out file
+
+	* contrib/Makefile-files, contrib/ip-sentinel.init, contrib/ip-sentinel.sysconfig, doc/.cvsignore, doc/Makefile-files, doc/ip-sentinel.man, ip-sentinel.spec.in, m4/wwwpublish.am, src/testsuite/data/blacklist.out, src/testsuite/functions:
+	initial checkin
+
+	* .cvsignore, configure.ac:
+	Added ip-sentinel.spec
+
+	* Makefile.am:
+	Added doc/contrib directories
+	Added wwwpublish rule
+
+	* ChangeLog.sed:
+	Added me
+
+2002-11-14  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_diet.m4:
+	- Added DIETFLAGS
+	- Added fix for broken compilername detection of 'diet'
+	- Added __ENSC_DIET_FUNC_CHECK which checks if a function is available
+	  with dietlibc
+	- Added ENSC_DIET_CHECK_ETHER which checks for the existence of the
+	  ether_* functions in dietlibc
+
+	* m4/ensc_developing.m4:
+	fixed/changed some flags
+
+	* m4/ensc_cflags.m4:
+	initial checkin
+
+	* m4/diet.am:
+	Added DIETFLAGS
+
+	* .cvsignore, AUTHORS, ChangeLog.sed, Makefile.am, Makefile.m4.am, NEWS, README, THANKS, configure.ac, src/.cvsignore, src/Makefile.am, src/antidos.c, src/antidos.h, src/arguments.c, src/arguments.h, src/arpmessage.h, src/blacklist.c, src/blacklist.h, src/compat.h, src/ether.c, src/ip-sentinel.c, src/ip-sentinel.h, src/parameters.h, src/testsuite/.cvsignore, src/testsuite/Makefile-files, src/testsuite/blacklist-check.c, src/testsuite/blacklist-check.sh, src/testsuite/blacklist-parser.c, src/testsuite/blacklist-parser.sh, src/testsuite/data/blacklist-check.fd3, src/testsuite/data/blacklist-check.ips, src/testsuite/data/blacklist-check.lst, src/testsuite/data/blacklist-check.out, src/testsuite/data/blacklist-check.res, src/testsuite/data/blacklist-check1.fd3, src/testsuite/data/blacklist-check1.lst, src/testsuite/data/blacklist-check1.out, src/testsuite/data/blacklist-check1.res, src/testsuite/data/blacklist.dat, src/util.c, src/util.h, src/vector.c, src/vector.h, src/wrappers.h:
+	initial checkin
+
+2002-08-29  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/changelog.am:
+	rcs2log will be called with '-l 0' now
+	made Makefile a dependency of ChangeLog
+
+	* m4/ensc_diet.m4:
+	Fixed broken evaluation of the --enable-dietlibc value
+
+	* m4/ensc_compat.m4:
+	Do not try to autodetect L2-protocol includes; just use the way suggested
+	in packet(7).
+
+2002-08-28  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_compat.m4:
+	Added check for <netpacket/packet.h>
+
+2002-08-27  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_developing.m4:
+	Made NDEBUG evaluate to true
+	Fixed Typo
+
+2002-07-11  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_compat.m4:
+	Added test for broken set*limit() headers
+
+2002-07-10  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_developing.m4:
+	Made NDEBUG really a boolean...
+
+2002-07-05  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_compat.m4:
+	Added '-pedantic' to cover some more broken cases...
+
+	* m4/ensc_compat.m4:
+	Fixes to compile with egcs-1.1.2
+
+	* m4/ensc_compat.m4:
+	Initial checkin
+
+	* m4/ensc_diet.m4:
+	in_addr_t related fixes to compile with borken libc's
+
+	* m4/changelog.am:
+	Adopted to behavior of recent rcs2log
+
+	* m4/ensc_diet.m4:
+	Added ENSC_DIET_CHECK_IN_ADDR_T macro to check existence of in_addr_t
+	type
+
+2002-07-04  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/substrule.am:
+	s!substrule!substvar!
+
+	* m4/ensc_developing.m4:
+	Make NDEBUG a boolean ('(!0)')to make splint quiet
+
+2002-06-17  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/substrule.am:
+	Generalized and outsourced the sed-substitution stuff
+
+2002-06-14  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_diet.m4:
+	Do not cache ensc_use_dietlibc anymore
+	Cache setting of the DIET environment variable
+	Autodetect dietlibc
+
+2002-06-13  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/diet.am, m4/ensc_diet.m4:
+	Fixed usage of DIET so 'gcc' instead of ' gcc' will be executed when
+	disabling dietlibc
+
+	* m4/gpgsig.am:
+	initial checkin
+
+2002-06-12  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_diet.m4:
+	Corrected namespace of variables
+
+2002-06-04  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/diet.am, m4/ensc_diet.m4:
+	Initial checkin
+
+2002-05-04  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_developing.m4:
+	Corrected help-string
+
+2002-05-03  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_ldapcxx.m4:
+	initial checkin
+
+	* m4/ensc_enscdebug.m4:
+	Use '-L... -l...' instead of '.../...'
+
+	* m4/ensc_db.m4:
+	Fixed case when first tested version is not found
+
+2002-05-01  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/changelog.am:
+	Fixed 'distcheck'
+
+2002-04-26  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/changelog.am, m4/ensc_rdtscll.m4:
+	Initial checkin
+
+2002-04-25  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_db.m4:
+	Added check for MINOR-version
+	Added DB_LTLIBS
+
+	* m4/ensc_db.m4:
+	s!DB_CFLAGS!DB_CXXFLAGS!
+
+2002-04-24  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_db.m4:
+	initial checkin
+
+2002-04-22  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/doxygen.am:
+	Fixed bad s!{...}!(...)!
+
+	* m4/validate.am:
+	s!{...}!(...)!
+	Made it work without calling ENSC_STANDARD_TOOLS
+	Added install-data-local & install-exec-local targets
+
+	* m4/pkgconfig.am, m4/doxygen.am:
+	s!{...}!(...)!
+	Made it work without calling ENSC_STANDARD_TOOLS
+
+2002-04-16  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_enscdebug.m4:
+	Applied changes of the enscdebug include-strategy
+
+	* m4/ensc_flexlexer.m4:
+	Remove lex.yy.o also
+
+2002-04-13  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_flexlexer.m4:
+	Initial checkin
+
+	* m4/pkgconfig.am:
+	- Added substitutions for include/lib-flags which do not contain
+	  standard-paths
+	- Added pkgconf_LIBFLAGS, pkgconf_INCFLAGS, pkgconf_PKGINCFLAGS
+	  variables to provide own values
+	- Added BAD_INC_PATHS and BAD_LIB_PATHS variables containing standard
+	  search-paths for include-files/libraries; these vars can/should be
+	  overridden when calling 'make'
+
+2002-03-29  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/doxygen.am:
+	Added DOXYTARGET support
+
+	* m4/doxygen.am:
+	Initial checkin
+
+	* m4/validate.am:
+	Added copyright
+	Added distclean-* rules
+
+	* m4/pkgconfig.am:
+	Fixed dist-pkgconfig target
+
+2002-03-28  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_developing.m4:
+	Made the usage of __USE_MALLOC selectable by '--disable-stl-malloc'
+
+2002-03-22  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_developing.m4:
+	Added __USE_MALLOC macro
+
+2002-03-20  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_enscdebug.m4:
+	Initial checkin
+
+	* m4/ensc_developing.m4:
+	Added lot of developing-flags
+
+	* m4/ensc_developing.m4:
+	Splitted ENSC_RELEASE into a __ENSC_RELEASE defun to enable its usage
+	in AC_REQUIRE()
+
+2002-03-19  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/pkgconfig.am, m4/validate.am:
+	Initial checkin
+
+	* m4/Makefile.am:
+	Make usage of the automake 'include' feature
+
+	* m4/ensc_tools.m4:
+	Added CP_P macro
+
+2002-02-11  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_developing.m4:
+	Added ENSC_RELEASE
+	Added CXXFLAGS for development
+
+2002-01-09  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/Makefile.am:
+	Made it more generally...
+
+2001-11-27  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_tools.m4:
+	Added doxygen, SGML_TOOLS and GRAPH_TOOLS
+
+2001-11-15  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/Makefile.am:
+	Removed Makefile.am from project repository; it's project specific
+
+2001-11-01  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_tools.m4:
+	Added some standard tools
+	Added ENSC_TEX_TOOLS macro
+
+	* m4/Makefile.am:
+	Removed include'ing of global Makefile
+
+2001-10-26  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_python.m4:
+	Quoted ${PYTHON}
+
+	* m4/Makefile.am, m4/ensc_database.m4, m4/ensc_developing.m4, m4/ensc_isdn.m4, m4/ensc_tools.m4:
+	Minor fix in the $Id$ string
+
+	* m4/ensc_python.m4:
+	Quoted ${PYTHON}
+	Added ENSC_PYCHECKER
+
+2001-10-25  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/Makefile.am, m4/ensc_database.m4, m4/ensc_developing.m4, m4/ensc_isdn.m4, m4/ensc_python.m4, m4/ensc_tools.m4:
+	Initial checkin
+
