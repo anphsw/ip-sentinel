@@ -1,3 +1,80 @@
+2004-12-16 10:25  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, THANKS, configure.ac, doc/index.html, doc/ip-sentinel.man:
+	  version 0.11
+
+2004-12-16 10:18  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* doc/ip-sentinel.man: minor cleanups added a '*@<mac>' example
+
+2004-12-16 00:46  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* README: added an example for the '*@<mac>' syntax
+
+2004-12-16 00:45  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/arguments.c: changed default args to '--poision --mac 802.3x
+	  --direction BOTH'
+
+2004-12-15 19:23  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/data/: simulate-test1.cfg, simulate-test1.inp,
+	  simulate-test1.out: added testcases for the '!<singleip>' syntax
+
+2004-12-15 19:22  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/data/: simulate-test.cfg, simulate-test.inp,
+	  simulate-test.out: added testcases for the '*@<mac>' syntax
+
+2004-12-15 19:21  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/: blacklist-check.sh, blacklist-parser.sh,
+	  prioqueue-check.sh, simulate.sh: updated valgrind invocation; it
+	  requires now a '--tool=...' argument
+
+2004-12-15 19:21  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/blacklist.c: implemented the '*@<mac>' syntax to block hosts
+	  with a certain ip
+
+2004-12-15 19:20  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* doc/ip-sentinel.man: documented the '*@mac' syntax cleanups
+	  updated version and date
+
+2004-12-15 19:19  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* ip-sentinel.spec.in: added support for 'fedora-usermgmt' (enabled
+	  with '--with fedora' switch) conditionalized building of -minit
+	  subpackage
+
+2004-12-15 19:19  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac: added sanity checks to ensure that it builds under
+	  Linux
+
+2004-08-19 23:45  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/compat.h: add prototypes for ether_ntoa() and ether_ntoa_r()
+	  removed prototypes for mem*() functions
+
+2004-08-19 23:25  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ether.c: include <string.h>
+
+2004-08-19 19:07  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_diet.m4: ENSC_DIET_TYPE_CHECK: added; it generalizes the
+	  type-checking code
+
+2004-08-19 15:53  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_fmt/fmt-internal.h: minor optimizations
+
+2004-06-27 15:00  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_fmt/fmt.h: cleanups; removed unneeded #undef's
+
 2004-06-17 15:03  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 
 	* NEWS, configure.ac, doc/index.html: version 0.10

@@ -1,4 +1,4 @@
-.\" $Id: ip-sentinel.man,v 1.12 2003/12/15 23:56:44 ensc Exp $
+.\" $Id: ip-sentinel.man,v 1.15 2004/12/16 09:25:20 ensc Exp $
 .\" Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 .\"  
 .\" Permission is granted to make and distribute verbatim copies of
@@ -26,7 +26,7 @@
 .ns
 .TP \\$1
 ..
-.TH ip-sentinel 8 "Aug 28 2003" "@PACKAGE@ 0.9"
+.TH ip-sentinel 8 "Dec 15 2004" "@PACKAGE@ 0.11"
 .\"
 .\" ====================
 .\"
@@ -214,7 +214,7 @@ one of the ip-sentinel host).
 Examples are: "192.168.42.23  11:22:33:44:55:66" or "10.0.0.0".
 .\"
 .TP
-.IR  ip @ [ ! ]srcmac\  [ mac ]
+.IB  ip @ [ ! ]srcmac\ [mac]
 Similarly to above, but when receiving ARP-requests, the entire
 sender-address (IP and MAC) will be compared against the \fIip\fR and
 \fIsrcmac\fR values. This setting affects packets \fBfrom\fR intruders
@@ -226,6 +226,11 @@ this ip which are \fBnot\fR having this mac will be matching.
 
 Examples are: "10.0.0.1@0:1:2:3:4:5" or "10.0.0.2@!a:b:c:d:e:f".
 .\"
+.TP
+.BI *@ srcmac\ [mac]
+Every host using the srcmac will be blocked unless there is a matching
+\fIip@srcmac\fR specification. This option does \fBnot\fR support '!' 
+modifiers.
 .TP
 .IB net / mask\ \fR[ \fImac\fR]
 .TQ
@@ -369,6 +374,8 @@ should be expressed with netmasks.
 10.0.0.1@a:a:a:a:a:a
 .RS 0
 10.0.0.2@!1:1:1:1:1:1
+.RS 0
+*@b:b:b:b:b:b             ## block MAC b:b:b:b:b:b regardless of the IP
 
 This setup will not send ARP-replies for the IPs 192.168.0.{3-255} but
 when a host tries to use e.g. 169.254.145.213, ip-sentinel will tell

@@ -1,6 +1,6 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Define if dietlibc defines the in_addr_t type */
+/* Define if dietlibc defines the 'in_addr_t' type */
 #undef DIET_HAS_IN_ADDR_T
 
 /* Define to 1 if dietlibc knows the 'ether_aton' function */

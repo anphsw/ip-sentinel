@@ -1,4 +1,4 @@
-// $Id: fmt-internal.h,v 1.1 2004/06/16 10:06:03 ensc Exp $    --*- c -*--
+// $Id: fmt-internal.h,v 1.2 2004/08/19 13:53:54 ensc Exp $    --*- c -*--
 
 // Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -19,7 +19,7 @@
 #ifndef H_UTIL_VSERVER_LIB_FMT_COMMON_H
 #define H_UTIL_VSERVER_LIB_FMT_COMMON_H
 
-static char const DIGITS[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+#define DIGITS			"0123456789abcdefghijklmnopqrstuvwxyz"
 
 #define FMT_P__(X,Y)		X ## Y
 #define FMT_P_(X,Y)		FMT_P__(X,Y)

@@ -1,4 +1,4 @@
-// $Id: fmt.h,v 1.1 2004/06/16 10:06:03 ensc Exp $    --*- c -*--
+// $Id: fmt.h,v 1.2 2004/06/27 13:00:41 ensc Exp $    --*- c -*--
 
 // Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -117,9 +117,6 @@ FMT_P(int)(char *ptr, int val)
 }
 #endif
 
-#undef ALIASFUNC
-#undef STRINGIFY
-#undef STRINGIFY_
 #undef FMT_P
 #undef FMT_P_
 #undef FMT_P__

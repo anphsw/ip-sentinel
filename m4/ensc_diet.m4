@@ -1,4 +1,4 @@
-dnl $Id: ensc_diet.m4,v 1.9 2002/11/16 02:17:00 ensc Exp $
+dnl $Id: ensc_diet.m4,v 1.10 2004/08/19 17:07:06 ensc Exp $
 
 dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
@@ -89,38 +89,41 @@ AC_DEFUN([ENSC_DIET_FIX],
 	fi
 ])
 
-AC_DEFUN([ENSC_DIET_CHECK_IN_ADDR_T],
+AC_DEFUN([ENSC_DIET_TYPE_CHECK],
 [
 	AC_REQUIRE([ENSC_DIET])
+	AH_TEMPLATE($1, [Define if dietlibc defines the '$2' type])
 
 	if test x"${ensc_use_dietlibc}" = xyes; then
-		AC_CACHE_CHECK([whether in_addr_t exists in dietlibc],
-		       [ensc_cv_type_diet_in_addr_t],
+		AC_CACHE_CHECK([whether $2 exists in dietlibc],
+		       [ensc_cv_type_$1],
 		       [AC_LANG_PUSH(C)
 			old_cc="${CC}"
 			CC="${DIET} ${CC}"
-	                AC_TRY_COMPILE([#include <netinet/in.h>
-	                               ],
-	                               [in_addr_t	foo],
-		                       [ensc_cv_type_diet_in_addr_t=yes],
-	    	                       [ensc_cv_type_diet_in_addr_t=no])
+	                AC_TRY_COMPILE([$3],
+	                               [$2	foo],
+		                       [ensc_cv_type_$1=yes],
+	    	                       [ensc_cv_type_$1=no])
 			CC="${old_cc}"
 			AC_LANG_POP(C)
 	               ])
 	
-	
-		if test x"${ensc_cv_type_diet_in_addr_t}" = xyes; then
-			AC_DEFINE([DIET_HAS_IN_ADDR_T], 1,
-	        	          [Define if dietlibc defines the in_addr_t type])
+		if test x"${ensc_cv_type_$1}" = xyes; then
+			AC_DEFINE($1, 1)
 		fi
 	fi
+])
 
+AC_DEFUN([ENSC_DIET_CHECK_IN_ADDR_T],
+[
+	ENSC_DIET_TYPE_CHECK(DIET_HAS_IN_ADDR_T, in_addr_t, [#include <netinet/in.h>])
 	ENSC_TYPE_IN_ADDR_T
 ])
 
 AC_DEFUN([__ENSC_DIET_FUNC_CHECK],
 [
 	AC_REQUIRE([ENSC_DIET])
+	AH_TEMPLATE(HAVE_DIET_$1, [Define to 1 if dietlibc knows the '$3' function])
 
 	if test x"${ensc_use_dietlibc}" = xyes; then
 		AC_CACHE_CHECK([whether dietlibc supports $3 function],
@@ -136,7 +139,6 @@ AC_DEFUN([__ENSC_DIET_FUNC_CHECK],
 				AC_LANG_POP(C)
 		               ])
 
-		AH_TEMPLATE(HAVE_DIET_$1, [Define to 1 if dietlibc knows the '$3' function])
 		if test x"$ensc_cv_func_diet_$3" = xyes; then
 			AC_DEFINE(HAVE_DIET_$1, 1)
 		fi

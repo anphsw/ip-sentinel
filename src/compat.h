@@ -1,4 +1,4 @@
-// $Id: compat.h,v 1.9 2004/06/16 10:35:16 ensc Exp $    --*- c++ -*--
+// $Id: compat.h,v 1.10 2004/08/19 21:45:10 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -34,6 +34,14 @@
 #  define ethhdr		ethhdrX
 #  include <net/ethernet.h>
 #  undef  ethhdr
+
+#  ifndef HAVE_DIET_ETHER_NTOA
+char *			ether_ntoa(struct ether_addr const *addr);
+#  endif
+
+#  ifndef HAVE_DIET_ETHER_NTOA_R
+struct ether_addr *	ether_aton_r(const char *asc, struct ether_addr *addr);
+#  endif
 #endif
 
 
@@ -49,13 +57,6 @@
 #include <netinet/in.h>
 #undef sin
 
-
-#ifdef __dietlibc__
-#include <string.h>
-void *memcpy(void *dest, const void *src, size_t n);
-void *memset(void *s, int c, size_t n);
-int memcmp(const void *s1, const void *s2, size_t n);
-#endif
 
 #ifdef __dietlibc__
 #include <net/if_arp.h>
