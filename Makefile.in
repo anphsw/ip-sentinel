@@ -30,118 +30,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #  
 
-# Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
-#  
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#  
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#  
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#  
-
-# Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
-#  
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#  
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#  
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#  
-
-# Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
-#  
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#  
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#  
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#  
-
-# Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
-#  
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#  
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#  
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#  
-
-# Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
-#  
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#  
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#  
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#  
-
-# Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
-#  
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#  
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#  
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#  
-
-# Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
-#  
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#  
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#  
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#  
-
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 VPATH = @srcdir@
@@ -285,16 +173,17 @@ EXTRA_DIST = ip-sentinel.spec ${contrib_FILES} $(doc_FILES)
 CLEANFILES = $(doc_CLEANFILES)
 
 contrib_FILES = contrib/ip-sentinel.init		\
-			   contrib/ip-sentinel.sysconfig
+			   contrib/ip-sentinel.sysconfig	\
+			   contrib/ip-sentinel-run
 
 
 doc_FILES = doc/ip-sentinel.man
 doc_CLEANFILES = doc/ip-sentinel.8
 
 man_MANS = doc/ip-sentinel.8
-@ENSC_ENABLE_DIET_FALSE@DIET_CC = @CC@
 
 @ENSC_ENABLE_DIET_TRUE@DIET_CC = $(DIET) $(DIETFLAGS) @CC@
+@ENSC_ENABLE_DIET_FALSE@DIET_CC = @CC@
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -769,11 +658,16 @@ uninstall-man: uninstall-man8
 
 
 install-contrib:	$(contrib_FILES)
-			$(mkinstalldirs) $(DESTDIR)/etc/{init.d,sysconfig}
+			$(mkinstalldirs) $(DESTDIR)/etc/{init.d,sysconfig,minit/services/ip-sentinel}
 			$(INSTALL_SCRIPT) contrib/ip-sentinel.init      $(DESTDIR)/etc/init.d/ip-sentinel
 			$(INSTALL_DATA)   contrib/ip-sentinel.sysconfig $(DESTDIR)/etc/sysconfig/ip-sentinel
 
+			$(INSTALL_SCRIPT) contrib/ip-sentinel-run	$(DESTDIR)/etc/minit/services/ip-sentinel/run
+			touch $(DESTDIR)/etc/minit/services/ip-sentinel/respawn
+
 uninstall-contrib:
+			rm -f $(DESTDIR)/etc/minit/services/ip-sentinel/run
+			rm -f $(DESTDIR)/etc/minit/services/ip-sentinel/respawn
 			rm -f $(DESTDIR)/etc/init.d/ip-sentinel   
 			rm -f $(DESTDIR)/etc/sysconfig/ip-sentinel
 
@@ -802,6 +696,7 @@ ChangeLog:			ChangeLog.sed Makefile
 				fi
 
 .PHONY:	ChangeLog
+
 gpgsig:
 			gpg --armor --detach-sign $(distdir).tar.bz2
 

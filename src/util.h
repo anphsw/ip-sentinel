@@ -1,4 +1,4 @@
-// $Id: util.h,v 1.2 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
+// $Id: util.h,v 1.3 2003/07/30 23:25:44 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -64,6 +64,8 @@ xstrcat(char **dst, size_t *cnt, char const *src)
 {
   xstrcatn(dst, cnt, src, strlen(src));
 }
+
+size_t fillUInt(char *dest, unsigned int nr);
 
 void writeUInt(int fd, unsigned int nr);
 void writeMsgTimestamp(int fd);

@@ -1,3 +1,69 @@
+2003-08-06  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, configure.ac:
+	version 0.6
+
+2003-08-05  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* contrib/Makefile-files, doc/Makefile-files, src/testsuite/Makefile-files, m4/changelog.am, m4/diet.am, m4/doxygen.am, m4/gpgsig.am, m4/pkgconfig.am, m4/substrule.am, m4/validate.am, m4/wwwpublish.am:
+	s!#!##! to avoid cluttering of the generated makefile with copyright-notices
+
+	* contrib/Makefile-files:
+	added minit support
+
+	* ip-sentinel.spec.in:
+	added minit support
+	removed unneeded curlies
+
+	* contrib/ip-sentinel-run:
+	initial checkin
+
+	* src/vector.c:
+	added small piece of documentation
+
+2003-08-01  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/.cvsignore:
+	added .gdb_history
+
+	* src/blacklist.c:
+	use the PARSE_ERROR macro where possible
+
+2003-07-31  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* doc/ip-sentinel.man:
+	version 0.6
+	documented performance and the new ranges-feature
+
+2003-07-30  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac:
+	version 0.5.1
+
+	* README:
+	added example for ip-ranges
+
+	* ip-sentinel.spec.in:
+	removed %%doc attribute from %%mandir-entries
+
+	* src/blacklist.c:
+	allow to specify ip-ranges; suggested by Jon Belanger
+
+	* NEWS:
+	version 0.5.1
+
+	* src/testsuite/data/blacklist.dat, src/testsuite/data/blacklist.out:
+	added testcases for the new ranges-feature
+
+	* src/vector.c, src/vector.h:
+	added Vector_unique() function
+
+	* src/util.c, src/util.h:
+	added fillUInt() function
+
+	* src/ip-sentinel.c:
+	fixed creation-mode of logfiles
+
 2003-07-15  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
 
 	* .cvsignore, NEWS, configure.ac, doc/index.html, ip-sentinel.spec.in:

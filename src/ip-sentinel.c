@@ -1,4 +1,4 @@
-// $Id: ip-sentinel.c,v 1.15 2003/07/15 13:48:19 ensc Exp $    --*- c++ -*--
+// $Id: ip-sentinel.c,v 1.16 2003/07/30 16:21:28 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -104,8 +104,8 @@ daemonize(Arguments *arguments)
   gid_t			gid;
   pid_t			daemon_pid;
 
-  err_fd = Eopen(arguments->errfile, O_WRONLY|O_CREAT|O_APPEND|O_NONBLOCK, 0700);
-  out_fd = Eopen(arguments->logfile, O_WRONLY|O_CREAT|O_APPEND|O_NONBLOCK, 0700);
+  err_fd = Eopen(arguments->errfile, O_WRONLY|O_CREAT|O_APPEND|O_NONBLOCK, 0600);
+  out_fd = Eopen(arguments->logfile, O_WRONLY|O_CREAT|O_APPEND|O_NONBLOCK, 0600);
   pid_fd = (!arguments->do_fork ? -1 :
 	    Eopen(arguments->pidfile, O_WRONLY|O_CREAT|O_TRUNC, 0755));
 

@@ -1,4 +1,4 @@
-// $Id: vector.h,v 1.3 2003/05/26 21:50:21 ensc Exp $    --*- c++ -*--
+// $Id: vector.h,v 1.4 2003/07/30 23:26:00 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -35,6 +35,7 @@ void	Vector_init(struct Vector *, size_t elem_size);
 void	Vector_free(struct Vector *);
 void *	Vector_search(struct Vector *, void const *key, int (*compar)(const void *, const void *));
 void	Vector_sort(struct Vector *, int (*compar)(const void *, const void *));
+void	Vector_unique(struct Vector *, int (*compar)(const void *, const void *));
 void *	Vector_pushback(struct Vector *);
 void *	Vector_insert(struct Vector *, void const *key, int (*compar)(const void *, const void *));
 void	Vector_popback(struct Vector *);

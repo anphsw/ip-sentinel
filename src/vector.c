@@ -1,4 +1,4 @@
-// $Id: vector.c,v 1.6 2003/05/27 11:31:07 ensc Exp $    --*- c++ -*--
+// $Id: vector.c,v 1.8 2003/08/05 12:24:58 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -72,6 +72,36 @@ Vector_sort(struct Vector *vec, int (*compare)(const void *, const void *))
   if (vec->count==0) return;
 
   qsort(vec->data, vec->count, vec->elem_size, compare);
+}
+
+  // TODO: do not iterate from begin to end but in the reverse direction. This should be more
+  // effective.
+void
+Vector_unique(struct Vector *vec, int (*compare)(const void *, const void *))
+{
+  size_t		idx;
+  
+  if (vec->count<2) return;
+
+  for (idx=0; idx+1<vec->count; ++idx) {
+    char	*ptr=static_cast(char *)(vec->data) + idx*vec->elem_size;
+    char	*next_ptr = ptr + vec->elem_size;
+    size_t	next_idx  = idx + 1;
+
+    while (next_idx<vec->count &&
+	   compare(ptr, next_ptr)==0) {
+      ++next_idx;
+      next_ptr += vec->elem_size;
+    }
+
+    if (next_idx==vec->count)
+      vec->count = idx+1;
+    else if (next_idx-idx > 1) {
+      memmove(ptr + vec->elem_size,
+	      next_ptr, (vec->count - next_idx)*vec->elem_size);
+      vec->count -= (next_idx-idx-1);
+    }
+  }
 }
 
 static void
