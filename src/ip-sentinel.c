@@ -1,4 +1,4 @@
-// $Id: ip-sentinel.c,v 1.5 2002/11/22 18:48:49 ensc Exp $    --*- c++ -*--
+// $Id: ip-sentinel.c,v 1.10 2002/11/27 22:35:56 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -28,6 +28,7 @@
 #include "antidos.h"
 #include "arpmessage.h"
 #include "compat.h"
+#include "ip-sentinel.h"
 
 #include <assert.h>
 #include <unistd.h>
@@ -53,12 +54,14 @@ void
 sigChild(int sig UNUSED)
 {
   while (waitpid(-1, 0, WNOHANG)>0) { if (child_count>0) --child_count; }
+  signal(SIGCHLD, sigChild);
 }
 
 void
 sigHup(int sig UNUSED)
 {
   do_reload = 1;
+  signal(SIGHUP, sigHup);
 }
 
 inline static void
@@ -116,9 +119,6 @@ daemonize(Arguments *arguments)
   Esetgroups(1, &gid);
   Esetgid(gid);
   Esetuid(uid);
-
-  signal(SIGCHLD, sigChild);
-  signal(SIGHUP,  sigHup);
 
   Eclose(0);
 
@@ -247,8 +247,8 @@ handleMessage(int sock, int if_idx, struct ether_addr const *mac, struct ether_a
   static int		error_count =0;
   pid_t			pid;
   sigset_t		block_set, old_set;
-  
-  while (child_count>MAX_CHILDS) {
+
+  while (child_count>=MAX_CHILDS) {
     writeMsgTimestamp(2);
     WRITE_MSGSTR(2, ": Too much children (");
     writeUInt(2, child_count);
@@ -258,10 +258,6 @@ handleMessage(int sock, int if_idx, struct ether_addr const *mac, struct ether_a
 
   sigfillset(&block_set);
   sigprocmask(SIG_BLOCK, &block_set, &old_set);
-  
-  ++child_count;
-
-  sigprocmask(SIG_SETMASK, &old_set, 0);
 
   pid = fork();
   switch (pid) {
@@ -281,9 +277,12 @@ handleMessage(int sock, int if_idx, struct ether_addr const *mac, struct ether_a
       exit(0);
 
     default	:
+      ++child_count;
       error_count = 0;
       break;
   }
+
+  sigprocmask(SIG_SETMASK, &old_set, 0);
 }
 
 static void NORETURN
@@ -311,7 +310,6 @@ run(int sock, int if_idx, char const *filename)
     int				arp_count;
     struct ether_addr const	*mac;
     struct ether_addr		mac_buffer;
-    bool			do_omit;
     
     AntiDOS_update(&anti_dos);
     size = TEMP_FAILURE_RETRY(recvfrom(sock, buffer, sizeof buffer, 0,
@@ -329,7 +327,7 @@ run(int sock, int if_idx, char const *filename)
 
     error_count = 0;
 
-    if (ntohs(addr.sll_protocol)!=ETHERTYPE_ARP)   continue;
+    if (ntohs(addr.sll_protocol)!=ETHERTYPE_ARP)      continue;
     if (ntohs(msg->data.ea_hdr.ar_op)!=ARPOP_REQUEST) continue;
 
     if (!do_reload) BlackList_softUpdate(&cfg);
@@ -355,10 +353,8 @@ run(int sock, int if_idx, char const *filename)
     }
 
     arp_count = AntiDOS_registerIP(&anti_dos, *src_ip);
-    do_omit   = ((arp_count>10 && arp_count<=50 && (rand()%40>=(50-arp_count))) ||
-		 (arp_count>50));
 
-    if (do_omit) {
+    if (isDOS(arp_count)) {
       writeMsgTimestamp(2);
       WRITE_MSGSTR(2, ": Too much requests from ");
       writeIP     (2, *src_ip);
@@ -386,5 +382,9 @@ main(int argc, char *argv[])
   sock   = Esocket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
   if_idx = getIfIndex(sock, arguments.iface);
   daemonize(&arguments);
+
+  signal(SIGCHLD, sigChild);
+  signal(SIGHUP,  sigHup);
+
   run(sock, if_idx, arguments.ipfile);
 }

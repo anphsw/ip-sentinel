@@ -1,3 +1,55 @@
+2002-11-27  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, configure.ac:
+	Version 0.3
+
+	* src/ip-sentinel.c:
+	Fixed typo
+
+	* src/ip-sentinel.c:
+	Fixed minor off-by-one error while checking actual child-count against
+	MAX_CHILDS
+
+	* src/ip-sentinel.c:
+	Rearranged signal-blocking to handle failed fork()'s in a better way
+
+	* README:
+	Updated
+
+	* src/blacklist.c:
+	Parameterized certain aspects of the sliding-random-MAC mechanism
+	Added some doc
+
+	* src/parameters.h:
+	Parameterized certain aspects of the sliding-random-MAC mechanism
+
+	* src/vector.c:
+	Fixed bad typo in vector-resize code which caused exponential memory
+	consumption
+
+	* src/ip-sentinel.c:
+	Fixed broken signal-handling
+
+	* src/blacklist.c:
+	Made sorting more determinably when running in testsuite-mode
+
+	* src/blacklist.c:
+	Minor cleanups
+	Netmask will be calculated more efficiently now
+
+	* src/arguments.c, src/compat.h:
+	Minor cleanups
+
+	* src/ip-sentinel.h, src/parameters.h, src/vector.c:
+	Parameterized behavior
+
+	* src/antidos.c, src/ip-sentinel.c:
+	Minor code-cleanups
+	Parameterized behavior
+
+	* src/testsuite/data/blacklist.dat, src/testsuite/data/blacklist.out:
+	Added some testcases
+
 2002-11-22  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
 
 	* NEWS, configure.ac:

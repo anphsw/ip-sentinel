@@ -1,4 +1,4 @@
-// $Id: compat.h,v 1.2 2002/11/16 02:37:24 ensc Exp $    --*- c++ -*--
+// $Id: compat.h,v 1.3 2002/11/27 00:26:18 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -68,8 +68,8 @@ struct  ether_arp {
 
 
 #if defined(__GNUC__)
-#  define UNUSED	__attribute__((unused))
-#  define NORETURN	__attribute__((noreturn))
+#  define UNUSED	__attribute__((__unused__))
+#  define NORETURN	__attribute__((__noreturn__))
 #else
 #  define UNUSED
 #  define NORETURN

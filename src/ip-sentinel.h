@@ -1,4 +1,4 @@
-// $Id: ip-sentinel.h,v 1.1 2002/11/14 22:51:42 ensc Exp $    --*- c++ -*--
+// $Id: ip-sentinel.h,v 1.2 2002/11/27 00:26:01 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -19,8 +19,20 @@
 #ifndef H_IPSENTINEL_IPSENTINEL_H
 #define H_IPSENTINEL_IPSENTINEL_H
 
+#include "parameters.h"
+
+#include <stdbool.h>
 #include <signal.h>
 
 extern volatile sig_atomic_t	child_count;
+
+inline static bool
+isDOS(unsigned int count)
+{
+  return ((count>ANTIDOS_COUNT_LOW && count<=ANTIDOS_COUNT_HIGH &&
+	   (rand()%(ANTIDOS_COUNT_HIGH-ANTIDOS_COUNT_LOW)>=
+	    (ANTIDOS_COUNT_HIGH-count))) ||
+	  (count>ANTIDOS_COUNT_HIGH));
+}
 
 #endif	//  H_IPSENTINEL_IPSENTINEL_H

@@ -1,4 +1,4 @@
-// $Id: arguments.c,v 1.3 2002/11/15 23:44:18 ensc Exp $    --*- c++ -*--
+// $Id: arguments.c,v 1.4 2002/11/27 00:26:18 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -82,8 +82,8 @@ printHelp(char const *cmd, int fd)
 	       "        [--logfile|-l <FILE>] [--errfile|-e <FILE>]"
 	       " [--user|-u <USER>]\n"
    	       "        [--chroot|-r <DIR>] [--nofork|-n] [--help|-h]\n"
-	       " [--version] <interface>\n\n");
-  WRITE_MSGSTR(fd,
+	       "        [--version] <interface>\n"
+	       "\n"
 	       "      --ipfile|-i <FILE>      read blocked IPs from FILE [" DEFAULT_IPFILE "]\n"
 	       "                              within CHROOT\n"
 	       "      --pidfile|-p <FILE>     write daemon-pid into FILE\n"
