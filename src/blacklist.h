@@ -1,6 +1,6 @@
-// $Id: blacklist.h,v 1.2 2002/11/18 21:58:18 ensc Exp $    --*- c++ -*--
+// $Id: blacklist.h,v 1.3 2003/05/26 21:50:08 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ struct ether_addr const *
 BlackList_getMac(BlackList const *lst, struct in_addr const ip, struct ether_addr *res);
 
 void		BlackList_init(BlackList *lst, char const *filename);
+void		BlackList_free(BlackList *);
 void		BlackList_softUpdate(BlackList *lst);
 void		BlackList_update(BlackList *lst);
 

@@ -1,5 +1,6 @@
 #! /bin/bash
 
+: ${srcdir=.}
 . ${srcdir}/testsuite/functions
 
 outfile_err=`mktemp /tmp/ip-sentinel.check.XXXXXX`
@@ -18,8 +19,8 @@ function execprog()
 
 function verify()
 {
-    sed -e 's!^.*\(: (Re)reading blacklist\)!TIME\1!' ${outfile_out} |
-	diff -c - ${basefile}.out || exit 1
+    sed -e "${REPLACE_REGEX}" ${outfile_out} |
+	diff -b -c - ${basefile}.out || exit 1
 }
 
 

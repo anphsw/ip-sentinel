@@ -1,6 +1,6 @@
-// $Id: ether.c,v 1.1 2002/11/14 22:51:42 ensc Exp $    --*- c++ -*--
+// $Id: ether.c,v 1.3 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@
 
 #include <net/ethernet.h>
 #include <assert.h>
+#include <stdbool.h>
+
+static bool const	allow_leading_zeros = true;
 
 #if defined(__dietlibc__) && !defined(HAVE_DIET_ETHER_ATON_R)
 struct ether_addr *
@@ -75,7 +78,7 @@ ether_ntoa(struct ether_addr const *addr)
   for (; pos<addr->ether_addr_octet+6; ++pos) {
     char	c = DEC2HEX[*pos>>4];
 
-    if (c!='0') *buf_ptr++ = c;
+    if (allow_leading_zeros || c!='0') *buf_ptr++ = c;
     *buf_ptr++ = DEC2HEX[*pos & 0x0F];
     *buf_ptr++ = ':';
   }

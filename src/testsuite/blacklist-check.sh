@@ -1,5 +1,6 @@
 #! /bin/bash
 
+: ${srcdir=.}
 . ${srcdir}/testsuite/functions
 
 outfile_err=`mktemp /tmp/ip-sentinel.check.XXXXXX`
@@ -19,13 +20,13 @@ function execprog()
 
 function verify()
 {
-    sed -e 's!^.*\(: (Re)reading blacklist\)!TIME\1!;
-	    s!\(de:ad:be:ef:0:\)[^[:blank:]]*!\1XX!g' ${outfile_out} |
-	diff -c - ${basefile}.out || exit 1
-    diff -c ${outfile_fd3} ${basefile}.fd3 || exit 1
+    sed -e "${REPLACE_REGEX}" ${outfile_out} |
+	diff -b -c - ${basefile}.out || exit 1
+    sed -e "${REPLACE_REGEX}" ${outfile_fd3} |
+	diff -b -c - ${basefile}.fd3 || exit 1
 }
 
-file ${execfile} | grep -q 'statically linked' || {
+LANG=C file ${execfile} | grep -q 'statically linked' || {
     exists ef       && { execprog ef 2>&1 | sed -e '1,2d'; } && verify
     exists valgrind && execprog valgrind -q && verify
 }

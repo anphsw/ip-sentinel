@@ -56,6 +56,3 @@
 
 /* Uses GNU features */
 #undef _GNU_SOURCE
-
-/* Use slow malloc-allocators allowing tracing of memory-leaks */
-#undef __USE_MALLOC

@@ -1,4 +1,4 @@
-// $Id: blacklist-parser.c,v 1.1 2002/11/14 22:51:42 ensc Exp $    --*- c++ -*--
+// $Id: blacklist-parser.c,v 1.2 2003/05/26 21:50:48 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -35,6 +35,8 @@ int main(int argc, char *argv[])
   BlackList_init(&lst, argv[1]);
   BlackList_softUpdate(&lst);
   BlackList_print(&lst,1);
+
+  BlackList_free(&lst);
 
   return EXIT_SUCCESS;
 }

@@ -1,3 +1,125 @@
+2003-05-27  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, configure.ac, ip-sentinel.spec.in:
+	version 0.4
+
+	* .cvsignore:
+	added .*-up-to-date files
+
+	* README:
+	fixed some typos
+
+	* doc/ip-sentinel.man:
+	Version 0.4
+	fixed some typos
+
+	* doc/index.html:
+	initial checkin
+
+	* src/blacklist.c, src/vector.c:
+	do not compile the *_free() methods into the standard binary; they are
+	used by the testsuite only and their removal will save some bytes
+
+	* contrib/ip-sentinel.init, contrib/ip-sentinel.sysconfig:
+	minor cleanups
+
+	* contrib/Makefile-files:
+	updated copyright date
+
+2003-05-26  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* ip-sentinel.spec.in:
+	cleanups and other enhancements
+
+	* src/testsuite/functions:
+	added (X)Emacs modeline
+
+	* src/testsuite/blacklist-parser.sh:
+	set $srcdir to a default value
+
+	* src/testsuite/blacklist-check.sh:
+	set $srcdir to a default value
+	set LANG=C
+
+	* src/testsuite/blacklist-parser.c, src/testsuite/blacklist-check.c:
+	free resources explicitely on exit
+
+	* src/vector.h, src/vector.c:
+	updated copyright dates
+	added Vector_free() method
+
+	* src/blacklist.h, src/blacklist.c:
+	updated copyright dates
+	added BlackList_free() method
+
+	* src/Makefile.am, src/antidos.c, src/antidos.h, src/arguments.c, src/arguments.h, src/arpmessage.h, src/compat.h, src/ether.c, src/ip-sentinel.c, src/ip-sentinel.h, src/parameters.h, src/util.c, src/util.h, src/vector.ic, src/wrappers.h:
+	updated copyright dates
+
+2003-01-30  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/ensc_developing.m4:
+	Removed __USE_MALLOC stuff; it does not work with gcc>=3.2 anymore
+
+	* m4/ensc_cflags.m4:
+	Typo
+
+	* m4/ensc_cflags.m4:
+	Fixed C++ language-checks
+
+2003-01-23  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* m4/wwwpublish.am:
+	Added .timestamp file to clean-rule
+
+	* m4/validate.am:
+	Made it a little bit more robust when used with non-GNU make
+
+2002-12-10  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* Makefile.m4.am:
+	Added missing ensc_tools.m4 file
+
+	* m4/ensc_tools.m4:
+	Fixed detection of CHOWN_REFERENCE/CHMOD_REFERENCE
+
+2002-12-03  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/blacklist-check.sh, src/testsuite/blacklist-parser.sh, src/testsuite/functions:
+	Cleanups
+
+	* src/testsuite/data/blacklist-check.fd3, src/testsuite/data/blacklist-check.ips, src/testsuite/data/blacklist-check.lst, src/testsuite/data/blacklist-check.out, src/testsuite/data/blacklist-check.res, src/testsuite/data/blacklist-check1.fd3, src/testsuite/data/blacklist-check1.lst, src/testsuite/data/blacklist-check1.out, src/testsuite/data/blacklist-check1.res, src/testsuite/data/blacklist.dat, src/testsuite/data/blacklist.out:
+	- Adapted testcases to the new fact, that MACs are allowed now in
+	  network-specifications
+	- Added new testcases to test the new behavior
+
+	* src/ip-sentinel.c:
+	Typo
+
+	* src/blacklist.c:
+	Allowed to specify MAC addresses at network definitions
+
+	* doc/ip-sentinel.man:
+	Reflected change, that MACs can be specified for networks now
+	Fixed typos
+
+	* README:
+	Reflected change, that MACs can be specified for networks now
+
+2002-11-28  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/Makefile-files:
+	Added -DENSC_TESTSUITE flag to the CPPFLAGS of the testsuite programs;
+	formerly only the library was built with this define
+
+	* src/parameters.h:
+	Increased limits
+
+	* src/ip-sentinel.c:
+	Enhanced logging
+
+	* src/ether.c:
+	Allow ether_ntoa() to produce leading zeros by default
+
 2002-11-27  Enrico Scholz  <enrico.scholz@informatik.tu-chemnitz.de>
 
 	* NEWS, configure.ac:

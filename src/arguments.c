@@ -1,6 +1,6 @@
-// $Id: arguments.c,v 1.4 2002/11/27 00:26:18 ensc Exp $    --*- c++ -*--
+// $Id: arguments.c,v 1.5 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -108,7 +108,7 @@ printVersion(int fd)
 {
   WRITE_MSGSTR(fd,
 	       "ip-sentinel " PACKAGE_VERSION " -- keeps your ip-space clean\n"
-	       "Copyright 2002 Enrico Scholz\n"
+	       "Copyright 2002,2003 Enrico Scholz\n"
 	       "This program is free software; you may redistribute it under the terms of\n"
 	       "the GNU General Public License.  This program has absolutely no warranty.\n");
 }

@@ -1,4 +1,4 @@
-// $Id: blacklist-check.c,v 1.1 2002/11/14 22:51:42 ensc Exp $    --*- c++ -*--
+// $Id: blacklist-check.c,v 1.2 2003/05/26 21:50:44 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -112,6 +112,10 @@ int main(int argc, char *argv[])
     else       printf("FAIL\n");
   }
 
+  BlackList_free(&lst);
+  fclose(result_file);
+  fclose(ip_file);
+  
   return EXIT_SUCCESS;  
 }
 

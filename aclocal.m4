@@ -1,4 +1,4 @@
-# generated automatically by aclocal 1.7.1 -*- Autoconf -*-
+# generated automatically by aclocal 1.7.5 -*- Autoconf -*-
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002
 # Free Software Foundation, Inc.
@@ -42,7 +42,7 @@ AU_DEFUN([AM_CONFIG_HEADER], [AC_CONFIG_HEADERS($@)])
 # This macro actually does too much some checks are only needed if
 # your package does certain things.  But this isn't really a big deal.
 
-# Copyright 1996, 1997, 1998, 1999, 2000, 2001, 2002
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003
 # Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
@@ -60,14 +60,7 @@ AU_DEFUN([AM_CONFIG_HEADER], [AC_CONFIG_HEADERS($@)])
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA.
 
-# serial 8
-
-# There are a few dirty hacks below to avoid letting `AC_PROG_CC' be
-# written in clear, in which case automake, when reading aclocal.m4,
-# will think it sees a *use*, and therefore will trigger all it's
-# C support machinery.  Also note that it means that autoscan, seeing
-# CC etc. in the Makefile, will ask for an AC_PROG_CC use...
-
+# serial 10
 
 AC_PREREQ([2.54])
 
@@ -112,8 +105,8 @@ m4_ifval([$2],
  AC_SUBST([PACKAGE], [$1])dnl
  AC_SUBST([VERSION], [$2])],
 [_AM_SET_OPTIONS([$1])dnl
- AC_SUBST([PACKAGE], [AC_PACKAGE_TARNAME])dnl
- AC_SUBST([VERSION], [AC_PACKAGE_VERSION])])dnl
+ AC_SUBST([PACKAGE], ['AC_PACKAGE_TARNAME'])dnl
+ AC_SUBST([VERSION], ['AC_PACKAGE_VERSION'])])dnl
 
 _AM_IF_OPTION([no-define],,
 [AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [Name of package])
@@ -134,6 +127,7 @@ AM_PROG_INSTALL_STRIP
 # some platforms.
 AC_REQUIRE([AC_PROG_AWK])dnl
 AC_REQUIRE([AC_PROG_MAKE_SET])dnl
+AC_REQUIRE([AM_SET_LEADING_DOT])dnl
 
 _AM_IF_OPTION([no-dependencies],,
 [AC_PROVIDE_IFELSE([AC_PROG_CC],
@@ -156,7 +150,16 @@ AC_PROVIDE_IFELSE([AC_PROG_CXX],
 # loop where config.status creates the headers, so we can generate
 # our stamp files there.
 AC_DEFUN([_AC_AM_CONFIG_HEADER_HOOK],
-[_am_stamp_count=`expr ${_am_stamp_count-0} + 1`
+[# Compute $1's index in $config_headers.
+_am_stamp_count=1
+for _am_header in $config_headers :; do
+  case $_am_header in
+    $1 | $1:* )
+      break ;;
+    * )
+      _am_stamp_count=`expr $_am_stamp_count + 1` ;;
+  esac
+done
 echo "timestamp for $1" >`AS_DIRNAME([$1])`/stamp-h[]$_am_stamp_count])
 
 # Copyright 2002  Free Software Foundation, Inc.
@@ -186,7 +189,7 @@ AC_DEFUN([AM_AUTOMAKE_VERSION],[am__api_version="1.7"])
 # Call AM_AUTOMAKE_VERSION so it can be traced.
 # This function is AC_REQUIREd by AC_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-	 [AM_AUTOMAKE_VERSION([1.7.1])])
+	 [AM_AUTOMAKE_VERSION([1.7.5])])
 
 # Helper functions for option handling.                    -*- Autoconf -*-
 
@@ -472,9 +475,42 @@ fi
 INSTALL_STRIP_PROGRAM="\${SHELL} \$(install_sh) -c -s"
 AC_SUBST([INSTALL_STRIP_PROGRAM])])
 
-# serial 4						-*- Autoconf -*-
+#                                                          -*- Autoconf -*-
+# Copyright (C) 2003  Free Software Foundation, Inc.
 
-# Copyright 1999, 2000, 2001 Free Software Foundation, Inc.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+
+# serial 1
+
+# Check whether the underlying file-system supports filenames
+# with a leading dot.  For instance MS-DOS doesn't.
+AC_DEFUN([AM_SET_LEADING_DOT],
+[rm -rf .tst 2>/dev/null
+mkdir .tst 2>/dev/null
+if test -d .tst; then
+  am__leading_dot=.
+else
+  am__leading_dot=_
+fi
+rmdir .tst 2>/dev/null
+AC_SUBST([am__leading_dot])])
+
+# serial 5						-*- Autoconf -*-
+
+# Copyright (C) 1999, 2000, 2001, 2002, 2003  Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -566,11 +602,17 @@ AC_CACHE_CHECK([dependency style of $depcc],
     if depmode=$depmode \
        source=conftest.c object=conftest.o \
        depfile=conftest.Po tmpdepfile=conftest.TPo \
-       $SHELL ./depcomp $depcc -c -o conftest.o conftest.c >/dev/null 2>&1 &&
+       $SHELL ./depcomp $depcc -c -o conftest.o conftest.c \
+         >/dev/null 2>conftest.err &&
        grep conftest.h conftest.Po > /dev/null 2>&1 &&
        ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
-      am_cv_$1_dependencies_compiler_type=$depmode
-      break
+      # icc doesn't choke on unknown options, it will just issue warnings
+      # (even with -Werror).  So we grep stderr for any message
+      # that says an option was ignored.
+      if grep 'ignoring option' conftest.err >/dev/null 2>&1; then :; else
+        am_cv_$1_dependencies_compiler_type=$depmode
+        break
+      fi
     fi
   done
 
@@ -592,16 +634,8 @@ AM_CONDITIONAL([am__fastdep$1], [
 # Choose a directory name for dependency files.
 # This macro is AC_REQUIREd in _AM_DEPENDENCIES
 AC_DEFUN([AM_SET_DEPDIR],
-[rm -f .deps 2>/dev/null
-mkdir .deps 2>/dev/null
-if test -d .deps; then
-  DEPDIR=.deps
-else
-  # MS-DOS does not allow filenames that begin with a dot.
-  DEPDIR=_deps
-fi
-rmdir .deps 2>/dev/null
-AC_SUBST([DEPDIR])
+[AC_REQUIRE([AM_SET_LEADING_DOT])dnl
+AC_SUBST([DEPDIR], ["${am__leading_dot}deps"])dnl
 ])
 
 
@@ -705,7 +739,7 @@ AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS],
 
 # Check to see how 'make' treats includes.	-*- Autoconf -*-
 
-# Copyright (C) 2001, 2002 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -730,8 +764,9 @@ AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS],
 AC_DEFUN([AM_MAKE_INCLUDE],
 [am_make=${MAKE-make}
 cat > confinc << 'END'
-doit:
+am__doit:
 	@echo done
+.PHONY: am__doit
 END
 # If we don't find an include directive, just comment out the code.
 AC_MSG_CHECKING([for style of include used by $am_make])
@@ -759,9 +794,9 @@ if test "$am__include" = "#"; then
       _am_result=BSD
    fi
 fi
-AC_SUBST(am__include)
-AC_SUBST(am__quote)
-AC_MSG_RESULT($_am_result)
+AC_SUBST([am__include])
+AC_SUBST([am__quote])
+AC_MSG_RESULT([$_am_result])
 rm -f confinc confmf
 ])
 
@@ -888,7 +923,7 @@ if eval "test \"`echo '$ac_cv_prog_cc_'${ac_cc}_c_o`\" != yes"; then
 fi
 ])
 
-dnl $Id: ensc_tools.m4,v 1.5 2002/03/19 21:44:22 ensc Exp $
+dnl $Id: ensc_tools.m4,v 1.6 2002/12/10 16:25:59 ensc Exp $
 
 AC_DEFUN([ENSC_STANDARD_TOOLS],
 [
@@ -922,21 +957,21 @@ AC_DEFUN([ENSC_STANDARD_TOOLS],
 	AC_SUBST(MKDIR_P)
 
 	testfile='.testfile'
-	CHOWN_REFERENCE=false
+	CHOWN_REFERENCE=:
 
 	AC_MSG_CHECKING([whether chown understands the --references option])
 	${TOUCH} ${testfile} && ${CHOWN} --reference ${testfile} ${testfile} && CHOWN_REFERENCE='${CHOWN} --reference'
-	if test x"${CHOWN_REFERENCE}" = xfalse; then
+	if test x"${CHOWN_REFERENCE}" = x:; then
 		AC_MSG_RESULT(no)
 	else
 		AC_MSG_RESULT(yes)
 	fi
 	AC_SUBST(CHOWN_REFERENCE)
 
-	CHMOD_REFERENCE=false
+	CHMOD_REFERENCE=:
 	AC_MSG_CHECKING([whether chmod understands the --references option])
 	${TOUCH} ${testfile} && ${CHMOD} --reference ${testfile} ${testfile} && CHMOD_REFERENCE='${CHMOD} --reference'
-	if test x"${CHMOD_REFERENCE}" = xfalse; then
+	if test x"${CHMOD_REFERENCE}" = x:; then
 		AC_MSG_RESULT(no)
 	else
 		AC_MSG_RESULT(yes)
@@ -977,7 +1012,7 @@ AC_DEFUN([ENSC_GRAPH_TOOLS],
 	AC_PATH_PROGS(TGD, tgd)
 ])
 
-dnl $Id: ensc_developing.m4,v 1.12 2002/11/14 22:55:06 ensc Exp $
+dnl $Id: ensc_developing.m4,v 1.13 2003/01/30 02:12:47 ensc Exp $
 
 
 AC_DEFUN([ENSC_DEVELOPING],
@@ -1011,25 +1046,6 @@ AC_DEFUN([ENSC_DEVELOPING],
 		DEVELOPING_CFLAGS=['-W -Werror -g3 -O0 -Woverloaded-virtual -Wsign-promo -Wsynth
 			            -Wchar-subscripts -Wparentheses -Wsequence-point -Wswitch
                                     -Wfloat-equal -Wpointer-arith']
-
-		AC_MSG_CHECKING([whether to define __USE_MALLOC])
-		AC_ARG_ENABLE(stl-malloc,
-			      [AC_HELP_STRING([--disable-stl-malloc],
-			                      [Do not use the slow malloc-allocator of the STL.
-                                               This generates faster code but may hide problems
-                                               like mem-leaks or overflows. This option will be
-                                               ignored when not using '--enable-developing'; then
-                                               it is on by default])],
-                              [case "${enableval}" in
-				  yes|no) enable_stl_malloc="${enableval}";;
-		 		  *)      AC_MSG_ERROR([bad value ${enableval} for --disable-stl-malloc]) ;;
-			       esac],
-                              [ enable_stl_malloc=${enable_stl_malloc_default} ])
-		AC_MSG_RESULT([${enable_stl_malloc}])
-
-		if test x"${enable_stl_malloc}" = xyes; then
-			AC_DEFINE([__USE_MALLOC], [1], [Use slow malloc-allocators allowing tracing of memory-leaks])
-		fi
 	fi
 
 	AC_SUBST([$1])
@@ -1341,7 +1357,7 @@ AC_DEFUN([ENSC_MODERN_COMPILER_CHECK],
 	fi
 ])
 
-dnl $Id: ensc_cflags.m4,v 1.2 2002/11/22 18:49:10 ensc Exp $
+dnl $Id: ensc_cflags.m4,v 1.4 2003/01/30 02:12:26 ensc Exp $
 
 dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
@@ -1370,16 +1386,16 @@ AC_DEFUN([__ENSC_CHECK_WARNFLAGS],
 	warn_flags="-Werror -W"
 	AC_MSG_CHECKING([whether the $1-compiler accepts ${warn_flags}])
 	AC_LANG_PUSH($1)
-	old_CFLAGS="${$2}"
-	$2=$warn_flags
+	old_CFLAGS="${$3}"
+	$3="$warn_flags"
 	AC_TRY_COMPILE([inline static void f(){}],
 		       [],
-		       [ensc_sys_compilerwarnflags_$1=${warn_flags}],
-		       [ensc_sys_compilerwarnflags_$1=])
+		       [ensc_sys_compilerwarnflags_$2=${warn_flags}],
+		       [ensc_sys_compilerwarnflags_$2=])
 	AC_LANG_POP($1)
-	$2="$old_CFLAGS"
+	$3="$old_CFLAGS"
 
-	if test x"${ensc_sys_compilerwarnflags_$1}" = x; then
+	if test x"${ensc_sys_compilerwarnflags_$2}" = x; then
 		AC_MSG_RESULT([no])
 	else
 		AC_MSG_RESULT([yes])
@@ -1388,12 +1404,12 @@ AC_DEFUN([__ENSC_CHECK_WARNFLAGS],
 
 AC_DEFUN([__ENSC_CHECK_WARNFLAGS_C],
 [
-	__ENSC_CHECK_WARNFLAGS(C, CFLAGS)
+	__ENSC_CHECK_WARNFLAGS(C, C, CFLAGS)
 ])
 
 AC_DEFUN([__ENSC_CHECK_WARNFLAGS_CXX],
 [
-	__ENSC_CHECK_WARNFLAGS(CXX, CFLAGS)
+	__ENSC_CHECK_WARNFLAGS(C++, CXX, CXXFLAGS)
 ])
 
 

@@ -1,4 +1,4 @@
-dnl $Id: ensc_developing.m4,v 1.12 2002/11/14 22:55:06 ensc Exp $
+dnl $Id: ensc_developing.m4,v 1.13 2003/01/30 02:12:47 ensc Exp $
 
 
 AC_DEFUN([ENSC_DEVELOPING],
@@ -32,25 +32,6 @@ AC_DEFUN([ENSC_DEVELOPING],
 		DEVELOPING_CFLAGS=['-W -Werror -g3 -O0 -Woverloaded-virtual -Wsign-promo -Wsynth
 			            -Wchar-subscripts -Wparentheses -Wsequence-point -Wswitch
                                     -Wfloat-equal -Wpointer-arith']
-
-		AC_MSG_CHECKING([whether to define __USE_MALLOC])
-		AC_ARG_ENABLE(stl-malloc,
-			      [AC_HELP_STRING([--disable-stl-malloc],
-			                      [Do not use the slow malloc-allocator of the STL.
-                                               This generates faster code but may hide problems
-                                               like mem-leaks or overflows. This option will be
-                                               ignored when not using '--enable-developing'; then
-                                               it is on by default])],
-                              [case "${enableval}" in
-				  yes|no) enable_stl_malloc="${enableval}";;
-		 		  *)      AC_MSG_ERROR([bad value ${enableval} for --disable-stl-malloc]) ;;
-			       esac],
-                              [ enable_stl_malloc=${enable_stl_malloc_default} ])
-		AC_MSG_RESULT([${enable_stl_malloc}])
-
-		if test x"${enable_stl_malloc}" = xyes; then
-			AC_DEFINE([__USE_MALLOC], [1], [Use slow malloc-allocators allowing tracing of memory-leaks])
-		fi
 	fi
 
 	AC_SUBST([$1])

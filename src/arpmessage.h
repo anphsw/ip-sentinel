@@ -1,6 +1,6 @@
-// $Id: arpmessage.h,v 1.1 2002/11/14 22:51:42 ensc Exp $    --*- c++ -*--
+// $Id: arpmessage.h,v 1.2 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

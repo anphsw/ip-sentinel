@@ -1,6 +1,6 @@
-// $Id: parameters.h,v 1.4 2002/11/27 21:15:56 ensc Exp $    --*- c++ -*--
+// $Id: parameters.h,v 1.6 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #ifndef H_IPSENTINEL_PARAMETERS_H
 #define H_IPSENTINEL_PARAMETERS_H
 
-#define MAX_CHILDS		20
+#define MAX_CHILDS		40
 #define MAX_ERRORS		6
 
   // To be switch-friendly, only a limited amount of random MACs will be used
@@ -48,8 +48,8 @@
   // ARP-requests with DOS-values below LOW will be answered; between LOW and
   // HIGH the probability of an answer is decreasing linearly and requests over
   // HIGH will not be answered.
-#define ANTIDOS_COUNT_LOW	10u
-#define ANTIDOS_COUNT_HIGH	50u
+#define ANTIDOS_COUNT_LOW	20u
+#define ANTIDOS_COUNT_HIGH	80u
 
   // Maximum DOS-values; this value is used to prevent overflows
 #define ANTIDOS_COUNT_MAX	1000u

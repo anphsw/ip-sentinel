@@ -1,4 +1,4 @@
-#! /bin/bash
+## --*- sh -*--
 
 export EF_PROTECT_BELOW=1
 export EF_PROTECT_FREE=1
@@ -7,6 +7,9 @@ export EF_FILL=42
 datadir=${srcdir}/testsuite/data
 basefile=`basename $0`
 basefile=${datadir}/${basefile%%.sh}
+
+REPLACE_REGEX='s!^.*\(: (Re)reading blacklist\)!TIME\1!;
+	      s!\(de:ad:be:ef:\)00*:[^[:blank:]]*!\100:XX!g'
 
 function exists()
 {

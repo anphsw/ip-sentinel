@@ -1,4 +1,4 @@
-dnl $Id: ensc_cflags.m4,v 1.2 2002/11/22 18:49:10 ensc Exp $
+dnl $Id: ensc_cflags.m4,v 1.4 2003/01/30 02:12:26 ensc Exp $
 
 dnl Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 dnl  
@@ -27,16 +27,16 @@ AC_DEFUN([__ENSC_CHECK_WARNFLAGS],
 	warn_flags="-Werror -W"
 	AC_MSG_CHECKING([whether the $1-compiler accepts ${warn_flags}])
 	AC_LANG_PUSH($1)
-	old_CFLAGS="${$2}"
-	$2=$warn_flags
+	old_CFLAGS="${$3}"
+	$3="$warn_flags"
 	AC_TRY_COMPILE([inline static void f(){}],
 		       [],
-		       [ensc_sys_compilerwarnflags_$1=${warn_flags}],
-		       [ensc_sys_compilerwarnflags_$1=])
+		       [ensc_sys_compilerwarnflags_$2=${warn_flags}],
+		       [ensc_sys_compilerwarnflags_$2=])
 	AC_LANG_POP($1)
-	$2="$old_CFLAGS"
+	$3="$old_CFLAGS"
 
-	if test x"${ensc_sys_compilerwarnflags_$1}" = x; then
+	if test x"${ensc_sys_compilerwarnflags_$2}" = x; then
 		AC_MSG_RESULT([no])
 	else
 		AC_MSG_RESULT([yes])
@@ -45,12 +45,12 @@ AC_DEFUN([__ENSC_CHECK_WARNFLAGS],
 
 AC_DEFUN([__ENSC_CHECK_WARNFLAGS_C],
 [
-	__ENSC_CHECK_WARNFLAGS(C, CFLAGS)
+	__ENSC_CHECK_WARNFLAGS(C, C, CFLAGS)
 ])
 
 AC_DEFUN([__ENSC_CHECK_WARNFLAGS_CXX],
 [
-	__ENSC_CHECK_WARNFLAGS(CXX, CFLAGS)
+	__ENSC_CHECK_WARNFLAGS(C++, CXX, CXXFLAGS)
 ])
 
 

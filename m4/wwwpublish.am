@@ -1,4 +1,4 @@
-## $Id: wwwpublish.am,v 1.1 2002/11/15 16:58:26 ensc Exp $ ---*- makefile -*---
+## $Id: wwwpublish.am,v 1.2 2003/01/23 18:28:58 ensc Exp $ ---*- makefile -*---
 
 # Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 #  
@@ -17,6 +17,12 @@
 #  
 
 www:		.www-timestamp
+
+distclean-local:	distclean-wwwpublish
+
+distclean-wwwpublish:
+			rm -f  .www-timestamp
+
 
 .www-timestamp:	www-sftp.cmds
 		sftp -b $< $(WWW_HOST)
