@@ -1,4 +1,4 @@
-// $Id: wrappers.h,v 1.6 2003/10/16 22:14:56 ensc Exp $    --*- c++ -*--
+// $Id: wrappers.h,v 1.7 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -18,8 +18,6 @@
 
 #ifndef H_IPSENTINEL_WRAPPERS_H
 #define H_IPSENTINEL_WRAPPERS_H
-
-#include "compat.h"
 
 #include <unistd.h>
 #include <grp.h>

@@ -1,4 +1,4 @@
-// $Id: util.h,v 1.8 2003/08/22 14:44:22 ensc Exp $    --*- c++ -*--
+// $Id: util.h,v 1.10 2004/06/16 10:35:16 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -18,8 +18,6 @@
 
 #ifndef H_IPSENTINEL_UTIL_H
 #define H_IPSENTINEL_UTIL_H
-
-#include "compat.h"
 
 #include <stdlib.h>
 #include <sys/param.h>
@@ -68,8 +66,6 @@ xstrcat(char **dst, size_t *cnt, char const *src)
 {
   xstrcatn(dst, cnt, src, strlen(src));
 }
-
-size_t fillUInt(char *dest, unsigned int nr);
 
 void writeUInt(int fd, unsigned int nr);
 void writeMsgTimestamp(int fd);

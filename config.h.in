@@ -56,3 +56,5 @@
 
 /* Uses GNU features */
 #undef _GNU_SOURCE
+
+#include "compat.h"

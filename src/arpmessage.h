@@ -1,4 +1,4 @@
-// $Id: arpmessage.h,v 1.2 2003/05/26 21:49:22 ensc Exp $    --*- c++ -*--
+// $Id: arpmessage.h,v 1.5 2004/06/16 10:35:16 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -19,10 +19,9 @@
 #ifndef H_IPSENTINEL_ARPMESSAGE_H
 #define H_IPSENTINEL_ARPMESSAGE_H
 
-#include "compat.h"
-
-#include <netinet/ether.h>
+#include <net/ethernet.h>
 #include <net/if_arp.h>
+#include <netinet/if_ether.h>
 
 #include <features.h>    /* for the glibc version number */
 #if (__GLIBC__ >= 2 && __GLIBC_MINOR >= 1) || defined(__dietlibc__)

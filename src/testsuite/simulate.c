@@ -1,4 +1,4 @@
-// $Id: simulate.c,v 1.6 2003/10/07 17:21:38 ensc Exp $    --*- c++ -*--
+// $Id: simulate.c,v 1.7 2004/06/17 13:03:03 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 
       struct BlackListQuery	query_src = {
 	.ip  = (struct in_addr const *)arp->arp_spa,
-	.mac = &rq.request.arp_sha,
+	.mac = (struct ether_addr const *)&rq.request.arp_sha,
       };
       
       switch (state) {

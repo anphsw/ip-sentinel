@@ -1,6 +1,6 @@
-// $Id: antidos.h,v 1.4 2004/06/15 11:56:46 ensc Exp $    --*- c++ -*--
+// $Id: vector-insert.c,v 1.2 2004/02/06 16:42:56 ensc Exp $    --*- c -*--
 
-// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2004 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,25 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-//  
 
-#ifndef H_IPSENTINEL_ANTIDOS_H
-#define H_IPSENTINEL_ANTIDOS_H
 
-#include "ensc_vector/vector.h"
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
 
-#include <stdbool.h>
-#include <netinet/in.h>
+#include "vector.h"
+#include <string.h>
 
-typedef struct
+void *
+Vector_insert(struct Vector *vec, void const *key,
+	      int (*compare)(const void *, const void *))
 {
-    time_t		min_time;
-    struct Vector	data;
-} AntiDOS;
+  char *	data;
+  char *	end_ptr = Vector_pushback(vec);
 
-void		AntiDOS_init(AntiDOS *);
-unsigned int	AntiDOS_registerIP(AntiDOS *, struct in_addr const);
-void		AntiDOS_update(AntiDOS *);
-bool		AntiDOS_isOversized(AntiDOS *);
+  for (data=vec->data; data<end_ptr; data += vec->elem_size) {
+    if (compare(key, data)<0) {
+      memmove(data+vec->elem_size, data,
+	      (char *)(end_ptr) - (char *)(data));
+      return data;
+    }
+  }
 
-#endif	//  H_IPSENTINEL_ANTIDOS_H
+  return end_ptr;
+}

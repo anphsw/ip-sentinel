@@ -33,9 +33,12 @@ BuildRequires:	dietlibc
 Summary:		SysV initscripts for ip-sentinel
 Group:			System Environment/Base
 Provides:		init(ip-sentinel)
-Requires:		%name = %epoch:%version-%release
-Requires(preun,postun):	initscripts
-Requires(post,preun):	/sbin/chkconfig
+Requires(preun):	%name = %epoch:%version-%release
+Requires(postun):	%name = %epoch:%version-%release
+Requires(preun):	initscripts
+Requires(postun):	initscripts
+Requires(post):		/sbin/chkconfig
+Requires(preun):	/sbin/chkconfig
 
 
 %package minit
@@ -43,7 +46,8 @@ Summary:		minit initscripts for ip-sentinel
 Group:			System Environment/Base
 Provides:		init(ip-sentinel)
 Requires:		%name = %epoch:%version-%release
-Requires(pre,postun):	minit-setup
+Requires(pre):		minit-setup
+Requires(postun):	minit-setup
 
 
 
@@ -147,23 +151,31 @@ test "$1" = 0 || %_initrddir/%service condrestart &>/dev/null
 %_mandir/*/*
 %_sbindir/*
 %attr(-,root,%username) %homedir
-%config(noreplace) %_sysconfdir/sysconfig/*
 
 
 %files sysv
 %defattr(-,root,root,-)
 %config %_initrddir/*
+%config(noreplace) %_sysconfdir/sysconfig/*
 
 
 %files minit
 %defattr(-,root,root,-)
 %dir %minitsvcdir
-%config %minitsvcdir/run
+%minitsvcdir/run
 %minitsvcdir/respawn
-
+%config(noreplace) %minitsvcdir/params
 
 
 %changelog
+* Wed Jun 16 2004 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de> - 0:0.9.2-0
+- updated minit filelist
+- moved /etc/sysconfig/* files into -sysv subpackage; they are not
+  used for 'minit' anymore
+
+* Sat Mar 20 2004 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de> - 0:0.9-0
+- workaround https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=118773
+
 * Thu Dec  4 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de> - 0:0.8-0
 - use 'install-contrib'
 

@@ -1,4 +1,4 @@
-// $Id: vector.ic,v 1.3 2003/12/04 18:22:31 ensc Exp $    --*- c++ -*--
+// $Id: vector.hc,v 1.1 2004/02/06 14:47:18 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -16,37 +16,37 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 //  
 
-inline void *
+static inline UNUSED void *
 Vector_begin(struct Vector *vec)
 {
   return vec->data;
 }
 
-inline void *
+static inline UNUSED void *
 Vector_end(struct Vector *vec)
 {
   return (char *)(vec->data) + (vec->count * vec->elem_size);
 }
 
-inline void const *
+static inline UNUSED void const *
 Vector_begin_const(struct Vector const *vec)
 {
   return vec->data;
 }
 
-inline void const *
+static inline UNUSED void const *
 Vector_end_const(struct Vector const *vec)
 {
   return (char *)(vec->data) + (vec->count * vec->elem_size);
 }
 
-inline size_t
+static inline UNUSED size_t
 Vector_count(struct Vector const *vec)
 {
   return vec->count;
 }
 
-static void const *
+static inline UNUSED void const *
 Vector_search_const(struct Vector const *vec, void const *key, int (*compar)(const void *, const void *))
 {
   return Vector_search((struct Vector *)(vec), key, compar);

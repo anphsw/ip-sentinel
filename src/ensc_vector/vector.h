@@ -1,6 +1,6 @@
-// $Id: vector.h,v 1.5 2003/12/04 18:22:28 ensc Exp $    --*- c++ -*--
+// $Id: vector.h,v 1.2 2004/06/16 10:10:55 ensc Exp $    --*- c++ -*--
 
-// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2002,2004 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,10 +16,9 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 //  
 
-#ifndef H_IPSENTINEL_VECTOR_H
-#define H_IPSENTINEL_VECTOR_H
+#ifndef H_UTILVSERVER_VECTOR_VECTOR_H
+#define H_UTILVSERVER_VECTOR_VECTOR_H
 
-#include "compat.h"
 #include <stdlib.h>
 
 struct Vector
@@ -41,6 +40,7 @@ void *	Vector_insert(struct Vector *, void const *key, int (*compar)(const void 
 void	Vector_popback(struct Vector *);
 void	Vector_resize(struct Vector *vec);
 void	Vector_clear(struct Vector *vec);
+void	Vector_zeroEnd(struct Vector *vec);
 static void const *	Vector_search_const(struct Vector const *, void const *key, int (*compar)(const void *, const void *));
 static void *		Vector_begin(struct Vector *);
 static void *		Vector_end(struct Vector *);
@@ -48,6 +48,6 @@ static void const *	Vector_begin_const(struct Vector const *);
 static void const *	Vector_end_const(struct Vector const *);
 static size_t		Vector_count(struct Vector const *vec);
 
-#include "vector.ic"
+#include "vector.hc"
 
-#endif	//  H_IPSENTINEL_VECTOR_H
+#endif	//  H_UTILVSERVER_VECTOR_VECTOR_H

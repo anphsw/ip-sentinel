@@ -1,4 +1,4 @@
-// $Id: blacklist-check.c,v 1.7 2003/12/04 18:26:14 ensc Exp $    --*- c++ -*--
+// $Id: blacklist-check.c,v 1.8 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -22,7 +22,6 @@
 
 #include "blacklist.h"
 #include "arguments.h"
-#include "compat.h"
 
 #include <stdbool.h>
 #include <signal.h>

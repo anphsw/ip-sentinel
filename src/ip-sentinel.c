@@ -1,4 +1,4 @@
-// $Id: ip-sentinel.c,v 1.27 2003/12/04 18:22:11 ensc Exp $    --*- c++ -*--
+// $Id: ip-sentinel.c,v 1.28 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -27,7 +27,6 @@
 #include "blacklist.h"
 #include "antidos.h"
 #include "arpmessage.h"
-#include "compat.h"
 #include "ip-sentinel.h"
 #include "worker.h"
 #include "jobinfo.h"

@@ -1,4 +1,4 @@
-// $Id: arguments.h,v 1.8 2003/10/07 17:20:05 ensc Exp $    --*- c++ -*--
+// $Id: arguments.h,v 1.10 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  

@@ -1,4 +1,4 @@
-// $Id: compat.h,v 1.7 2003/09/16 12:28:25 ensc Exp $    --*- c++ -*--
+// $Id: compat.h,v 1.9 2004/06/16 10:35:16 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -18,6 +18,24 @@
 
 #ifndef H_ENSC_IPSENTINEL_SRC_COMPAT_H
 #define H_ENSC_IPSENTINEL_SRC_COMPAT_H
+
+#if defined(__dietlibc__) && !defined(ENSC_DIETLIBC_C99) && defined(__STRICT_ANSI__) && defined(__STDC_VERSION__)
+  // fixed in 0.25+
+#  include <sys/cdefs.h>
+#  undef inline
+
+#  undef  __STRICT_ANSI__
+#  include <stdint.h>
+#  define __STRICT_ANSI__
+#endif
+
+#ifdef __dietlibc__
+  // fixed in 0.27+
+#  define ethhdr		ethhdrX
+#  include <net/ethernet.h>
+#  undef  ethhdr
+#endif
+
 
 #ifndef __dietlibc__
 #  include <stropts.h>
@@ -40,7 +58,6 @@ int memcmp(const void *s1, const void *s2, size_t n);
 #endif
 
 #ifdef __dietlibc__
-#include <netinet/if_ether.h>
 #include <net/if_arp.h>
 #include <stdint.h>
 

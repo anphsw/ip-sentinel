@@ -1,4 +1,4 @@
-## $Id: Makefile.am,v 1.6 2003/08/22 19:15:42 ensc Exp $
+## $Id: Makefile.am,v 1.8 2004/06/16 10:35:16 ensc Exp $
 
 # Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 #  
@@ -25,24 +25,33 @@ ether_SRCS			=
 endif
 
 lib_SRCS			=  arguments.c util.c blacklist.c 	\
-				   antidos.c vector.c prioqueue.c	\
-				   worker.c				\
-				   $(ether_SRCS)
+				   antidos.c prioqueue.c worker.c	\
+				   $(ether_SRCS)			\
+				   $(ensc_fmt_SRCS)
 
 EXTRA_ip_sentinel_SOURCES	=  ether.c
 ip_sentinel_SOURCES		=  ip-sentinel.c $(lib_SRCS)
+ip_sentinel_LDADD		=  libensc_vector.a
 
 AM_CPPFLAGS			=  -D_GNU_SOURCE
 
 noinst_HEADERS			=  antidos.h arguments.h arpmessage.h	\
 				   blacklist.h compat.h ip-sentinel.h	\
-				   parameters.h util.h vector.h		\
+				   parameters.h util.h			\
 				   worker.h jobinfo.h			\
-				   wrappers.h vector.ic			\
-				   prioqueue.h prioqueue.ic
+				   wrappers.h fmt.h			\
+				   prioqueue.h prioqueue.ic \
+				   $(ENSC_VECTOR_HDRS) $(ENSC_VECTOR_XHDRS)
+
+noinst_LIBRARIES		=  $(ENSC_VECTOR_LIBS)
 
 EXTRA_DIST			=  $(testsuite_FILES)
 CLEANFILES			=  $(testsuite_CLEANFILES)
 
+check_PROGRAMS			=  $(ENSC_VECTOR_TESTSUITE_PRGS)
+TESTS				=  $(ENSC_VECTOR_TESTSUITE_TSTS)
+
 include $(top_srcdir)/m4/diet.am
 include $(srcdir)/testsuite/Makefile-files
+include $(srcdir)/ensc_vector/Makefile-files
+include $(srcdir)/ensc_fmt/Makefile-files

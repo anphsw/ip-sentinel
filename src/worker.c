@@ -1,4 +1,4 @@
-// $Id: worker.c,v 1.7 2003/10/07 17:21:20 ensc Exp $    --*- c++ -*--
+// $Id: worker.c,v 1.9 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -27,6 +27,7 @@
 #include "parameters.h"
 #include "util.h"
 
+#include <netinet/ether.h>
 #include <assert.h>
 #include <sys/time.h>
 #include <sys/types.h>

@@ -1,3 +1,152 @@
+2004-06-17 15:03  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* NEWS, configure.ac, doc/index.html: version 0.10
+
+2004-06-17 15:03  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/simulate.c: added an explicit cast to avoid
+	  compiler warnings
+
+2004-06-16 12:43  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* ip-sentinel.spec.in: moved /etc/sysconfig/* files into -sysv
+	  subpackage; they are not used for 'minit' anymore
+
+2004-06-16 12:39  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* ip-sentinel.spec.in: updated minit filelist
+
+2004-06-16 12:35  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/: Makefile.am, blacklist.c, util.c, util.h: added 'ensc_fmt'
+	  support
+
+2004-06-16 12:35  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/compat.h: added workaround for uint64* types in dietlibc
+	  <0.25
+
+2004-06-16 12:35  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/arpmessage.h: include <netinet/if_ether.h>
+
+2004-06-16 12:34  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* contrib/ip-sentinel.params, src/fmt.h: initial checkin
+
+2004-06-16 12:34  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* contrib/Makefile-files: removed minit-run scripts; it is done
+	  more efficiently now...  added minit-params template
+
+2004-06-16 12:34  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* contrib/ip-sentinel-run[DEAD]: removed minit-run scripts; it is
+	  done more efficiently now...
+
+2004-06-16 12:10  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/: Makefile-files, vector-zeroend.c, vector.h:
+	  added Vector_zeroEnd() function
+
+2004-06-16 12:06  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_fmt/: .cvsignore, Makefile-files, fmt-32.c, fmt-64.c,
+	  fmt-internal.h, fmt-tai64n.c, fmt.h, fmt.hc, fmtx-32.c,
+	  fmtx-64.c, fmtx.hc: moved fmt* functionality into the 'ensc_fmt'
+	  module
+
+2004-06-15 14:12  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* configure.ac: add '#include "compat.h"' to end of <config.h>
+
+2004-06-15 14:11  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/: arguments.c, arguments.h, arpmessage.h, blacklist.c,
+	  blacklist.h, ether.c, ip-sentinel.c, util.h, worker.c,
+	  wrappers.h, testsuite/blacklist-check.c: do not include
+	  "compat.h" anymore; this happens through <config.h> now
+
+2004-06-15 14:05  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/testsuite/Makefile-files: cleanups for ensc_vector library
+
+2004-06-15 14:04  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/: arguments.c, arguments.h, arpmessage.h, blacklist.c,
+	  compat.h, util.c, worker.c: fixed build with recent dietlibc
+	  (duplicate 'struct ethhdr' declarations)
+
+2004-06-15 14:04  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/blacklist.h: fixed build with recent dietlibc (duplicate
+	  'struct ethhdr' declarations) use 'ensc_vector' library instead
+	  of 'vector*' files
+
+2004-06-15 14:02  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/: vector.c[DEAD], vector.h[DEAD], vector.ic[DEAD]: use
+	  'ensc_vector' library instead of 'vector*' files
+
+2004-06-15 13:56  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/: Makefile.am, antidos.h: use 'ensc_vector' library instead
+	  of 'vector*' files
+
+2004-06-15 13:55  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* ip-sentinel.spec.in: removed 'Requires(...,...)' statements; they
+	  are not working as expected :(
+
+2004-03-24 02:12  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/.cvsignore: initial checkin
+
+2004-03-24 02:11  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/.cvsignore: added some standardfiles; I
+	  do not want to wait until Savannah fixes its scripts and allows
+	  access to CVSROOT/cvsignore again.
+
+2004-03-10 03:30  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/: Makefile-files, testsuite/Makefile-files:
+	  modernized the Makefiles; use '+=' where possible to remove
+	  complexity from the toplevel Makefile.am
+
+2004-02-17 20:51  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/test1.c: make non-C99 compilers happy
+
+2004-02-16 20:18  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/test1.c: #undef NDEBUG
+
+2004-02-10 13:24  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/.cvsignore: initial checkin
+
+2004-02-06 18:43  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/testsuite/: Makefile-files, test1.c: initial
+	  checkin
+
+2004-02-06 18:41  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/Makefile-files: added ensc_vector testsuite
+
+2004-02-06 17:42  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/vector-insert.c: fixed it
+
+2004-02-06 15:47  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+
+	* src/ensc_vector/: Makefile-files, vector-clear.c, vector-free.c,
+	  vector-init.c, vector-insert.c, vector-internal.h,
+	  vector-popback.c, vector-pushback.c, vector-resize.c,
+	  vector-resizeinternal.hc, vector-search.c, vector-sort.c,
+	  vector-unique.c, vector.h, vector.hc: initial checkin
+
 2003-12-16 00:56  Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 
 	* NEWS, configure.ac, doc/index.html, doc/ip-sentinel.man: version

@@ -1,4 +1,4 @@
-// $Id: ether.c,v 1.5 2003/12/04 18:21:35 ensc Exp $    --*- c++ -*--
+// $Id: ether.c,v 1.6 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -19,8 +19,6 @@
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
-
-#include "compat.h"
 
 #include <net/ethernet.h>
 #include <assert.h>

@@ -1,4 +1,4 @@
-// $Id: blacklist.h,v 1.7 2003/12/04 19:51:38 ensc Exp $    --*- c++ -*--
+// $Id: blacklist.h,v 1.9 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -19,13 +19,12 @@
 #ifndef H_IPSENTINEL_BLACKLIST_H
 #define H_IPSENTINEL_BLACKLIST_H
 
-#include "vector.h"
+#include "ensc_vector/vector.h"
 
 #include <netinet/in.h>
 #include <net/ethernet.h>
 #include <time.h>
 #include <stdbool.h>
-#include <compat.h>
 
 struct Arguments;
 

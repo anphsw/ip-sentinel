@@ -1,6 +1,6 @@
-// $Id: antidos.h,v 1.4 2004/06/15 11:56:46 ensc Exp $    --*- c++ -*--
+// $Id: fmtx-64.c,v 1.1 2004/06/16 10:06:03 ensc Exp $    --*- c -*--
 
-// Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+// Copyright (C) 2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,25 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-//  
 
-#ifndef H_IPSENTINEL_ANTIDOS_H
-#define H_IPSENTINEL_ANTIDOS_H
 
-#include "ensc_vector/vector.h"
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
 
-#include <stdbool.h>
-#include <netinet/in.h>
+#define FMT_BITSIZE	64
+#include "fmtx.hc"
 
-typedef struct
-{
-    time_t		min_time;
-    struct Vector	data;
-} AntiDOS;
-
-void		AntiDOS_init(AntiDOS *);
-unsigned int	AntiDOS_registerIP(AntiDOS *, struct in_addr const);
-void		AntiDOS_update(AntiDOS *);
-bool		AntiDOS_isOversized(AntiDOS *);
-
-#endif	//  H_IPSENTINEL_ANTIDOS_H
+#if __WORDSIZE==FMT_BITSIZE
+size_t	FMT_P(xulong)(char *ptr, unsigned long val) ALIASFUNC(xuint64);
+size_t	FMT_P( xlong)(char *ptr,          long val) ALIASFUNC( xint64);
+#endif

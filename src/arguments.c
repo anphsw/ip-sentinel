@@ -1,4 +1,4 @@
-// $Id: arguments.c,v 1.11 2003/10/07 17:20:01 ensc Exp $    --*- c++ -*--
+// $Id: arguments.c,v 1.13 2004/06/15 12:11:29 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -22,14 +22,12 @@
 
 #include "arguments.h"
 #include "util.h"
-#include "compat.h"
 
 #include <getopt.h>
 #include <assert.h>
 #include <string.h>
 #include <unistd.h>
 #include <net/ethernet.h>
-#include <netinet/ether.h>
 
 #ifndef DEFAULT_IPFILE
 #  define DEFAULT_IPFILE		PATH_CONFIGFILE

@@ -1,4 +1,4 @@
-// $Id: blacklist.c,v 1.22 2003/12/05 17:05:24 ensc Exp $    --*- c++ -*--
+// $Id: blacklist.c,v 1.25 2004/06/16 10:35:16 ensc Exp $    --*- c++ -*--
 
 // Copyright (C) 2002,2003 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 //  
@@ -24,13 +24,12 @@
 #include "parameters.h"
 #include "util.h"
 #include "arguments.h"
-#include "compat.h"
+#include "fmt.h"
 
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <netinet/ether.h>
-#include <net/ethernet.h>
 #include <assert.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -453,7 +452,7 @@ BlackList_iterateRange(BlackList *lst,
   if (err_ptr>list_end)            PARSE_ERRROR("unexpected error while parsing range");
 
   for (; start<=end; ++start) {
-    size_t	len = fillUInt(prefix_end, start);
+    size_t	len = fmt_uint(prefix_end, start);
     
     memcpy(prefix_end+len, postfix_start, postfix_len);
 
