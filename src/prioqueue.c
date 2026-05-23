@@ -32,10 +32,10 @@ powify(size_t val)
 
   for (i=sizeof(size_t)*8; i>0;) {
     --i;
-    if (val&(1<<i)) {
+    if (val&((size_t)1<<i)) {
 	// overflow
       if (i==(sizeof(size_t)*8-1)) return val;
-      else                         return (1<<(i+1))-1;
+      else                         return ((size_t)1<<(i+1))-1;
     }
   }
 
