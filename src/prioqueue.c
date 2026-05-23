@@ -25,7 +25,7 @@
 #include "util.h"
 #include <assert.h>
 
-inline static size_t ALWAYSINLINE
+inline static size_t
 powify(size_t val)
 {
   int	i;
@@ -150,7 +150,7 @@ PriorityQueue_extract(struct PriorityQueue *q)
 }
 
 
-static void ALWAYSINLINE
+static void
 PriorityQueue_insertInternal(struct PriorityQueue *q, void const *key)
 {
   void * const		ptr = q->data;

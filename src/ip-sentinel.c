@@ -55,7 +55,7 @@ sigHup(int sig UNUSED)
   signal(SIGHUP, sigHup);
 }
 
-static void ALWAYSINLINE
+static void
 adjustUserGroup(struct Arguments *arguments, uid_t *uid, gid_t *gid)
 {
   struct passwd const *	pw_user;
@@ -142,7 +142,7 @@ daemonize(struct Arguments *arguments)
   SETCLOEXEC(2);
 }
 
-inline static int ALWAYSINLINE
+inline static int
 initIfaceInformation(int fd, char const *iface_name)
 {
   struct ifreq		iface;
@@ -173,7 +173,7 @@ initIfaceInformation(int fd, char const *iface_name)
   return ifidx;
 }
 
-static void ALWAYSINLINE
+static void
 generateJobToIntruder(struct Worker *worker,
 		      AntiDOS *anti_dos, BlackList const *blacklist,
 		      ArpMessage const *const msg,
@@ -229,7 +229,7 @@ int *oversize_sleep)
 }
 
 
-static void ALWAYSINLINE
+static void
 generateJobFromIntruder(struct Worker *worker,
 			AntiDOS *anti_dos, BlackList const *blacklist,
 			ArpMessage const *const msg,
@@ -351,7 +351,7 @@ run(struct Worker *worker, struct Arguments const *args)
   }
 }
 
-inline static int ALWAYSINLINE
+inline static int
 generateSocket(char const *iface, int *idx)
 {
   int			sock = Esocket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP));

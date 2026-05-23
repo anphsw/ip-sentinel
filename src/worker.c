@@ -134,7 +134,7 @@ Worker_executeJob(struct Worker const *worker, struct ScheduleInfo const *job)
   error_count = 0;
 }
 
-static void ALWAYSINLINE
+static void
 Worker_fillPacket(struct Worker const *worker,
 		  struct ScheduleInfo *job,
 		  struct RequestInfo const *rq)
@@ -254,7 +254,7 @@ callAction(char const * const desc[8])
   }
 }
 
-static void ALWAYSINLINE
+static void
 Worker_printJob(struct Worker const *worker,
 		struct RequestInfo const *rq)
 {
@@ -316,7 +316,7 @@ Worker_poisonJob(struct ScheduleInfo *job, struct RequestInfo const *rq)
   return false;
 }
 
-static void ALWAYSINLINE
+static void
 Worker_scheduleNewJob(struct Worker *worker, struct PriorityQueue *queue, time_t now)
 {
   struct RequestInfo	request;

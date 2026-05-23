@@ -189,7 +189,7 @@ do {						\
 } while (false)
 
 
-static BlackListStatus ALWAYSINLINE
+static BlackListStatus
 BlackList_setDefaultMac(BlackList const *lst, struct ether_addr *addr)
 {
   BlackListStatus	res;
@@ -206,7 +206,7 @@ BlackList_setDefaultMac(BlackList const *lst, struct ether_addr *addr)
   return res;
 }
 
-static bool ALWAYSINLINE
+static bool
 BlackList_parseNetMask(struct in_addr * const result, char **start,
 		       UNUSED char const * const end, int line_nr)
 {
@@ -271,7 +271,7 @@ BlackList_parseMac(char const *start, struct ether_addr *mac, int line_nr)
   return true;
 }
 
-static bool ALWAYSINLINE
+static bool
 BlackList_parseLine(BlackList *lst, char *start, char const *end, size_t line_nr)
 {
   BlackListStatus	parse_status = blUNDECIDED;
@@ -437,7 +437,7 @@ static bool
 BlackList_expandLine(BlackList *lst, char *start, char const *end, size_t line_nr);
 
 
-static bool ALWAYSINLINE
+static bool
 BlackList_iterateList(BlackList *lst,
 		      char *list_start,    char const *list_end,
 		      char *prefix_start,  char *prefix_end,
@@ -466,7 +466,7 @@ BlackList_iterateList(BlackList *lst,
   return true;
 }
 
-static bool ALWAYSINLINE
+static bool
 BlackList_iterateRange(BlackList *lst,
 		       char *list_start,    char const *list_end,
 		       char *prefix_start,  char *prefix_end,
@@ -616,7 +616,7 @@ BlackList_expandLine(BlackList *lst, char *start, char const *end, size_t line_n
   return true;
 }
 
-static bool ALWAYSINLINE
+static bool
 BlackList_updateInternal(BlackList *lst, int fd)
 {
   size_t	line_nr     = 1;

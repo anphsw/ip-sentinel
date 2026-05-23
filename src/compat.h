@@ -45,11 +45,7 @@ struct ether_addr *	ether_aton_r(const char *asc, struct ether_addr *addr);
 #endif
 
 
-#ifndef __dietlibc__
-#  include <stropts.h>
-#else
-#  include <sys/ioctl.h>
-#endif
+#include <sys/ioctl.h>
 
 #ifdef __dietlibc__
 #  define sin	XsinX
