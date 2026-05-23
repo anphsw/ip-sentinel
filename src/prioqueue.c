@@ -28,6 +28,8 @@
 inline static size_t
 powify(size_t val)
 {
+  if (val >= 0x80000000) return val;
+
   int	i;
 
   for (i=sizeof(size_t)*8; i>0;) {
