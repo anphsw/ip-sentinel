@@ -23,6 +23,7 @@
 
 #include <stdbool.h>
 #include <netinet/in.h>
+#include <time.h>
 
 typedef struct
 {
